@@ -1,111 +1,111 @@
-# $(LayoutAnimation) and $(MultiLayoutPanel)
+＃$（LayoutAnimation）和$（MultiLayoutPanel）
 
-There is a certain kind of animation which deserves special attention. When an @(Element) has certain properties like @(Width), @(Height) or @(Margin) (collectively reffered to as "layout properties") changed or when its location in the visual tree changes, we can trigger a `LayoutAnimation`.
+有某种动画值得特别注意。当@（元素）具有某些属性，如@（Width），@（Height）或@（Margin）（统称为“布局属性”）改变或当它在视图树中的位置改变时，布局动画。
 
-Calculating layout for a large UX-document can be quite costly. When animating layout properties with @(Change) animators, we run the risk of forcing a new layout to be calculated each frame. This can very easily lead to frame drops.
+计算大型UX文档的布局可能相当昂贵。当使用@（更改）动画制作动画布局属性时，我们运行强制每个框架计算新布局的风险。这很容易导致帧丢失。
 
-Fuse offers a neat alternative to this: the @(LayoutAnimation) trigger.
-For example, instead of animating the @(Width) of an @(Element) using @(Change), we can use @(Set) and react to this change using a @(LayoutAnimation). Inside `LayoutAnimation` we specify how our element should move/resize from its previous position to its new position.
-Here is a quick example:
+保险丝提供了一个整洁的替代品：@（LayoutAnimation）触发器。
+例如，我们可以使用@（Set）并使用@（LayoutAnimation）对这个变化作出反应，而不是使用@（变化）来动画化一个@（元素）的@（宽度）。在`LayoutAnimation'中，我们指定元素如何从上一个位置移动/调整大小到新位置。
+这里有一个简单的例子：
 
-	<Panel>
-		<Panel ux:Name="panel" Width="50" Height="50" Background="Teal">
+	<面板>
+		<Panel ux：Name =“panel”Width =“50”Height =“50”Background =“Teal”>
 			<LayoutAnimation>
-				<Resize X="1" Y="1" RelativeTo="LayoutChange" Duration="0.5"/>
-				<Move X="1" Y="1" RelativeTo="LayoutChange" Duration="0.5"/>
-			</LayoutAnimation>
+				<Resize X =“1”Y =“1”RelativeTo =“LayoutChange”Duration =“0.5”/>
+				<Move X =“1”Y =“1”RelativeTo =“LayoutChange”Duration =“0.5”/>
+			</ LayoutAnimation>
 			<Clicked>
-				<Set panel.Width="200"/>
-				<Set panel.Height="300"/>
-			</Clicked>
-		</Panel>
-	</Panel>
+				<Set panel.Width =“200”/>
+				<Set panel.Height =“300”/>
+			</ Clicked>
+		</ Panel>
+	</ Panel>
 
-The @(Clicked) trigger has two @(Set) actions in it. They set the @(Width) and the @(Height) of the @(Panel).
-The @(Panel) has a @(LayoutAnimation) on it with a @(Resize) and @(Move) animator. Both these animators have their `RelativeTo` property set to `LayoutChange`. This means that they will animate from whatever the value was before the new layout was calculated, to whatever the new values are. Because changing the @(Width), and @(Height) of the @(Panel) leads to it having its position changed, we also use a @(Move) animator to make a smooth animation.
+@（已单击）触发器中有两个@（设置）操作。他们设置@（面板）的@（宽度）和@（高度）。
+@（Panel）有一个@（LayoutAnimation），它有一个@（调整大小）和@（移动）动画。这两个动画都有自己的“RelativeTo”属性设置为“LayoutChange”。这意味着它们将从计算新布局之前的任何值生成到任何新值。因为改变@（面板）的@（宽度）和@（高度）导致它的位置改变，我们还使用@（移动）动画制作一个平滑的动画。
 
-## Animating other layout properties
+##动画其他布局属性
 
-@(LayoutAnimation) opens up a whole world of possibilities. We can for example use it to animate an @(Element:elements) alignment:
+@（LayoutAnimation）打开了一个全世界的可能性。我们可以例如使用它来动画化一个@（Element：elements）对齐：
 
-	<Panel>
-		<Panel ux:Name="panel" Width="50" Height="50" Background="Teal" Alignment="Center">
+	<面板>
+		<Panel ux：Name =“panel”Width =“50”Height =“50”Background =“Teal”Alignment =“Center”>
 			<LayoutAnimation>
-				<Move X="1" Y="1" RelativeTo="LayoutChange" Duration="0.5"/>
-			</LayoutAnimation>
+				<Move X =“1”Y =“1”RelativeTo =“LayoutChange”Duration =“0.5”/>
+			</ LayoutAnimation>
 			<Clicked>
-				<Set panel.Alignment="BottomRight"/>
-			</Clicked>
-		</Panel>
-	</Panel>
+				<Set panel.Alignment =“BottomRight”/>
+			</ Clicked>
+		</ Panel>
+	</ Panel>
 
-In this example, we use a @(Set) action to change the @(Alignment) of a @(Panel) from @(Center) to @(BottomRight). We use a @(LayoutAnimation) with a @(Move) in order to make it move to its new position.
+在本示例中，我们使用@（设置）操作将@（面板）的@（对齐）从@（中心）更改为@（BottomRight）。我们使用@（布局动画）和@（移动），以使它移动到新的位置。
 
-## $(MultiLayoutPanel)
+## $（MultiLayoutPanel）
 
-$(MultiLayout) allows us to move @(Element:elements) between different @(Layout:layouts). This allows us to @(Move) elements between different locations in the visual tree, and also switch between certain layouts on the fly.
+$（MultiLayout）允许我们在不同的@（布局：布局）之间移动@（元素：元素）。这允许我们在视觉树中的不同位置之间@（移动）元素，还可以在特定布局之间切换。
 
-## $(Placeholder)
+## $（占位符）
 
-The `Placeholder` element is used to reference other @(Element:elements) in the visual tree. A `Placeholder` is itself an @(Element) and it can have its own layout properties.
+`Placeholder`元素用于引用视觉树中的其他@（Element：元素）。“占位符”本身是一个@（Element），它可以有自己的布局属性。
 
-The `Placeholder` is used when we want to define two different locations or layouts for the same @(Element). We use the placeholders `Target` property to reference the @(Element) we want to make a plceholder for. The @(Element) definition itself has to also be wrapped in a `Placeholder`. Think of it as an @(Element) being tossed from one `Placeholder` to another.
+当我们想为同一个@（Element）定义两个不同的位置或布局时，使用“占位符”。我们使用占位符`Target`属性来引用我们想要作为plceholder的@（Element）。@（元素）定义本身也必须包装在一个`Placeholder`中。把它当作一个@（元素）从一个“Placeholder”转移到另一个。
 
-	<Placeholder Height="50">
-		<Rectangle ux:Name="rectangle1" Fill="Red"/>
-	</Placeholder>
+	<Placeholder Height =“50”>
+		<Rectangle ux：Name =“rectangle1”Fill =“Red”/>
+	</ Placeholder>
 
-	<Placeholder Target="rectangle1" Height="100"/>
+	<Placeholder Target =“rectangle1”Height =“100”/>
 
-Notice that the second `Placeholder` references the @(Rectangle), not the other `Placeholder`.
+请注意，第二个“占位符”引用@（Rectangle），而不是其他的“占位符”。
 
-To switch between the two placeholder, we need to use @(MultiLayout). We can apply `MultiLayout` to any @(Panel) type or use the @(MultiLayoutPanel). Here is how we can apply the example above to a @(StackPanel):
+要在两个占位符之间切换，我们需要使用@（MultiLayout）。我们可以将`MultiLayout`应用于任何@（Panel）类型或使用@（MultiLayoutPanel）。下面是我们如何将上面的例子应用到@（StackPanel）：
 
 	<StackPanel>
-		<MultiLayout LayoutElement="placeholder2"/>
-		<Placeholder Name="placeholder1" Height="70">
-			<Rectangle Name="rectangle1" Fill="Red" Margin="25,5"/>
-		</Placeholder>
-		<Placeholder Name="placeholder2" Target="rectangle1" Height="100"/>
-	</StackPanel>
+		<MultiLayout LayoutElement =“placeholder2”/>
+		<Placeholder Name =“placeholder1”Height =“70”>
+			<Rectangle Name =“rectangle1”Fill =“Red”Margin =“25,5”/>
+		</ Placeholder>
+		<Placeholder Name =“placeholder2”Target =“rectangle1”Height =“100”/>
+	</ StackPanel>
 
-By changing the `LayoutElement` property of the MultiLayout, we can move the @(Rectangle) between "placeholder1" and "placeholder2". Notice that the @(Rectangle) has its @(Margin) property set. Therefore that property will still exist when it's moved to the other @(Placeholder). The @(Height) however, is set on the @(Placeholder:placeholders) themselves, and will therefore change.
+通过更改MultiLayout的`LayoutElement`属性，我们可以在“placeholder1”和“placeholder2”之间移动@（Rectangle）。请注意，@（Rectangle）具有其@（Margin）属性设置。因此，当它移动到另一个@（Placeholder）时，该属性仍然存在。然而，@（高度）是在@（占位符：占位符）本身设置的，因此会改变。
 
 
-Here is a quick example, showing how we can move a @(Rectangle) from one @(Panel) to another. In this example we use a @(MultilayoutPanel) with a `DockLayout`. We put three @(Panel:panels) inside it, docket to different locations. We use @(Placeholder:placeholders) to reference one @(Rectangle) and move it between the three @(Panel:panels).
+这里有一个快速示例，显示了如何将@（Rectangle）从一个@（Panel）移动到另一个。在这个例子中，我们使用一个@（MultilayoutPanel）和一个`DockLayout`。我们把三个@（Panel：panel）放在里面，docket到不同的位置。我们使用@（占位符：占位符）来引用一个@（Rectangle），并在三个@（Panel：panel）之间移动。
 
-	<MultiLayoutPanel ux:Name="multiLayoutPanel">
-		<DockLayout/>
-		<Panel ux:Name="panel1">
-			<Placeholder Width="50" Height="50">
-				<Rectangle ux:Name="rect" Fill="Teal">
+	<MultiLayoutPanel ux：Name =“multiLayoutPanel”>
+		<DockLayout />
+		<Panel ux：Name =“panel1”>
+			<Placeholder Width =“50”Height =“50”>
+				<Rectangle ux：Name =“rect”Fill =“Teal”>
 					<LayoutAnimation>
-						<Move X="1" Y="1" RelativeTo="LayoutChange" Duration="1"/>
-						<Resize X="1" Y="1" RelativeTo="LayoutChange" Duration="1"/>
-					</LayoutAnimation>
-				</Rectangle>
+						<Move X =“1”Y =“1”RelativeTo =“LayoutChange”Duration =“1”/>
+						<Resize X =“1”Y =“1”RelativeTo =“LayoutChange”Duration =“1”/>
+					</ LayoutAnimation>
+				</ Rectangle>
 				<Clicked>
-					<Set multiLayoutPanel.LayoutElement="panel2"/>
-				</Clicked>
-			</Placeholder>
-		</Panel>
-		<Panel ux:Name="panel2" Dock="Right" Width="200">
-			<Placeholder Target="rect">
+					<Set multiLayoutPanel.LayoutElement =“panel2”/>
+				</ Clicked>
+			</ Placeholder>
+		</ Panel>
+		<Panel ux：Name =“panel2”Dock =“Right”Width =“200”>
+			<Placeholder Target =“rect”>
 				<Clicked>
-					<Set multiLayoutPanel.LayoutElement="panel3"/>
-				</Clicked>
-			</Placeholder>
-		</Panel>
-		<Panel ux:Name="panel3" Dock="Bottom" Height="100">
-			<Placeholder Target="rect">
+					<Set multiLayoutPanel.LayoutElement =“panel3”/>
+				</ Clicked>
+			</ Placeholder>
+		</ Panel>
+		<Panel ux：Name =“panel3”Dock =“Bottom”Height =“100”>
+			<Placeholder Target =“rect”>
 				<Clicked>
-					<Set multiLayoutPanel.LayoutElement="panel1"/>
-				</Clicked>
-			</Placeholder>
-		</Panel>
-	</MultiLayoutPanel>
+					<Set multiLayoutPanel.LayoutElement =“panel1”/>
+				</ Clicked>
+			</ Placeholder>
+		</ Panel>
+	</ MultiLayoutPanel>
 
-Check out these examples for some inspiration on using @(LayoutAnimation) and @(MultiLayout).
+查看这些例子以了解使用@（LayoutAnimation）和@（MultiLayout）的灵感。
 
-* [ScrollingAnimation](https://www.fusetools.com/developers/examples/scrollinganimation)
-* [Tabbar using MultiLayout](https://www.fusetools.com/developers/examples/tabsmultilayout)
+* [ScrollingAnimation]（https://www.fusetools.com/developers/examples/scrollinganimation）
+* [Tabbar using MultiLayout]（https://www.fusetools.com/developers/examples/tabsmultilayout）

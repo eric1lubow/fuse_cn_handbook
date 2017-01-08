@@ -1,100 +1,100 @@
-# Hello, $(UX Markup)!
+＃Hello，$（UX Markup）！
 
-The primary way of working in Fuse is by editing UX Markup - an XML-based file format that's tailor-made for app development. Layout, interaction and animation is written in a clear, declarative syntax. The main benefits of working in UX Markup is that it opens up for much deeper and faster development, and offers a better way for designers and developers to work together and more easily share code and designs.
+在Fuse中工作的主要方式是通过编辑UX Markup  - 一种基于XML的文件格式，这是为应用程序开发量身定制的。布局，交互和动画是以清晰的声明语法编写的。在UX Markup中工作的主要好处是它可以开辟更深更快更快的开发，并为设计师和开发人员提供一种更好的方式，一起工作，更轻松地共享代码和设计。
 
-UX Markup is used for building components, UI views, designs, prototypes and full apps in Fuse and is compiled down to C++ native code. UX Markup is complemented by business logic written in JavaScript, which runs on its own thread, leaving your UI and animation nice and smooth.
+UX Markup用于在Fuse中构建组件，UI视图，设计，原型和完整应用程序，并编译为C ++本地代码。UX Markup是用JavaScript编写的业务逻辑的补充，它在自己的线程上运行，让您的UI和动画更加流畅。
 
-For an in-depth look at the features of UX Markup, see the [UX Markup Guide](https://www.fusetools.com/learn/guides/uxmarkup).
+要深入了解UX Markup的功能，请参阅[UX标记指南]（https://www.fusetools.com/learn/guides/uxmarkup）。
 
-## $(Creating apps) : $(App)
+## $（创建应用）：$（应用）
 
-When creating stand-alone apps or prototypes in Fuse, we use the `<App>` tag.
+当在Fuse中创建独立的应用程序或原型时，我们使用`<App>`标签。
 
-	<App Background="#436EEE">
-		<Text>Hello, world!</Text>
-	</App>
+	<App Background =“＃436EEE”>
+		<Text> Hello，world！</ Text>
+	</ App>
 
-Inside your `<App>` tag you can put any `Node`, `Behavior` or `Theme` tag. The above example
-simply displays text using the default font.
+在你的`<App>`标签中，你可以放置任何`Node`，`Behavior`或`Theme`标签。上面的例子
+只需使用默认字体显示文本。
 
-The `<App>` tag itself bootstraps the app and takes care of application lifecycle and @(Theme).
+`<App>`标签本身引导应用程序，并负责应用程序生命周期和@（主题）。
 
-The $(Background) property controls the color of the root view of the app.
+$（Background）属性控制应用程序的根视图的颜色。
 
 
-## UX tags
+## UX标签
 
-UX documents consists of XML tags. Each available UX tag corresponds to a *class* implemented in Uno code. Each tag corresponds to one (or multiple) runtime objects.
+UX文档由XML标记组成。每个可用的UX标签对应于在Uno代码中实现的*类*。每个标记对应一个（或多个）运行时对象。
 
-The available tags (classes) come in these categories:
+可用的标签（类）分为以下类别：
 
-* The @(App) class is the root of the app, and can contain exactly one Node
-* Many `Node` types, most of which are @(Element:UI Elements)
-* Behaviors which modify nodes. Behaviors come in many flavors:
-  * Gestures
-  * Triggers
-  * Scripts
-  * Visual @(effects) which can be applied to elements
-* $(Styles:Styling) which allow consistent look and feel of components without repeating data
+* @（App）类是应用程序的根，并且可以只包含一个节点
+*许多`Node`类型，大多数是@（Element：UI Elements）
+*修改节点的行为。行为有多种风格：
+  *手势
+  *触发器
+  *脚本
+  * Visual @（效果），可以应用于元素
+* $（样式：样式），允许组件的一致的外观和感觉，而不重复数据
 
-## $(Theme:Themes)
+## $（主题：主题）
 
-`App` offers a setting called `Theme`, which specifies how standard components in
-the app will look and feel. You set it like this:
+`App`提供了一个名为“Theme”的设置，它指定了标准组件的方式
+该应用程序将外观和感觉。你这样设置：
 
-	<App Theme="..name of theme..">
+	<App Theme =“.. name of theme ..”>
 
-`Theme` can have the following settings:
+`Theme`可以有以下设置：
 
-* `Basic` - Reccommended. Uses OpenGL based graphics to render controls with identical appearance on each platform.
-* `Native` - Uses the native iOS and Android platform controls by default. Note that this will not work in local desktop preview.
-* `NativeWithFallback` - Uses `Native` theme on iOS and Android devices, but `Basic` in local desktop preview.
-* *Default* - If nothing is specified, Fuse uses OpenGL based graphics, but provides *no default appearance* for standard controls (such as `Button` and `Slider`).
+*`基础` - 建议。使用基于OpenGL的图形在每个平台上渲染具有相同外观的控件。
+*`Native`  - 默认使用本机iOS和Android平台控件。请注意，这不会在本地桌面预览中工作。
+*`NativeWithFallback`  - 在iOS和Android设备上使用`Native`主题，而在本地桌面预览中使用`Basic`。
+* *默认*  - 如果没有指定，Fuse使用基于OpenGL的图形，但是对于标准控件（例如`Button`和`Slider'）提供*没有默认外观*。
 
-### $(NativeTheme: Native Theme)
+### $（NativeTheme：Native Theme）
 
-When using `Theme="Native"`, Fuse will use the native controls from the target platform. To use a native theme, do:
+当使用`Theme =“Native”`时，Fuse将使用目标平台的本地控件。要使用本机主题，请执行：
 
-	<App Theme="Native">
+	<App Theme =“Native”>
 		<StackPanel>
 			<Button />
-			<Switch />
+			<开关/>
 			<Slider />
-		</StackPanel>
-	</App>
+		</ StackPanel>
+	</ App>
 
-In this example, the displayed controls will have native appearance on iOS and Android, and *no appearance* in desktop preview.
+在此示例中，显示的控件在iOS和Android上具有本机外观，在桌面预览中没有外观*。
 
-> If you still want to make use of desktop preview while working with native controls, you can use the `NativeWithFallback` theme. This will give you native controls on iOS and Android, while falling back to a (unspecified) basic theme on desktop.
+>如果您仍然希望在使用本机控件时使用桌面预览，则可以使用“NativeWithFallback”主题。这将给你的iOS和Android的原生控件，而回到一个（未指定）基本主题在桌面上。
 
-### $(BasicTheme: Basic Theme)
+### $（BasicTheme：Basic Theme）
 
-The `Basic` theme renders controls with OpenGL, gives controls a look and feel inspired by material design.
+“Basic”主题通过OpenGL呈现控件，为控件提供由材质设计启发的外观和感觉。
 
-Example usage:
+用法示例：
 
-	<App Theme="Basic">
+	<App Theme =“Basic”>
 
-Using `Theme="Basic"` which will give your app an identical look on all platforms, with the exception of:
+使用`Theme =“Basic”`这将给你的应用程序在所有平台上相同的外观，除了：
 
-* Status bars will behave differently across platforms
-* `TextInput` is and other higher level controls will map to the platform-specific controls.
+*状态栏在不同平台上的行为不同
+*`TextInput`是和其他更高级别的控件将映射到平台特定的控件。
 
-The main benefits of working with `Basic` theme are:
+使用`Basic`主题的主要好处是：
 
-* You can preview your app on Mac and PC using Fuse's realtime preview window,
-  which offers a much smoother experience than the iOS and Android emulators.
-* Your designs and animations will look and behave identically on all platforms.
+*您可以在Mac和PC上使用Fuse的实时预览窗口预览您的应用程序，
+  它提供了比iOS和Android模拟器更平滑的体验。
+*您的设计和动画在所有平台上的外观和行为相同。
 
-## $(ux:AutoBind)
+## $（ux：AutoBind）
 
-@(ux:AutoBind) controls whether an object should automatically be "connected" to the parent node. By default `ux:AutoBind="true"`, so you only need to use this if you want to do something special.
+@（ux：AutoBind）控制对象是否应自动“连接”到父节点。默认情况下'ux：AutoBind =“true”`，所以你只需要使用这个，如果你想做一些特别的事情。
 
-For example:
+例如：
 ```
-<Panel ux:Name="panel1" >
-    <Panel ux:AutoBind="false" ux:Name="panel2" />
-</Panel>
+<Panel ux：Name =“panel1”>
+    <Panel ux：AutoBind =“false”ux：Name =“panel2”/>
+</ Panel>
 ```
 
-In this case, `panel2` will not become a child of `panel1`. Instead, it will remain detached from the object tree. This is only meaningful if you intend to add it later, for example by navigating to it in a `HierarchicalNavigation`.
+在这种情况下，`panel2`不会成为`panel1`的子级。相反，它将保持与对象树分离。这只有在您打算以后添加时才有意义，例如通过在“HierarchicalNavigation”中导航到它。

@@ -1,1485 +1,1485 @@
-# $(Trigger:Triggers) and $(Animators)
+＃$（Trigger：Triggers）和$（Animators）
 
-Triggers provide a declarative way of creating animations with Fuse. At their most basic, triggers represent events that are triggered in response to user and/or program input. @(Trigger:Triggers) can contain @(Animators) and @(Actions) which are used to animate and manipulate elements as well as interacting with @(JavaScript).
+触发器提供了使用Fuse创建动画的声明式方法。最基本的，触发器表示响应于用户和/或程序输入而触发的事件。@（Trigger：Triggers）可以包含@（Animators）和@（Actions），用于动画和操作元素以及与@（JavaScript）交互。
 
-@(Trigger)s are behaviors that live on a `Node` or UI @(Element), listen to events and perform animations and @(actions) in response.
+@（Trigger）是生活在Node或UI @（Element）上的行为，监听事件并执行动画和@（动作）作为响应。
 
-For example, here is a @(Panel) with a @(WhilePressed) trigger causing the panel to rotate 90 degrees with a bouncy animation.
+例如，这里是一个@（面板）与@（WhilePressed）触发器，使面板旋转90度与弹跳动画。
 
 ```
-<Panel>
+<面板>
 	<WhilePressed>
-		<Rotate Degrees="90" Duration="0.5" Easing="BounceInOut"/>
-	</WhilePressed>
-</Panel>
+		<旋转角度=“90”Duration =“0.5”Easing =“BounceInOut”/>
+	</ WhilePressed>
+</ Panel>
 ```
 
-> ## Video introduction to Triggers and Animators
+> ##视频介绍触发器和动画
 
 [YOUTUBE bT1npBvXEzw]
 
-<!-- TODO:
-* Explain how triggers are a timeline, plays forwards/backwards, applies/unapplies -->
+<！ -  TODO：
+*解释触发器是时间轴，向前/向后播放，应用/未应用 - >
 
-## $(Rest state) and deviation
+## $（静止状态）和偏差
 
-The default layout and configuration of UX markup elements is called the rest state.
-Triggers define deviations from this rest state.
-Each trigger knows how to "un-apply" its own animation to return to the rest state, even if interrupted mid-animation.
-This is great because it means animation is completely separated from the logical state of your program, greatly reducing the complexity of dealing with combined animation on
-multiple devices, screen sizes, with real data and real user input.
+UX标记元素的默认布局和配置称为休眠状态。
+触发器定义与该静止状态的偏差。
+每个触发器知道如何“取消应用”其自己的动画返回到休息状态，即使中间动画中断。
+这是伟大的，因为它意味着动画完全从你的程序的逻辑状态分离，大大降低了处理组合动画的复杂性
+多个设备，屏幕尺寸，真实数据和真实用户输入。
 
-### $(BackwardAnimation:Separate forward and backward animations)
+### $（BackwardAnimation：单独的向前和向后动画）
 
-Some advanced @(Trigger) animations allow separate forward and backward animations.
-To do this, put the backward animation inside a `TriggerAnimation`, and bind it do the `BackwardAnimation` binding on the parent (forward) animation. The below example uses `BackwardAnimation` to animate with a different easing when the animation is going back to its idle state.
+一些高级@（触发器）动画允许单独的向前和向后动画。
+要做到这一点，将后向动画放在一个`TriggerAnimation`里，绑定它做父动（向前）动画上的`BackwardAnimation`绑定。下面的例子使用`BackwardAnimation`在动画回到空闲状态时用不同的缓动动画。
 
 ```
 <WhilePressed>
-	<Rotate Degrees="90" Duration="0.5" />
-	<TriggerAnimation ux:Binding="BackwardAnimation" >
-		<Rotate Degrees="90" Duration="1" Easing="BounceOut" />
-	</TriggerAnimation>
-</WhilePressed>
+	<旋转角度=“90”持续时间=“0.5”/>
+	<TriggerAnimation ux：Binding =“BackwardAnimation”>
+		<旋转角度=“90”Duration =“1”Easing =“BounceOut”/>
+	</ TriggerAnimation>
+</ WhilePressed>
 ```
 
-**Note:** Animations in a `BackwardAnimation` are automatically right-aligned.
+**注意：**“BackwardAnimation”中的动画自动右对齐。
 
-## Animators
+##动画师
 
-Animators are used to specify which and how @(Element:elements) are to be animated when a @(Trigger:trigger) is triggered.
-There are three pairs of properties which are important for controlling the exact result of an animation.
+动画师用于指定在触发@（触发器：触发器）时要触发@（Element：元素）的动画。
+有三对属性对于控制动画的确切结果很重要。
 
-### $(Duration)/$(DurationBack)
+### $（Duration）/ $（DurationBack）
 
-Animations can have different behavior when animating forward and backward. When a trigger is activated, the animation is said to play forward. When the trigger is deactivated, the animation is played backward. Duration is used to set the duration for the animation. One can set a different duration for the backward animation by using the `DurationBack` property.
+当动画向前和向后动画时，动画可以具有不同的行为。当触发器被激活时，动画被称为向前播放。当触发器被禁用时，动画向后播放。持续时间用于设置动画的持续时间。可以使用`DurationBack`属性为后向动画设置不同的持续时间。
 
-When there are multiple @(Animators:animators) inside a trigger, the total duration of the trigger will be the longest duration among the animators.
+当触发器中有多个@（Animators：animator）时，触发器的总持续时间将是动画器中最长的持续时间。
 
-In the following example, the total duration of the @(WhileTrue) trigger will be 3 seconds. If we wanted the animations to happen one after the other, we could use @(Delay).
+在以下示例中，@（WhileTrue）触发器的总持续时间将为3秒。如果我们想让动画一个接一个地发生，我们可以使用@（延迟）。
 
 ```
 <WhileTrue>
-	<Move X="10" Duration="2"/>
-	<Rotate Degrees="90" Duration="3"/>
-</WhileTrue>
+	<Move X =“10”Duration =“2”/>
+	<旋转角度=“90”持续时间=“3”/>
+</ WhileTrue>
 ```
 
-### $(Delay)/$(DelayBack)
+### $（Delay）/ $（DelayBack）
 
-Setting the `Delay` property results in the actual animation being delayed by that amount of seconds. `DelayBack` is used to set a different delay on the backward animation. The total duration of the animation becomes the delay + the duration. The following @(Change:change) animator has a total duration of 7 seconds. It waits 5 seconds after being activated and then animates its target element over 2 seconds.
-
-```
-<Change Delay="5" Duration="2" someElement.Height="100"/>
-```
-
-### $(Easing)/$(EasingBack)
-
-Fuse comes with a standard set of predefined easing curves. Easing curves are used to control how an animation progresses over time. The default easing is set to `Linear`. With linear easing, the animation progresses at the same speed over its entire duration. This usually appears quite unnatural and fake. To gain a more natural feel, we can change the easing to `QuadraticInOut`, like so:
+设置“Delay”属性会导致实际动画被延迟该秒数。`DelayBack`用于对后向动画设置不同的延迟。动画的总持续时间变为延迟+持续时间。以下@（更改：更改）动画师的总持续时间为7秒。它在激活后等待5秒钟，然后在2秒内对其目标元素进行动画处理。
 
 ```
-<Change Easing="QuadraticInOut" Duration="2" someElement.Property="SomeValue"/>
+<Change Delay =“5”Duration =“2”someElement.Height =“100”/>
 ```
 
-This animator will progress slowly in the beginning, faster in the middle, and then slow again in the end.
+### $（Easing）/ $（EasingBack）
 
-The following easing curves are defined:
-
-- $(Linear)
-- $(Quadratic)
-- $(Cubic)
-- $(Quartic)
-- $(Quintic)
-- $(Sinusoidal)
-- $(Exponential)
-- $(Circular)
-- $(Elastic)
-- $(Back)
-- $(Bounce)
-
-They each have three different versions: [easing]In, [easing]Out and [easing]InOut.
-Assign easing to an animator like so:
+保险丝带有一组标准的预定义缓动曲线。缓动曲线用于控制动画随时间推移的过程。默认缓动设置为“线性”。使用线性宽松，动画在其整个持续时间上以相同的速度进行。这通常显得很不自然和假。为了获得更自然的感觉，我们可以将缓动改变为“QuadraticInOut”，如下：
 
 ```
-<Move Easing="CubicIn" X="5" Y="10" Duration="0.5"/>
-<Scale Easing="BounceOut" Factor="1.5" Duration="0.2"/>
-<Rotate Easing="BounceOut" Degrees="10" Duration="0.4"/>
+<Change Easing =“QuadraticInOut”Duration =“2”someElement.Property =“SomeValue”/>
 ```
 
-<!-- - MixOp
-TODO/AUTH: Write about mixop-->
+这个动画师将在开始时缓慢地进行，在中间更快地进行，然后在最后再次慢慢地进行。
 
-### $(Change)
+定义以下缓动曲线：
 
-`Change` temporarily changes the value of a property while its containing trigger is active. To permanently change a value, use the @(Set) animator.
+-  $（线性）
+-  $（二次）
+-  $（Cubic）
+-  $（Quartic）
+-  $（Quintic）
+-  $（正弦）
+-  $（指数）
+-  $（循环）
+-  $（弹性）
+-  $（返回）
+-  $（Bounce）
 
-The `Target` property refers to the property that we intend to animate.
-The `Value` property is the value of the result of the animation.
-
-* Note: You can specify @(Units) with `Value` as long as the unit matches the original unit of the `Target`.
-
-Because the task of setting a target property and value is so common, UX has a special syntax for this. Instead of
-
-```
-<Change Target="target.Property" Value="Value"/>
-```
-
-one can do the following:
-
-```
-<Change target.Property="Value"/>
-```
-
-The `Change` animator can be used to animate almost any property.
+它们各有三个不同的版本：[缓动] In，[缓和] Out和[缓和] InOut。
+为动画师分配缓动，像这样：
 
 ```
-<Panel ux:Name="somePanel" Color="Red" />
-
-<Change somePanel.Opacity="0"/>
-<Change somePanel.Color="Blue" Duration="0.3"/>
-<Change somePanel.Visibility="Collapsed"/>
+<Move Easing =“CubicIn”X =“5”Y =“10”Duration =“0.5”/>
+<Scale Easing =“BounceOut”Factor =“1.5”Duration =“0.2”/>
+<旋转松动=“BounceOut”度=“10”持续时间=“0.4”/>
 ```
 
-One can also animate such properties as `Width`, `Height` and `Margin`, but because these properties might affect the entire layout of your UI, this can end up being quite costly in terms of performance. There are usually more effective ways to do animations that interact with layout. Check out @(LayoutAnimation) and @(MultiLayoutPanel) for some inspiration.
+<！ -   -  MixOp
+TODO / AUTH：写关于mixop  - >
 
-> ### $(Cycle)
+### $（更改）
 
-`Cycle` continuously animates a property between two values at a given frequency.
+`Change`在包含触发器的时候临时改变属性的值。要永久更改值，请使用@（设置）动画。
 
-	<Panel>
-		<Translation ux:Name="someTranslation" />
+Target属性指的是我们想要动画的属性。
+`Value`属性是动画结果的值。
+
+*注意：只要单元与目标的原始单元匹配，您就可以用`Value`指定@（Units）。
+
+因为设置目标属性和值的任务如此常见，所以UX具有特殊的语法。代替
+
+```
+<Change Target =“target.Property”Value =“Value”/>
+```
+
+可以执行以下操作：
+
+```
+<Change target.Property =“Value”/>
+```
+
+`Change`动画可以用来动画几乎任何属性。
+
+```
+<Panel ux：Name =“somePanel”Color =“Red”/>
+
+<更改somePanel.Opacity =“0”/>
+<Change somePanel.Color =“Blue”Duration =“0.3”/>
+<更改somePanel.Visibility =“折叠”/>
+```
+
+还可以激活“宽度”，“高度”和“边距”等属性，但是因为这些属性可能会影响您的UI的整个布局，这可能最终在性能方面相当昂贵。通常有更有效的方法来做与布局交互的动画。查看@（LayoutAnimation）和@（MultiLayoutPanel）的一些灵感。
+
+> ### $（Cycle）
+
+“Cycle”连续地在给定频率上对两个值之间的属性进行动画处理。
+
+	<面板>
+		<Translation ux：Name =“someTranslation”/>
 		<WhilePressed>
-			<Cycle Target="someTranslation.X" Low="-20" High="20" Frequency="2" />
-		</WhilePressed>
-	</Panel>
+			<Cycle Target =“someTranslation.X”Low =“ -  20”High =“20”Frequency =“2”/>
+		</ WhilePressed>
+	</ Panel>
 
-You may also specify a `Duration` to control the length of the animation.
+您还可以指定一个“Duration”来控制动画的长度。
 
 ### Transform animators
 
-Transform animators apply a transformation to an element. They do not affect layout, guaranteeing fast animations.
+变换动画师对元素应用变换。它们不影响布局，保证快速动画。
 
-All transform animators accept an *optional* `Target` property, indicating which element the transform should be applied to.
+所有变换动画都接受*可选*`Target`属性，指示应该应用变换的元素。
 
-#### $(Move)
+#### $（Move）
 
-The `Move` animator is used to move an element. `Move` does not affect layout, so the element will just get an offset from its actual location.
-
-```
-<Move X="50" />
-```
-
-When triggered, this will move the element by 50 points in the X direction.
-
-You may want for an element to move relative to its own size or some other elements size.
-To achieve this we can use the @(RelativeTo) property, for instance:
+`Move` animator用于移动元素。`Move`不会影响布局，因此元素只会从其实际位置获得偏移量。
 
 ```
-<Move X="0.5" RelativeTo="Size" />
+<Move X =“50”/>
 ```
 
-When triggered, this will move the element by half of its own width in the X-direction.
+当触发时，将沿X方向将元素移动50点。
 
-$(RelativeTo) can be set to the following values:
-
-- `Local`(default): Moves the set amount of points in the X and/or Y direction.
-- `Size`: Moves the set amount times the size of the element. So X="1" moves the element by its entire width in the X direction.
-- `ParentSize`: Same as `Size` but uses the elements parents size instead.
-- `PositionChange`: Used in response to a @(LayoutAnimation) to move the element by the amount of change in position within it's parent.
-- `WorldPositionChange`: Used in response to a @(LayoutAnimation) to move the element by the amount of change in position relative to the entire display.
-- `Keyboard`: Moves the element relative to the size of the keyboard.
-
-The `RelativeNode` property lets you move an element relative to another. In that case, you may use the following `RelativeTo` modes:
-
-- `Size`: Works the same way it would without `RelativeNode`, but measures the size of the `RelativeNode` instead.
-- `ParentSize`: Same as `Size` but measures the `RelativeNode`'s parent size instead.
-- `PositionOffset`: Moves the element to be in the same position as the element specified by `RelativeNode`.
-  The offset is measured as the difference in `ActualPosition` between the two elements.
-- `TransformOriginOffset`: Works like `PositionOffset`, but instead measures the difference in `TransformOrigin`.
-
-Move corresponds to adding a @(Translation) on the element and using @(Change) to animate its X and Y values. The following two examples give the same result.
+您可能希望元素相对于其自身大小或某些其他元素大小移动。
+要实现这一点，我们可以使用@（RelativeTo）属性，例如：
 
 ```
-<Panel>
+<Move X =“0.5”RelativeTo =“Size”/>
+```
+
+当触发时，将沿X方向将元素移动其自身宽度的一半。
+
+$（RelativeTo）可以设置为以下值：
+
+- `Local`（默认）：在X和/或Y方向上移动设置的点数。
+- `Size`：移动设置的量乘以元素的大小。因此，X =“1”将元素在X方向上移动其整个宽度。
+- `ParentSize`：与“Size”相同，但是使用元素parent size。
+- `PositionChange`：用于响应@（LayoutAnimation）将元素移动其父级内位置的变化量。
+- `WorldPositionChange`：用于响应@（LayoutAnimation），将元素移动相对于整个显示的位置变化量。
+- `Keyboard`：相对于键盘的大小移动元素。
+
+`RelativeNode`属性允许你相对于另一个元素移动一个元素。在这种情况下，您可以使用以下`RelativeTo`模式：
+
+- `Size`：工作方式与没有`RelativeNode`时相同，但是测量`RelativeNode`的大小。
+- `ParentSize`：与“Size”相同，但是测量“RelativeNode”的父大小。
+- `PositionOffset`：将元素移动到与`RelativeNode`指定的元素相同的位置。
+  偏移量被测量为两个元素之间的“ActualPosition”中的差异。
+- `TransformOriginOffset`：像`PositionOffset`，但是测量`TransformOrigin`中的差异。
+
+移动对应于在元素上添加@（翻译），并使用@（更改）为其X和Y值设置动画。以下两个示例给出相同的结果。
+
+```
+<面板>
 	<WhilePressed>
-		<Move X="100" Duration="0.2"/>
-	</WhilePressed>
-</Panel>
+		<Move X =“100”Duration =“0.2”/>
+	</ WhilePressed>
+</ Panel>
 ```
 
 ```
-<Panel>
-	<Translation ux:Name="someTranslation"/>Transition
+<面板>
+	<Translation ux：Name =“someTranslation”/> Transition
 	<WhilePressed>
-		<Change someTranslation.X="100" Duration="0.2"/>
-	</WhilePressed>
-</Panel>
+		<Change someTranslation.X =“100”Duration =“0.2”/>
+	</ WhilePressed>
+</ Panel>
 ```
 
-#### $(Scale)
+#### $（Scale）
 
-`Scale` works in the same way as @(Move) except that it scales the element. Note that scale doesn't actually change the elements size. This means that the rest of the UI layout wont be affected and the animation is guaranteed to be fast.
+`Scale`的工作方式与@（Move）相同，只是它缩放元素。请注意，scale不会实际更改元素大小。这意味着UI布局的其余部分不会受到影响，并且动画保证是快速的。
 
-You can scale an element uniformly along all axes by using the `Factor` property. Alternatively, you can also scale on a per-axis basis using `Vector` or `X`, `Y`, and `Z`.
-
-```
-<Scale Factor="2" Duration="0.4"/>
-```
-
-`Scale` can be used relative to something using the `RelativeTo` property. The two choices are:
-
-* `SizeChange` - scales relative to the change in size of the element specified by the `RelativeNode` property.
-* `SizeFactor` - scales with a factor relative to another element, specified by `RelativeNode`. A factor of `1` would make it the same size as the `RelativeNode`, while a factor of `0.5` would make it half the size, and so on.
-
-#### $(Rotate)
-
-`Rotate` rotates an Element and is equal to adding a @(Rotation) and animating it with a @(Change).
+您可以使用“Factor”属性沿所有轴均匀缩放元素。或者，您也可以使用`Vector`或`X`，`Y`和`Z`在每个轴上缩放。
 
 ```
-<Rotate Degrees="90" Duration="0.5"/>
+<比例因子=“2”持续时间=“0.4”/>
 ```
 
-Using the `Degrees` property rotates the element around the Z-axis. Alternatively, you can use `DegreesX`, `DegreesY`, and `DegreesZ` to rotate the element around a specific axis.
+`Scale`可以使用相对于某些东西使用`RelativeTo`属性。两个选择是：
 
-#### $(Resize)
+*`SizeChange`  - 相对于由`RelativeNode`属性指定的元素大小的变化。
+*`SizeFactor`  - 用相对于另一个元素的因子进行缩放，由`RelativeNode`指定。“1”的系数将使其与“RelativeNode”的大小相同，而“0.5”的系数将使其为大小的一半，依此类推。
 
-When used in concert with @(LayoutAnimation), `Resize` allows you to animate the size of an element:
+#### $（Rotate）
+
+`Rotate`旋转一个Element，等于添加一个@（Rotation）并用@（Change）来动画。
 
 ```
-<Resize RelativeTo="SizeChange" Duration="0.5" Easing="CircularInOut" />
+<旋转角度=“90”持续时间=“0.5”/>
 ```
 
-`Resize` has two options for `RelativeTo`:
+使用`Degrees`属性可以围绕Z轴旋转元素。或者，您可以使用“DegreesX”，“DegreesY”和“DegreesZ”来围绕特定轴旋转元素。
 
-* `SizeChange` - resizes relative to the change in size during a @(LayoutAnimation).
-* `Size` - resizes relative to the size of the element specified by `RelativeNode`.
+#### $（Resize）
 
-#### $(Spin)
+当与@（LayoutAnimation）一起使用时，`Resize`允许你设置一个元素的大小：
 
-`Spin` continuously rotates an element, given a `Frequency` measured in full rotations per second.
+```
+<Resize RelativeTo =“SizeChange”Duration =“0.5”Easing =“CircularInOut”/>
+```
 
-	<Panel>
+`Resize`有两个选项`RelativeTo`：
+
+*`SizeChange`  - 在@（LayoutAnimation）期间相对于大小的变化调整大小。
+*`Size`  - 相对于由`RelativeNode`指定的元素的大小来调整大小。
+
+#### $（Spin）
+
+`旋转连续旋转元素，给定一个“频率”以每秒全旋转度量。
+
+	<面板>
 		<WhilePressed>
-			<Spin Frequency="2" />
-		</WhilePressed>
-	</Panel>
+			<Spin Frequency =“2”/>
+		</ WhilePressed>
+	</ Panel>
 
-As with @(Cycle), you may also specify a `Duration` to control the length of the animation.
+与@（Cycle）一样，您也可以指定一个“Duration”来控制动画的长度。
 
-#### $(Skew)
+#### $（Skew）
 
-`Skew` allows you to animate a skew transform on an element.
-
-```
-<Skew DegreesX="30" Duration="0.4"/>
-```
-
-You can use `DegreesX` and `DegreesY` to skew on one axis, or `DegreesXY` and `XY` to skew on both axes in degrees or radians, respectively.
-
-### $(Attractor)
-
-The `Attractor` is used to give a more natural movement to animations. It acts as an intermediary between an animator and its target. An `Attractor` will continuously animate its target towards its `Value` using a simple form of physics simulation. We can combine this behavior with animation by animating the attractor's `Value` property.
+`Skew'允许你对一个元素的倾斜变换进行动画处理。
 
 ```
-<Panel ux:Name="somePanel">
-	<Translation ux:Name="someTranslation"/>
-	<Attractor ux:Name="someAttractor" Target="someTranslation.X"/>
+<倾斜度X =“30”持续时间=“0.4”/>
+```
+
+您可以使用“DegreesX”和“DegreesY”在一个轴上倾斜，或者“DegreesXY”和“XY”分别以度或弧度在两个轴上倾斜。
+
+### $（Attractor）
+
+“Attractor”用于给动画更自然的运动。它充当动画师和其目标之间的中介。一个“Attractor”将使用一种简单的物理模拟形式，连续地将它的目标动态化为它的“Value”。我们可以通过使吸引子的Value属性动画化来将这种行为与动画结合。
+
+```
+<Panel ux：Name =“somePanel”>
+	<Translation ux：Name =“someTranslation”/>
+	<Attractor ux：Name =“someAttractor”Target =“someTranslation.X”/>
 	<WhilePressed>
-		<Change someAttractor.Value="100"/>
-	</WhilePressed>
+		<Change someAttractor.Value =“100”/>
+	</ WhilePressed>
 
-</Panel>
+</ Panel>
 ```
 
-### $(Keyframe:Keyframes)
+### $（关键帧：关键帧）
 
-There are situations where we don't simply want to animate from point a to point b. For the cases where we want to specify several steps for an animation, we can use @(Keyframe:keyframes).
+有些情况下，我们不想简单地从点a动画到点b。对于我们想要为动画指定几个步骤的情况，我们可以使用@（关键帧：关键帧）。
 
 ```
-<Move RelativeTo="ParentSize">
-	<Keyframe X="10" Time="0.5"/>
-	<Keyframe X="15" Time="1"/>
-	<Keyframe X="5" Time="2"/>
-</Move>
+<Move RelativeTo =“ParentSize”>
+	<关键帧X =“10”时间=“0.5”/>
+	<关键帧X =“15”时间=“1”/>
+	<关键帧X =“5”时间=“2”/>
+</ Move>
 ```
 
-This @(Move) animator will first animate X to 10 over 0.5 second, then from 10 to 15 over 0.5 second. Finally, it will go from an X of 15 to 5 over 1 second.
-Here is an example of using @(Keyframe:keyframes) with a @(Change) animator:
+这个@（移动）动画将首先动画X到10超过0.5秒，然后从10到15超过0.5秒。最后，它将从15的X变为5超过1秒。
+下面是使用@（关键帧：关键帧）和@（更改）动画制作者的示例：
 
 	<Page>
-		<SolidColor ux:Name="background" Color="#f00"/>
+		<SolidColor ux：Name =“background”Color =“＃f00”/>
 		<ActivatingAnimation>
-			<Change Target="background.Color">
-				<Keyframe Value="#0f0" TimeDelta="0.25"/>
-				<Keyframe Value="#f00" TimeDelta="0.25"/>
-				<Keyframe Value="#ff0" TimeDelta="0.25"/>
-				<Keyframe Value="#0ff" TimeDelta="0.25"/>
-			</Change>
-		</ActivatingAnimation>
-	</Page>
+			<Change Target =“background.Color”>
+				<关键帧值=“＃0f0”TimeDelta =“0.25”/>
+				<关键帧值=“＃f00”TimeDelta =“0.25”/>
+				<Keyframe Value =“＃ff0”TimeDelta =“0.25”/>
+				<关键帧值=“＃0ff”TimeDelta =“0.25”/>
+			</ Change>
+		</ ActivatingAnimation>
+	</ Page>
 
-This time we use `TimeDelta` instead of time. With `TimeDelta` we can specify time as a relative term instead of absolute. This means that the order of the @(Keyframe:keyframes) matter, but it lets us reason about the keyframes in terms of their duration instead of their absolute time on the timeline.
-<!-- TODO: Interpolation -->
+这次我们使用TimeDelta代替时间。使用`TimeDelta`，我们可以将时间指定为相对项而不是绝对值。这意味着@（关键帧：关键帧）的顺序很重要，但它让我们推测关键帧在它们的持续时间，而不是它们在时间线上的绝对时间。
+<！ -  TODO：Interpolation  - >
 
-### $(Nothing)
+### $（Nothing）
 
-All animations for a `Trigger` share a common timeline, which ends when the last animation has completed. In some rare cases, you may want to artificially extend the timeline. This can be done using `Nothing`. Logically, it is a blank animation with a set length, forcing the length of the timeline to be at least the duration of the `Nothing`.
-
-```
-<Nothing Duration="1" />
-```
-
-## Transforms
-
-All @(Element:elements) can have transforms applied to them in order to move, scale or rotate.
-It is worth mentioning that the order of these transforms affects the order of when they are applied to the element, and therefore can lead to different results.
-
+“触发器”的所有动画共享一个公共时间轴，当最后一个动画完成时结束。在一些罕见的情况下，你可能想人为地延长时间表。这可以使用`Nothing`来完成。逻辑上，它是一个具有设置长度的空白动画，强制时间线的长度至少为“Nothing”的持续时间。
 
 ```
-<Panel Width="100" Height="50">
-	<Translation X="100"/>
-	<Rotation Degrees="45"/>
-</Panel>
+<Nothing Duration =“1”/>
+```
+
+##转换
+
+所有@（元素：元素）可以应用变换，以便移动，缩放或旋转。
+值得一提的是，这些变换的顺序影响了它们应用于元素的顺序，因此可能导致不同的结果。
+
+
+```
+<面板宽度=“100”高度=“50”>
+	<Translation X =“100”/>
+	<旋转角度=“45”/>
+</ Panel>
 ```
 
 ```
-<Panel Width="100" Height="50">
-	<Rotation Degrees="45"/>
-	<Translation X="100"/>
-</Panel>
+<面板宽度=“100”高度=“50”>
+	<旋转角度=“45”/>
+	<Translation X =“100”/>
+</ Panel>
 ```
 
-The two examples have quite different results. In the first case, the panel is first moved 100 points to the right and then rotated 45 degrees. In the other case, the panel is first rotated 45 degrees. The positive X direction is now 45 degrees downward, and so our panel ends up being moved toward the bottom right.
+这两个例子有非常不同的结果。在第一种情况下，首先将面板向右移动100点，然后旋转45度。在另一种情况下，首先将面板旋转45度。正X方向现在向下45度，因此我们的面板最终向右下移动。
 
-### $(Translation)
+### $（翻译）
 
-`Translation` moves the element in the specified X, Y, and Z direction. The following example shows a @(Rectangle) which is moved 100 points in the X-direction and 50 points in the Y-direction.
-
-```
-<Rectangle Width="50" Height="50">
-	<Translation X="100" Y="50"/>
-</Rectangle>
-```
-
-You can set the translation value for `Translation` with:
-
- * `X` or `Y`, to separately set the X and Y translations
- * `XY`, to set the translation of both axes at once
- * `Z`, to set the translation in the Z axis.
-
-The coordinates default to being relative to the elements original position(`TranslationModes.Local`), but this can be changed using the property `RelativeTo`. Further, you can make the transform relative to another element by using `RelativeNode`.
-
-### $(Scaling)
-
-`Scaling` enlarges or shrinks the element by the factor specified. The following example will make the @(Rectangle) twice as big as the original size:
+`Translation`在指定的X，Y和Z方向移动元素。以下示例显示了一个@（矩形），它在X方向上移动了100个点，在Y方向上移动了50个点。
 
 ```
-<Rectangle Width="100" Height="100">
-	<Scaling Factor="2"/>
-</Rectangle>
+<Rectangle Width =“50”Height =“50”>
+	<Translation X =“100”Y =“50”/>
+</ Rectangle>
 ```
 
-`Scaling` can be utilized using:
+您可以使用以下设置“翻译”的翻译值：
 
- * `Factor`, to set an universal scale on all axes
- * `Vector`, to set the scale of all three axes at once
- * `X`, `Y`, and `Z`, for control of individual axes.
+ *`X`或`Y`，分别设置X和Y平移
+ *`XY`，立即设置两个轴的平移
+ *`Z`，设置Z轴的平移。
 
-<!-- TODO: Document Vector -->
+坐标默认为相对于元素的原始位置（`TranslationModes.Local`），但这可以使用属性`RelativeTo`来更改。此外，您可以使用`RelativeNode`相对于另一个元素进行转换。
 
-### $(Rotation)
+### $（缩放）
 
-`Rotation` rotates the element by the degrees specified. Here is an example of a rectangle which is rotated by 90 degrees.
-
-```
-<Rectangle Width="100" Height="50">
-	<Rotation Degrees="90"/>
-</Rectangle>
-```
-
-You can rotate an element using:
-
- * `Degrees`, controlling rotation around the Z axis
- * `DegreesX`, `DegreesY`, `DegreesZ`, giving you individual control of all 3 axes.
- * `EulerAngle` and `EulerAngleDegrees`, letting you set the Euler angles of the element in radians or degrees, respectively.
-
-### $(Shear)
-
-The `Shear` animator can be used to perform a shear mapping on an element. One can use `DegreesX` and `DegreesY` to set the shear on one axis, or `Degrees` and `Vector` to set the shear in both the X and Y plane, using degrees or radians.
-
-## $(Actions)
-
-Triggers can contain actions too, which are one-off events that fire at a particular point in the trigger's timeline.
-
-Note that actions, contrary to @(Animators:animators) are not reversible. This means it is not necessarily possible to return to the @(rest state) if the trigger is reversed.
-
-Like @(Animators:animators), `Actions` can have a `Delay`. This specifies a number of seconds from the @(Trigger) is activated to the `Action` is fired. However, unlike `Animators`, they also have a property called `AtProgress` which can be set to a value between 0 and 1. It has a similar function as `Delay`, but is instead relative to the full @(Duration) of the @(Trigger). Setting `AtProgress` to 0, means the action is fired as soon as the @(Trigger) is activated. Setting it to 0.5 means it is fired half way through and so on.
-
-### $(Action.AtProgress:AtProgress)
-
-`Actions` also has a property called `AtProgress` which can be set to a value between 0 and 1. It has a similar function as `Delay`, but is instead relative to the full @(Duration) of the @(Trigger). Setting `AtProgress` to 0, means the action is fired as soon as the @(Trigger) is activated. Setting it to 0.5 means it is fired half way through and so on.
-
-### $(DebugAction)
-
-`DebugAction` lets you print a message to the Monitor/terminal when activated.
-It is the equivalent of calling `debug_log` from Uno or JavaScript.
+“缩放”按照指定的因子放大或缩小元素。以下示例将使@（Rectangle）的大小是原始大小的两倍：
 
 ```
-<Button>
+<Rectangle Width =“100”Height =“100”>
+	<比例因子=“2”/>
+</ Rectangle>
+```
+
+`缩放'可以使用：
+
+ *`Factor`，在所有轴上设置通用刻度
+ *`Vector`，立即设置所有三个轴的比例
+ *`X`，`Y`和`Z`，用于控制各个轴。
+
+<！ -  TODO：Document Vector  - >
+
+### $（Rotation）
+
+`Rotation`旋转元素所指定的度数。这里是一个旋转90度的矩形的例子。
+
+```
+<Rectangle Width =“100”Height =“50”>
+	<旋转角度=“90”/>
+</ Rectangle>
+```
+
+您可以使用以下方式旋转元素：
+
+ *`度'，控制围绕Z轴的旋转
+ *`DegreesX`，`DegreesY`，`DegreesZ`，给你个人控制所有3个轴。
+ *`EulerAngle`和`EulerAngleDegrees`，让你设置元素的欧拉角度，分别为弧度或度。
+
+### $（Shear）
+
+剪切动画可用于对元素执行剪切映射。可以使用“DegreesX”和“DegreesY”在一个轴上设置剪切，或者“度数”和“矢量”使用度数或弧度在X和Y平面中设置剪切。
+
+## $（Actions）
+
+触发器还可以包含动作，这些动作是在触发器时间轴中特定点触发的一次性事件。
+
+注意，与@（动画：动画）相反的动作是不可逆的。这意味着如果触发器反转，则不一定可以返回到@（静止状态）。
+
+像@（Animators：animators），`Actions`可以有一个`Delay`。这指定从激活@（触发器）到激活“动作”的秒数。然而，与'Animators'不同，它们还有一个称为AtProgress的属性，它可以设置为0和1之间的值。它具有与Delay相似的功能，但相对于完整的@（Duration） @（触发器）。将`AtProgress`设置为0，意味着@（触发器）激活时，触发操作。设置为0.5意味着它被点火一半，等等。
+
+### $（Action.AtProgress：AtProgress）
+
+`Actions也有一个名为`AtProgress`的属性，它可以设置为0和1之间的一个值。它具有与Delay相似的功能，但相对于@（Trigger）的完整@（Duration） 。将`AtProgress`设置为0，意味着@（触发器）激活时，触发操作。设置为0.5意味着它被点火一半，等等。
+
+### $（DebugAction）
+
+`DebugAction`允许您在激活时向Monitor /终端打印消息。
+它相当于从Uno或JavaScript调用`debug_log`。
+
+```
+<按钮>
 	<Clicked>
-		<DebugAction Message="Clicked!" />
-	</Clicked>
-</Button>
+		<DebugAction Message =“点击！/>
+	</ Clicked>
+</ Button>
 ```
 
-### $(Set)
+### $（Set）
 
-Permanently changes the value of a property. If you want to just change it temporarily, use @(Change). When using `Set` on a property, the value will not be reverted back when the containing trigger is deactivated. In the following example we change the color of a rectangle by setting the value of its `SolidColor` @(Element). Multiple activations of the @(Clicked) trigger won't have any additional effect.
+永久更改属性的值。如果您只想暂时更改它，请使用@（更改）。当在属性上使用`Set`时，当包含触发器被取消激活时，该值不会被还原。在下面的示例中，我们通过设置其“SolidColor”@（Element）的值来更改矩形的颜色。多次激活@（已点击）触发器将不会产生任何其他效果。
 
 ```
-<Rectangle ux:Name="rect" Color="#00f" />
+<Rectangle ux：Name =“rect”Color =“＃00f”/>
 <Clicked>
-	<Set rect.Color="#f00"/>
-</Clicked>
+	<Set rect.Color =“＃f00”/>
+</ Clicked>
 ```
 
-Set may also be invoked using its `Target` and `Value` properties. The following lines are equivalent:
+也可以使用它的“Target”和“Value”属性来调用集合。以下行是等效的：
 
 ```
-<Set Target="rect.Color" Value="#f00" />
-<Set rect.Color="#f00" />
+<Set Target =“rect.Color”Value =“＃f00”/>
+<Set rect.Color =“＃f00”/>
 ```
 
-### $(Callback)
+### $（Callback）
 
-The `Callback` action is used to call a JavaScript function (see @(Data Binding)) when a trigger is activated.
+`Callback`操作用于在激活触发器时调用JavaScript函数（参见@（Data Binding））。
 
 ```
 <JavaScript>
-	var someJSFunction = function () {
-		console.log("some function called");
-	}
-	module.exports = { someJSFunction: someJSFunction };
-</JavaScript>
-<Rectangle Width="100" Height="50" Alignment="Center" Fill="Red">
+	var someJSFunction = function（）{
+		console.log（“some function called”）;
+	}}
+	module.exports = {someJSFunction：someJSFunction};
+</ JavaScript>
+<Rectangle Width =“100”Height =“50”Alignment =“Center”Fill =“Red”>
 	<WhilePressed>
-		<Callback Handler="{someJSFunction}"/>
-	</WhilePressed>
-</Rectangle>
+		<Callback Handler =“{someJSFunction}”/>
+	</ WhilePressed>
+</ Rectangle>
 ```
 
-### $(GoForward)
+### $（GoForward）
 
-Tells a @(Navigation:navigation context) or a @(WebView) to step forward in its navigation history.
+在其导航历史记录中指示@（导航：导航上下文）或@（WebView）前进。
 
-	<GoForward TargetNode="myNavigation" />
+	<GoForward TargetNode =“myNavigation”/>
 
-	<GoForward TargetNode="myWebView" />
+	<GoForward TargetNode =“myWebView”/>
 
-For more information about `GoForward` in the context of @(Navigation:navigation), see @(Controlling navigation).
-
-
-### $(GoBack)
-
-Tells a @(Navigation:navigation context) or a @(WebView) to step backward in its navigation history.
-
-	<GoBack TargetNode="myNavigation" />
-
-	<GoBack TargetNode="myWebView" />
-
-For more information about `GoBack` in the context of @(Navigation:navigation), see @(Controlling navigation).
+有关@（导航：导航）上下文中的`GoForward`的更多信息，请参阅@（控制导航）。
 
 
-### $(Toggle)
+### $（GoBack）
 
-`Toggle` is used to toggle a boolean value between `true` and `false`. If inside a @(Switch) it will toggle the value of the @(Switch). `Toggle` can also be used to activate/deactive @(WhileTrue) and @(WhileFalse) triggers like so:
+告诉@（导航：导航上下文）或@（WebView）在其导航历史记录中向后退。
+
+	<GoBack TargetNode =“myNavigation”/>
+
+	<GoBack TargetNode =“myWebView”/>
+
+有关@（导航：导航）上下文中的`GoBack`的更多信息，请参阅@（控制导航）。
+
+
+### $（切换）
+
+`Toggle`用于在`true`和`false`之间切换布尔值。如果在@（开关）内，它将切换@（开关）的值。`Toggle`也可以用来激活/ deactive @（WhileTrue）和@（WhileFalse）触发器，如下所示：
 
 ```
-<WhileTrue ux:Name="trueTrigger">
-	...
-</WhileTrue>
-<Panel>
+<WhileTrue ux：Name =“trueTrigger”>
+	... ...
+</ WhileTrue>
+<面板>
 	<Clicked>
-		<Toggle Target="trueTrigger"/>
-	</Clicked>
-</Panel>
+		<切换目标=“trueTrigger”/>
+	</ Clicked>
+</ Panel>
 ```
 
-### $(Pulse)
+### $（Pulse）
 
-`Pulse` is used to momentarily trigger a `WhileTrue`, `WhileFalse` or `Timeline`.
+`Pulse`用于暂时触发`WhileTrue`，`WhileFalse或`Timeline`。
 
-	<Button Text="Pulse">
-		<WhileTrue ux:Name="pulseMe" Value="false">
-			<Scale Factor="1.5" Duration="0.2" />
-		</WhileTrue>
+	<Button Text =“Pulse”>
+		<WhileTrue ux：Name =“pulseMe”Value =“false”>
+			<比例因子=“1.5”持续时间=“0.2”/>
+		</ WhileTrue>
 
 		<Clicked>
-			<Pulse Target="pulseMe" />
-		</Clicked>
-	</Button>
+			<脉冲目标=“pulseMe”/>
+		</ Clicked>
+	</ Button>
 
-### $(BringIntoView)
+### $（BringIntoView）
 
-The `BringIntoView` action is used together with the @(ScrollView) control. By setting its `TargetNode` property, we can instruct the @(ScrollView) to go to a position, making that `Node` visible.
+`BringIntoView`操作与@（ScrollView）控件一起使用。通过设置它的TargetNode属性，我们可以指示@（ScrollView）去一个位置，使得Node可见。
 
-This example shows how to use `BringIntoView` to make a @(ScrollView) automatically scroll between the top and the bottom by clicking a button:
+这个例子显示如何使用`BringIntoView`使@（ScrollView）通过点击按钮自动在顶部和底部之间滚动：
 
 ```
-<App Theme="Basic" ClearColor="#eeeeeeff">
+<App Theme =“Basic”ClearColor =“＃eeeeeeff”>
 	<DockPanel>
-		<StatusBarBackground DockPanel.Dock="Top" />
-		<ScrollView ClipToBounds="true">
+		<StatusBarBackground DockPanel.Dock =“Top”/>
+		<ScrollView ClipToBounds =“true”>
 			<StackPanel>
-				<Panel ux:Name="panel1" Height="80" Background="#F44336" />
-				<Panel Height="200" Background="#ddd"/>
-				<Panel Height="200" Background="#bbb"/>
-				<Panel Height="200" Background="#999"/>
-				<Panel Height="200" Background="#777"/>
-				<Panel Height="200" Background="#444"/>
-				<Panel ux:Name="panel2" Height="80" Background="#3949AB" />
-			</StackPanel>
-		</ScrollView>
-		<StackPanel Dock="Bottom" Height="60" Orientation="Horizontal" Alignment="Center">
-			<Button Text="To the top">
+				<Panel ux：Name =“panel1”Height =“80”Background =“＃F44336”/>
+				<面板高度=“200”背景=“＃ddd”/>
+				<面板高度=“200”背景=“＃bbb”/>
+				<面板高度=“200”背景=“＃999”/>
+				<面板高度=“200”背景=“＃777”/>
+				<面板高度=“200”背景=“＃444”/>
+				<Panel ux：Name =“panel2”Height =“80”Background =“＃3949AB”/>
+			</ StackPanel>
+		</ ScrollView>
+		<StackPanel Dock =“Bottom”Height =“60”Orientation =“Horizo​​ntal”Alignment =“Center”>
+			<Button Text =“To the top”>
 				<Clicked>
-					<BringIntoView TargetNode="panel1" />
-				</Clicked>
-			</Button>
-			<Button Text="To the bottom">
+					<BringIntoView TargetNode =“panel1”/>
+				</ Clicked>
+			</ Button>
+			<Button Text =“到底部”>
 				<Clicked>
-					<BringIntoView TargetNode="panel2" />
-				</Clicked>
-			</Button>
-		</StackPanel>
-	</DockPanel>
-</App>
+					<BringIntoView TargetNode =“panel2”/>
+				</ Clicked>
+			</ Button>
+		</ StackPanel>
+	</ DockPanel>
+</ App>
 ```
 
-### $(BringToFront)
+### $（BringToFront）
 
-UX is generally structured such that elements defined higher up in the document are drawn on top.
-This is done to mimic popular graphics packages such as Photoshop's layer behaviour.
-With `BringToFront`, one can bring the element specified by the `Target` property to the front of its siblings.
+UX通常是结构化的，使得在文档中更高层定义的元素在顶部绘制。
+这是为了模仿流行的图形包，如Photoshop的图层行为。
+使用`BringToFront`，可以将`Target`属性指定的元素置于其兄弟的前面。
 
-* Note: `BringToFront` only makes the element the frontmost in its parent, not the entire UX tree.
+*注意：`BringToFront`只使元素在其父对象中最前面，而不是整个UX树。
 
 ```
 <DockPanel>
-	<Panel Background="#F00" />
-	<Panel ux:Name="bluePanel" Background="#00F" />
-	<Button Text="Blue to front!" Dock="Bottom">
+	<面板背景=“＃F00”/>
+	<Panel ux：Name =“bluePanel”Background =“＃00F”/>
+	<Button Text =“Blue to front！” Dock =“Bottom”>
 		<Clicked>
-			<BringToFront Target="bluePanel" />
-		</Clicked>
-	</Button>
-</DockPanel>
+			<BringToFront Target =“bluePanel”/>
+		</ Clicked>
+	</ Button>
+</ DockPanel>
 ```
 
-### $(TransitionLayout)
+### $（TransitionLayout）
 
-The `TransitionLayout` action lets you create a temporary layout change.
-This can be used to do visual layout transitions without needing actual layout changes.
+`TransitionLayout`操作允许您创建临时布局更改。
+这可以用于进行可视布局转换，而不需要实际的布局更改。
 
-It has no noticeable effect on its own, and needs to be combined with a @(LayoutAnimation).
-The @(LayoutAnimation) will in turn be triggered by this action.
+它对自己没有明显的影响，需要与@（LayoutAnimation）结合。
+@（LayoutAnimation）将会被这个动作触发。
 
 	<DockPanel>
-		<Panel Dock="Top" Height="20" ux:Name="originElement" />
+		<Panel Dock =“Top”Height =“20”ux：Name =“originElement”/>
 
-		<Button Height="100" Dock="Bottom" Text="Transition!">
+		<Button Height =“100”Dock =“Bottom”Text =“Transition！”>
 			<LayoutAnimation>
-				<Move X="1" Y="1" RelativeTo="WorldPositionChange" Duration="1" />
-				<Resize X="1" Y="1" RelativeTo="SizeChange" Duration="1" />
-			</LayoutAnimation>
+				<Move X =“1”Y =“1”RelativeTo =“WorldPositionChange”Duration =“1”/>
+				<Resize X =“1”Y =“1”RelativeTo =“SizeChange”Duration =“1”/>
+			</ LayoutAnimation>
 			<Clicked>
-				<TransitionLayout From="originElement" />
-			</Clicked>
-		</Button>
-	</DockPanel>
+				<TransitionLayout From =“originElement”/>
+			</ Clicked>
+		</ Button>
+	</ DockPanel>
 
-When clicked, the @(Button) in this example will perform a transition over 1 second from the position and size of `originElement` (top edge of the @(DockPanel)) to its actual position and size (bottom edge of the @(DockPanel)).
+单击时，此示例中的@（按钮）将执行从“originElement”（@（DockPanel）的上边缘）的位置和大小到其实际位置和大小（@（ DockPanel））。
 
-### $(NavigateToggle)
+### $（NavigateToggle）
 
-Toggles a `Navigation`. This is currently only supported in @(EdgeNavigation), and will do nothing if used on another type of navigation.
+切换`Navigation`。这当前仅在@（EdgeNavigation）中支持，如果在其他类型的导航上使用，则不会执行任何操作。
 
-Used on an `EdgeNavigation`, it will navigate to and from a @(Panel) with `EdgeNavigation.Edge` set, specified by using the `Target` property.
+用于`EdgeNavigation`，它将使用`Target`属性指定的`EdgeNavigation.Edge`集合导航到一个@（Panel）。
 
-## $(Gestures)
+## $（Gestures）
 
-Following are triggers which react to pointer gestures.
+以下是对指针手势做出反应的触发器。
 
-### $(Clicked)
+### $（点击）
 
-`Clicked` is activated in response to a click @(Gestures:gesture). What constitutes a click-event can be platform specific, but usually means that the pointer was pressed and released within the bounds of the containing element.
+“点击”被激活以响应点击@（手势：手势）。什么构成点击事件可以是平台特定的，但通常意味着指针在包含元素的边界内被按下和释放。
 
 ```
-<Panel Width="50" Height="50">
+<面板宽度=“50”高度=“50”>
 	<Clicked>
-		<Scale Factor="2" Duration="0.2"/>
-	</Clicked>
-</Panel>
+		<比例因子=“2”持续时间=“0.2”/>
+	</ Clicked>
+</ Panel>
 ```
 
-### $(Tapped)
+### $（Tapped）
 
-The `Tapped`-trigger is quite similar to the @(Clicked)-trigger. Where a click just means that the pointer has to be pressed and released on the element, a tap means that the pointer has to be released within a certain time after the pointer is pressed.
+“Tapped”触发器与@（Clicked）触发器非常相似。其中，点击仅意味着指针必须在元素上被按下和释放，点击意味着指针必须在按下指针之后的特定时间内被释放。
 
-### $(DoubleClicked)
+### $（DoubleClicked）
 
-`DoubleClicked` is activated when the element has been @(Clicked) twice within a certain timeframe.
+当元素在特定时间范围内@（点击）两次时，“DoubleClicked”被激活。
 
-### $(DoubleTapped)
+### $（DoubleTapped）
 
-As with @(DoubleClicked), `DoubleTapped` is activated when the element has been @(Tapped) twice within a certain timeframe.
+与@（DoubleClicked）一样，当元素在特定时间范围内被@（敲击）两次时，“DoubleTapped”被激活。
 
-### $(WhilePressed)
+### $（WhilePressed）
 
-`WhilePressed` is active while its containing element is being pressed and the pointer is inside its bounds.
+`WhilePressed`是活动的，而其包含的元素被按下，并且指针在其边界内。
 
 ```
-<Panel Width="50" Height="50">
+<面板宽度=“50”高度=“50”>
 	<WhilePressed>
-		<Scale Factor="2" Duration="0.2"/>
-	</WhilePressed>
-</Panel>
+		<比例因子=“2”持续时间=“0.2”/>
+	</ WhilePressed>
+</ Panel>
 ```
 
-### $(WhileHovering)
+### $（WhileHovering）
 
-`WhileHovering` is active while the pointer is within the bounds if its containing @(Element).
+`WhileHovering'是活动的，而指针在bounds内，如果它包含@（Element）。
 
-* Note: `WhileHovering` only has value when the device supports a hovering pointer, like the mouse pointer on desktop machines. For most smart phones this trigger won't have much value.
+*注意：`WhileHovering只有当设备支持悬停指针时才有价值，就像桌面机上的鼠标指针一样。对于大多数智能手机，这个触发器没有太多价值。
 
-### $(SwipeGesture:Swipe gestures)
+### $（SwipeGesture：滑动手势）
 
-We use the `SwipeGesture` behavior when we want an element to handle swipe gestures.
+当我们想要一个元素处理滑动手势时，我们使用`SwipeGesture`行为。
 
 ```
-<Panel>
-	<SwipeGesture Direction="Right" Length="100" Type="Active" />
-</Panel>
+<面板>
+	<SwipeGesture Direction =“Right”Length =“100”Type =“Active”/>
+</ Panel>
 ```
 
-- `Direction="Right"` specifies that this should be a swipe-to-the-right gesture.
-- `Length="100"` means that the swipe has a length of 100 points in the specified `Direction`.
-- `Type="Active"` indicates that this should be a two-state swipe gesture that toggles between an inactive/active state.
+- `Direction =“Right”`指定这应该是一个向右滑动手势。
+- `Length =“100”`表示滑动在指定的“方向”中的长度为100点。
+- `Type =“Active”`表示这应该是一个双态滑动手势，在非活动/活动状态之间切换。
 
-`SwipeGesture` accepts the following properties:
+`SwipeGesture`接受以下属性：
 
-- `Direction` specifies the direction of the swipe.
-	Possible values are `Left`, `Up`, `Right` and `Down`.
-- `Edge` can be used instead of `Direction`, and specifies an edge of the element that can be swiped from.
-	Possible values are `Left`, `Top`, `Right` and `Bottom`.
-- `HitSize` only applies when `Edge` is used, and specifies how far from the edge we can start swiping for it to be recognized.
-- `Length` specifies, in points, how far we can swipe in the specified `Direction`.
-- `LengthNode` can be used instead of `Length`. It references another element that should be measured to determine the length of the swipe.
+- `方向'指定滑动的方向。
+	可能的值为`Left`，`Up`，`Right`和`Down`。
+- 可以使用`Edge`代替`Direction`，并指定可以刷新的元素的边。
+	可能的值为`Left`，`Top`，`Right`和`Bottom`。
+- `HitSize`仅适用于使用“边缘”时，并指定从边缘离开多远，我们可以开始滑动，以便识别。
+- `Length'指定了我们在指定的“方向”上滑动的距离。
+- `LengthNode`可以用来代替`Length`。它引用另一个应该测量的元素来确定滑动的长度。
 - `Type`
-	- `Active` indicates that swiping should toggle between an inactive/active state.
-	- `Simple` indicates that swiping should invoke a single, momentary action.
+	- “活动”表示滑动应在非活动/活动状态之间切换。
+	- `简单'表示滑动应该调用单一的瞬间动作。
 
-The `SwipeGesture` behavior has no effect on its own. We need to apply our own triggers and animators to respond to the gesture.
-In the following sub-sections we will go through different triggers and actions we can use to respond to and control @(SwipeGesture:SwipeGestures).
+`SwipeGesture`行为本身没有影响。我们需要应用我们自己的触发器和动画师来响应手势。
+在下面的小节中，我们将通过不同的触发器和动作来回应和控制@（SwipeGesture：SwipeGestures）。
 
-* Note: Since you have the possibility to attach multiple swipe gestures on the same element, the related triggers need to know which one you are referring to.
-We are therefore required to set the `Source` property of all swipe-related triggers to the @(SwipeGesture) it should respond to.
+*注意：由于您可以在同一元素上附加多个滑动手势，相关的触发器需要知道您要引用的是哪一个。
+因此，我们需要将所有滑动相关触发器的`Source`属性设置为它应该响应的@（SwipeGesture）。
 
-#### $(SwipingAnimation)
+#### $（SwipingAnimation）
 
-`SwipingAnimation` performs animation in response to an element being swiped.
-The most common use case is to move the element along with the pointer.
+`SwipingAnimation`执行动画以响应正在滑动的元素。
+最常见的用例是将元素与指针一起移动。
 
-	<Panel Width="100" Height="100" Background="#000">
-		<SwipeGesture ux:Name="swipe" Direction="Right" Length="200" />
-		<SwipingAnimation Source="swipe">
-			<Move X="200" />
-		</SwipingAnimation>
-	</Panel>
+	<面板宽度=“100”高度=“100”背景=“＃000”>
+		<SwipeGesture ux：Name =“swipe”Direction =“Right”Length =“200”/>
+		<SwipingAnimation Source =“swipe”>
+			<Move X =“200”/>
+		</ SwipingAnimation>
+	</ Panel>
 
-Instead of using a fixed length for the swipe we may also determine it from the size of another element.
-This is achieved using the `LengthNode` property of @(SwipeGesture), and in this case the `RelativeNode` property of @(Move) as well.
+代替使用固定长度的滑动，我们也可以从另一个元素的大小来确定它。
+这是使用@（SwipeGesture）的`LengthNode`属性实现的，在这种情况下也是@（Move）的RelativeNode属性。
 
-	<Panel ux:Name="parentContainer" Margin="40">
-		<Panel Width="60" Height="60" Background="#000" Alignment="Left">
-			<SwipeGesture ux:Name="swipe" Direction="Right" Type="Active" LengthNode="parentContainer" />
-			<SwipingAnimation Source="swipe">
-				<Move X="1" RelativeTo="Size" RelativeNode="parentContainer" />
-			</SwipingAnimation>
-		</Panel>
-	</Panel>
+	<Panel ux：Name =“parentContainer”Margin =“40”>
+		<面板宽度=“60”高度=“60”背景=“＃000”对齐=“左”>
+			<SwipeGesture ux：Name =“swipe”Direction =“Right”Type =“Active”LengthNode =“parentContainer”/>
+			<SwipingAnimation Source =“swipe”>
+				<Move X =“1”RelativeTo =“Size”RelativeNode =“parentContainer”/>
+			</ SwipingAnimation>
+		</ Panel>
+	</ Panel>
 
-#### $(Swiped)
+#### $（Swiped）
 
-`Swiped` is a pulse trigger that is invoked when a swipe has occurred.
+`Swiped`是一个脉冲触发器，当发生滑动时被调用。
 
-	<Panel Width="100" Height="100">
-		<SwipeGesture ux:Name="swipe" Direction="Up" Length="50" Type="Simple" />
-		<Swiped Source="swipe">
-			<Scale Factor="1.5" Duration="0.4" DurationBack="0.2" />
-		</Swiped>
-	</Panel>
+	<面板宽度=“100”高度=“100”>
+		<SwipeGesture ux：Name =“swipe”Direction =“Up”Length =“50”Type =“Simple”slashb
+		<Swiped Source =“swipe”>
+			<比例因子=“1.5”持续时间=“0.4”DurationBack =“0.2”/>
+		</ Swiped>
+	</ Panel>
 
-By default, `Swiped` will only trigger when swiping to the primary swipe direction (when it enters the active state).
-For instance, if the @(SwipeGesture) has `Direction="Left"` it only triggers on a `Left` swipe and ignores the matching closing swipe.
-We can control this behavior by setting the `How` property to either `ToActive` (default), `ToInactive` or `ToEither`.
+默认情况下，“Swiped”只会在向主滑动方向滑动时（当它进入活动状态时）触发。
+例如，如果@（SwipeGesture）有方向=“左”，它只触发一个`左'滑动，忽略匹配关闭滑动。
+我们可以通过将`How`属性设置为`ToActive`（默认），`ToInactive`或`ToEither'来控制这种行为。
 
-#### $(WhileSwipeActive)
+#### $（WhileSwipeActive）
 
-`WhileSwipeActive` is active whenever a @(SwipeGesture) is active (when the user has swiped it "open").
+`WhileSwipeActive`当@（SwipeGesture）处于活动状态（当用户已经将其“打开”时）。
 
-	<Panel Width="100" Height="100">
-		<SwipeGesture ux:Name="swipe" Direction="Up" Length="50" Type="Simple" />
-		<WhileSwipeActive Source="swipe">
-			<Scale Factor="1.5" Duration="0.4" DurationBack="0.2" />
-		</WhileSwipeActive>
-	</Panel>
+	<面板宽度=“100”高度=“100”>
+		<SwipeGesture ux：Name =“swipe”Direction =“Up”Length =“50”Type =“Simple”slashb
+		<WhileSwipeActive Source =“swipe”>
+			<比例因子=“1.5”持续时间=“0.4”DurationBack =“0.2”/>
+		</ WhileSwipeActive>
+	</ Panel>
 
-#### $(SetSwipeActive) and $(ToggleSwipeActive)
+#### $（SetSwipeActive）和$（ToggleSwipeActive）
 
-We can control the state of `Active` type @(SwipeGesture:SwipeGestures) by using the `SetSwipeActive` and `ToggleSwipeActive` actions.
+我们可以通过使用`SetSwipeActive`和`ToggleSwipeActive`动作来控制`Active` type @（SwipeGesture：SwipeGestures）的状态。
 
-	<SwipeGesture ux:Name="swipe" Direction="Right" Length="100" Type="Active" />
-	...
+	<SwipeGesture ux：Name =“swipe”Direction =“Right”Length =“100”Type =“Active”/>
+	... ...
 	<StackPanel>
-		<Button Text="Close">
+		<Button Text =“关闭”>
 			<Clicked>
-				<SetSwipeActive Target="swipe" Value="false" />
-			</Clicked>
-		</Button>
+				<SetSwipeActive Target =“swipe”Value =“false”/>
+			</ Clicked>
+		</ Button>
 
-		<Button Text="Toggle">
+		<Button Text =“Toggle”>
 			<Clicked>
-				<ToggleSwipeActive Target="swipe" />
-			</Clicked>
-		</Button>
-	</StackPanel>
+				<ToggleSwipeActive Target =“swipe”/>
+			</ Clicked>
+		</ Button>
+	</ StackPanel>
 
-If we wish to bypass the animation, `SetSwipeActive` lets us do that by setting `Bypass="true"`.
+如果我们想绕过动画，`SetSwipeActive`允许我们通过设置`Bypass =“true”`来实现。
 
-## Data triggers
+##数据触发器
 
-These triggers react to data changes, either from data binding or from the control context.
+这些触发器对数据更改做出反应，无论是从数据绑定还是从控制上下文。
 
-### $(WhileTrue)
+### $（WhileTrue）
 
-`WhileTrue` is active while its `Value` property is `True` and inactive while it's false.
+`WhileTrue`是活动的，而其`Value`属性是`True`，而当它为false时是非活动的。
 
-### $(WhileFalse)
+### $（WhileFalse）
 
-`WhileFalse` is active while its `Value` property is `False` and inactive while it's true.
+`WhileFalse`是活动的，而其`Value`属性是`False`，而在它为真时是非活动的。
 
-<!-- ### WhileFailed
-TODO: I dont know what it does -->
+<！ -  ### WhileFailed
+TODO：我不知道它做什么 - >
 
-## Native triggers
+##本机触发器
 
-### $(Platform triggers)
+### $（平台触发器）
 
-Sometimes it can be necessary with platform specific code. This can be done by using the platform triggers `Android` and `iOS`.
+有时它可能需要平台特定的代码。这可以通过使用平台触发器“Android”和“iOS”来完成。
 
-In the following example, we place a red @(Panel) if on an Android device and a blue @(Panel) if on an iOS device:
+在下面的示例中，我们在Android设备上放置红色@（Panel）if，在iOS设备上放置blue @（Panel）if：
 
 ```
-<Panel>
+<面板>
 	<Android>
-		<Panel Background="#f00" Alignment="Center" Width="150" Height="150"/>
-	</Android>
+		<面板背景=“＃f00”对齐=“中心”宽度=“150”高度=“150”/>
+	</ Android>
 	<iOS>
-		<Panel Background="#00f" Alignment="Center" Width="150" Height="150"/>
-	</iOS>
-</Panel>
+		<面板背景=“＃00f”对齐=“中心”宽度=“150”高度=“150”/>
+	</ iOS>
+</ Panel>
 ```
 
 
-### $(WhileKeyboardVisible)
+### $（WhileKeyboardVisible）
 
-`WhileKeyboardVisible` is active whenever the on-screen keyboard is visible.
+`WhileKeyboardVisible`在屏幕键盘可见时处于活动状态。
 
-<!-- TODO: Example -->
+<！ -  TODO：Example  - >
 
-### $(TextInputActionTriggered)
+### $（TextInputActionTriggered）
 
-`TextInputActionTriggered` is triggered when the user presses the return key while editing a @(TextInput).
-The following example demonstrates how you can respond to this by releasing focus from the input, thereby hiding the on-screen keyboard.
+当用户在编辑@（TextInput）时按下返回键时，会触发TextInputActionTriggered。
+以下示例演示了如何通过从输入释放焦点，从而隐藏屏幕键盘来响应此问题。
 
 ```
 <TextInput>
 	<TextInputActionTriggered>
 		<ReleaseFocus />
-	</TextInputActionTriggered>
-</TextInput>
+	</ TextInputActionTriggered>
+</ TextInput>
 ```
 
-### $(OnBackButton)
+### $（OnBackButton）
 
-This trigger fires when the user presses either a physical or emulated back button on their device. The following code will flash the screen blue when the back button is pressed:
+当用户按下其设备上的物理或仿真后退按钮时，将触发此触发器。当按下返回按钮时，以下代码将使屏幕闪烁蓝色：
 
 ```
-<Panel>
-	<Rectangle ux:Name="rect" Layer="Background" Color="#F00" />
+<面板>
+	<Rectangle ux：Name =“rect”Layer =“Background”Color =“＃F00”/>
 	<OnBackButton>
-		<Change rect.Color="#00F" Duration="0.2" />
-	</OnBackButton>
-</Panel>
+		<Change rect.Color =“＃00F”Duration =“0.2”/>
+	</ OnBackButton>
+</ Panel>
 ```
 
-> ### $(OnKeyPress)
+> ### $（OnKeyPress）
 
-`OnKeyPress` is triggered when the key specified by the property `Key` is pressed.
-The following example will flash the screen blue when the "menu" button (which is present on some older android devices) is pressed.
-
-```
-<Panel>
-	<Rectangle ux:Name="rect" Layer="Background" Color="#F00" />
-	<OnKeyPress Key="MenuButton">
-		<Change rect.Color="#00F" Duration="0.2" />
-	</OnKeyPress>
-</Panel>
-```
-
-For a complete list of supported keys, check out the [Key enum](https://www.fusetools.com/learn/uno/api/uno/platform/key) list.
-
-## Native actions
-
-Fuse comes with a set of actions that invoke OS-specific behavior, such as dialing a phone number or vibrating the device.
-
-### $(Fuse.Launcher)
-
-The Fuse.Launcher package lets you start other activities like email, maps and web browsers.
-
-* Note: Make sure you add Fuse.Launcher to your @(Project structure:.unoproj) file.
-
-#### $(LaunchUri)
-
-Requests the operating system to launch a [URI](https://en.wikipedia.org/wiki/Uniform_Resource_Identifier).
-
-	<LaunchUri Uri="https://www.fusetools.com" />
-
-An URI can be anything from a URL to a custom URI scheme registered by an app. The underlying OS is responsible for handling the request.
-For instance, [here is a list of common URI schemes](http://www.iana.org/assignments/uri-schemes) that are registered with The Internet Assigned Numbers Authority (IANA).
-
-#### $(LaunchEmail)
-
-Launches the default email app, and starts composing a message.
-
-	<LaunchEmail To="contact@fusetools.com" />
-
-`LaunchEmail` accepts the following properties:
-
-- `To` – The email address(es) of the recipient
-- `CarbonCopy` – The email address(es) of whom to send a carbon copy
-- `BlindCarbonCopy` – The email address(es) of whom to send a blind carbon copy
-- `Subject` – The subject of the email
-- `Message` – The body text of the email
-
-#### $(LaunchMaps)
-
-Launches the default maps app, given a latitude/longitude pair.
-
-	<LaunchMaps Latitude="35.673813" Longitude="-36.780810" />
-
-#### $(Call)
-
-Issues a phone call to the specified number.
-
-	<Call Number="123 45 678" />
-
-### $(Vibrate)
-
-Vibrates the device for a given number of seconds. Note: iOS will not honor any specified duration, as this is not an option in the native iOS API.
-
-	<Vibrate Duration="0.8" />
-
-
-## $(State groups)
-
-State groups allow you to define completely custom states, with custom events.
-
-### $(State)
-
-A `State` consists of a set of @(Animators:animators) inside a `State` object. It acts as a normal @(Trigger), but is activated by its containing @(StateGroup).
+当按下属性“Key”指定的键时，触发OnKeyPress。
+以下示例将按下“菜单”按钮（在一些较旧的Android设备上存在）时，将屏幕蓝色闪烁。
 
 ```
-<State>
-	<Rotate Degrees="200" Duration="0.4"/>
-	<Move X="10" Duration="0.4"/>
-</State>
+<面板>
+	<Rectangle ux：Name =“rect”Layer =“Background”Color =“＃F00”/>
+	<OnKeyPress Key =“MenuButton”>
+		<Change rect.Color =“＃00F”Duration =“0.2”/>
+	</ OnKeyPress>
+</ Panel>
 ```
 
-### $(StateGroup)
+有关支持的键的完整列表，请查看[Key enum]（https://www.fusetools.com/learn/uno/api/uno/platform/key）列表。
 
-A `StateGroup` is used to group a set of @(State:states) together and switch between them.
-`StateGroup` has an `Active` property, which is used to assign which @(State) is currently active in that group.
+##本机操作
 
-Here is an example of how to use a `StateGroup` to switch the color of a @(Rectangle) between three states:
+保险丝提供了一组调用操作系统特定行为的操作，例如拨打电话号码或振动设备。
+
+### $（Fuse.Launcher）
+
+Fuse.Launcher包允许您启动其他活动，如电子邮件，地图和网络浏览器。
+
+*注意：确保您将Fuse.Launcher添加到您的@（项目结构：.unoproj）文件。
+
+#### $（LaunchUri）
+
+请操作系统启动[URI]（https://en.wikipedia.org/wiki/Uniform_Resource_Identifier）。
+
+	<LaunchUri Uri =“https://www.fusetools.com”/>
+
+URI可以是从URL到应用程序注册的自定义URI方案的任何内容。底层操作系统负责处理请求。
+例如，[这里是一个常见的URI方案列表]（http://www.iana.org/assignments/uri-schemes），在互联网号码分配机构（IANA）注册。
+
+#### $（LaunchEmail）
+
+启动默认电子邮件应用程序，并开始撰写邮件。
+
+	<LaunchEmail To =“contact@fusetools.com”/>
+
+`LaunchEmail`接受下列属性：
+
+- `To' - 收件人的电子邮件地址
+- `CarbonCopy`  - 要发送副本的电子邮件地址
+- “BlindCarbonCopy” - 发送盲目拷贝的电子邮件地址
+- `主题`电子邮件的主题
+- `Message`  - 电子邮件的正文文本
+
+#### $（LaunchMaps）
+
+启用默认地图应用程序，给定纬度/经度对。
+
+	<LaunchMaps Latitude =“35.673813”Longitude =“ -  36.780810”/>
+
+#### $（Call）
+
+向指定的号码发出电话呼叫。
+
+	<Call Number =“123 45 678”/>
+
+### $（Vibrate）
+
+振动设备达到给定的秒数。注意：iOS不会遵守任何指定的时间长度，因为这不是原生iOS API中的选项。
+
+	<振动持续时间=“0.8”/>
+
+
+## $（州组）
+
+状态组允许您使用自定义事件定义完全自定义状态。
+
+### $（State）
+
+一个`State`由一个`State`对象中的一组@（Animators：animators）组成。它作为一个正常的@（触发器），但是由它包含@（StateGroup）激活。
+
+```
+<状态>
+	<旋转角度=“200”持续时间=“0.4”/>
+	<Move X =“10”Duration =“0.4”/>
+</ State>
+```
+
+### $（StateGroup）
+
+`StateGroup`用于将一组@（State：states）组合在一起并在它们之间切换。
+`StateGroup`有一个`Active`属性，用于分配哪个@（State）当前在该组中处于活动状态。
+
+下面是一个如何使用`StateGroup`来切换@（Rectangle）在三种状态之间的颜色的例子：
 
 ```
 <StackPanel>
-	<Panel Width="100" Height="100">
-		<SolidColor ux:Name="someColor"/>
-	</Panel>
-	<StateGroup ux:Name="stateGroup">
-		<State ux:Name="redState">
-			<Change someColor.Color="#f00" Duration="0.2"/>
-		</State>
-		<State ux:Name="blueState">
-			<Change someColor.Color="#00f" Duration="0.2"/>
-		</State>
-		<State ux:Name="greenState">
-			<Change someColor.Color="#0f0" Duration="0.2"/>
-		</State>
-	</StateGroup>
-	<Grid ColumnCount="3">
-		<Button Text="Red">
+	<面板宽度=“100”高度=“100”>
+		<SolidColor ux：Name =“someColor”/>
+	</ Panel>
+	<StateGroup ux：Name =“stateGroup”>
+		<State ux：Name =“redState”>
+			<Change someColor.Color =“＃f00”Duration =“0.2”/>
+		</ State>
+		<状态ux：Name =“blueState”>
+			<Change someColor.Color =“＃00f”Duration =“0.2”/>
+		</ State>
+		<状态ux：Name =“greenState”>
+			<Change someColor.Color =“＃0f0”Duration =“0.2”/>
+		</ State>
+	</ StateGroup>
+	<Grid ColumnCount =“3”>
+		<Button Text =“Red”>
 			<Clicked>
-				<Set stateGroup.Active="redState"/>
-			</Clicked>
-		</Button>
-		<Button Text="Blue">
+				<Set stateGroup.Active =“redState”/>
+			</ Clicked>
+		</ Button>
+		<Button Text =“Blue”>
 			<Clicked>
-				<Set stateGroup.Active="blueState"/>
-			</Clicked>
-		</Button>
-		<Button Text="Green">
+				<Set stateGroup.Active =“blueState”/>
+			</ Clicked>
+		</ Button>
+		<Button Text =“Green”>
 			<Clicked>
-				<Set stateGroup.Active="greenState"/>
-			</Clicked>
-		</Button>
-	</Grid>
-</StackPanel>
+				<Set stateGroup.Active =“greenState”/>
+			</ Clicked>
+		</ Button>
+	</ Grid>
+</ StackPanel>
 ```
 
-One can also specify the `Transition`, which can be either `Exclusive` or `Parallel`.
-`Exclusive` means that each state will have to be fully deactivated before the next state becomes active.
-`Parallel` means that as one state deactivates, the next one will become active and whatever properties they animate will be interpolated between them.
+还可以指定“Transition”，它可以是“Exclusive”或“Parallel”。
+`Exclusive`意味着在下一个状态变为活动状态之前，每个状态必须完全禁用。
+“并行”意味着当一个状态去激活时，下一个状态将变为活动状态，并且它们动画的任何属性将在它们之间内插。
 
-## $(User events)
+## $（用户事件）
 
-User events are intended for sending messages between components of your application.
-They may be sent and received from UX, Uno, and JavaScript.
+用户事件用于在应用程序的组件之间发送消息。
+它们可以从UX，Uno和JavaScript发送和接收。
 
-* Make sure you also check out the documentation on using @(UserEvents-js:FuseJS UserEvents from JavaScript).
+*确保你也看看关于使用@（UserEvents-js：FuseJS从JavaScript的用户事件）的文档。
 
-### $(UserEvent)
+### $（UserEvent）
 
-User events are attached to the node they are declared in, and only that node and its children can raise and handle the event.
+用户事件附加到它们声明的节点，并且只有该节点及其子节点可以引发和处理事件。
 
 	<App>
-		<UserEvent Name="MyEvent"/>
-		...
+		<UserEvent Name =“MyEvent”/>
+		... ...
 
-This creates an event with the name `MyEvent`.
-By putting this `UserEvent` in `App` we are essentially making it an app-wide event, since every child of App can raise and respond to this event.
+这将创建一个名为`MyEvent`的事件。
+通过将这个`UserEvent`放在`App`中，我们基本上把它作为一个app的事件，因为App的每个孩子都可以提出并响应这个事件。
 
-* Note: Make sure you add "Fuse.UserEvents" to your .unoproj file.
+*注意：确保向.unoproj文件中添加“Fuse.UserEvents”。
 
-### $(RaiseUserEvent:Raising user events from UX)
+### $（RaiseUserEvent：从UX提高用户事件）
 
-To raise a @(UserEvent:user event) from UX, use the `RaiseUserEvent` action.
+要从UX引发@（UserEvent：user事件），请使用`RaiseUserEvent`操作。
 
-	<Button>
+	<按钮>
 		<Clicked>
-			<RaiseUserEvent Name="MyEvent" />
-		</Clicked>
-	</Button>
+			<RaiseUserEvent Name =“MyEvent”/>
+		</ Clicked>
+	</ Button>
 
-### $(UserEventArg:Passing arguments)
+### $（UserEventArg：传递参数）
 
-A $(UserEvent:user event) may also include a number of arguments that can be read from either JavaScript or Uno.
+A $（UserEvent：user事件）还可以包括可以从JavaScript或Uno读取的多个参数。
 
-	<RaiseUserEvent Name="MyEvent">
-		<UserEventArg Name="message" StringValue="Hello from UX!" />
-	</RaiseUserEvent>
+	<RaiseUserEvent Name =“MyEvent”>
+		<UserEventArg Name =“message”StringValue =“Hello from UX！” />
+	</ RaiseUserEvent>
 
-`UserEventArg` accepts `IntValue`, `FloatValue`, `StringValue` or `BoolValue`.
+`UserEventArg`接受`IntValue`，`FloatValue`，`StringValue`或`BoolValue`。
 
-### $(OnUserEvent:Responding to user events)
+### $（OnUserEvent：响应用户事件）
 
-To respond to a @(UserEvent:user event), use the `OnUserEvent` trigger.
+要响应@（UserEvent：user事件），请使用`OnUserEvent`触发器。
 
-	<OnUserEvent Name="MyEvent">
-		...
-	</OnUserEvent>
+	<OnUserEvent Name =“MyEvent”>
+		... ...
+	</ OnUserEvent>
 
-By default, `OnUserEvent` will only listen for events that are declared in one of its ancestor nodes.
-If you want to listen for events coming from anywhere, set the `Filter` property to `Global`.
+默认情况下，`OnUserEvent`只监听在其祖先节点之一中声明的事件。
+如果你想监听来自任何地方的事件，将Filter属性设置为“Global”。
 
-`OnUserEvent` also lets you attach a JavaScript handler to the event.
+`OnUserEvent`也允许你为事件附加一个JavaScript处理程序。
 
-	<OnUserEvent Name="MyEvent" Handler="{myHandler}" />
+	<OnUserEvent Name =“MyEvent”Handler =“{myHandler}”/>
 
-The handler function can then read the @(UserEventArg:arguments) that were passed with the event.
+然后，处理函数可以读取与事件一起传递的@（UserEventArg：arguments）。
 
 ```javascript
-function myHandler(args) {
-	console.log(args.message);
-}
+function myHandler（args）{
+	console.log（args.message）;
+}}
 
-module.exports = { myHandler: myHandler }
+module.exports = {myHandler：myHandler}
 ```
 
-## $(Viewport triggers)
+## $（Viewport triggers）
 
-These triggers react to changes in the geometry of the screen.
+这些触发器对屏幕几何形状的变化做出反应。
 
-### $(WhileWindowLandscape)
+### $（WhileWindowLandscape）
 
-The `WhileWindowLandscape` trigger is active whenever the app's viewport width is larger than it's height. The following example changes the App's background color depending on its orientation:
+当应用程序的视口宽度大于它的高度时，`WhileWindowLandscape`触发器是活动的。以下示例根据其方向更改应用程序的背景颜色：
 
 ```
-<App ux:Name="app" Theme="Basic" Background="#FFF">
+<App ux：Name =“app”Theme =“Basic”Background =“＃FFF”>
      <WhileWindowLandscape>
-         <Change app.ClearColor="0,0,1,1" Duration="1" />
-     </WhileWindowLandscape>
-</App>
+         <Change app.ClearColor =“0,0,1,1”Duration =“1”/>
+     </ WhileWindowLandscape>
+</ App>
 ```
 
-### $(WhileWindowPortrait)
+### $（WhileWindowPortrait）
 
-The `WhileWindowPortrait` trigger is active whenever the app's viewport height is larger than, or equal to, the width.
+当应用程序的视口高度大于或等于宽度时，`WhileWindowPortrait`触发器是活动的。
 
-### $(WhileWindowSize)
+### $（WhileWindowSize）
 
-The `WhileWindowSize` trigger has three float2-properties that control its behavior:
+`WhileWindowSize`触发器有三个float2属性控制它的行为：
 
- * `GreaterThan`
- * `LessThan`
- * `EqualTo`
+ *`GreaterThan`
+ *`LessThan
+ *`EqualTo
 
 
-These properties have to be larger than `0,0`, and are conditions the app viewport has to conform to in order for the trigger to be active. The following is an example that changes the background color of an app if the viewport size is greater than a certain size:
-
-```
-<App Theme="Basic">
-  <Panel>
-     <SolidColor ux:Name="coloredPanel" Color="#F00" />
-     <WhileWindowSize GreaterThan="400,400">
-       <Change coloredPanel.Color="#0F0" Duration=".5"/>
-     </WhileWindowSize>
-  </Panel>
-</App>
-```
-
-## $(Control triggers)
-
-### $(WhileEnabled)
-
-The `WhileEnabled` trigger is active whenever its containing @(Element:elements) `IsEnabled` property is set to `True`.
+这些属性必须大于`0,0'，并且是应用程序视口必须符合的条件，以便触发器处于活动状态。以下是一个示例，如果视口大小大于某个大小，则更改应用程序的背景颜色：
 
 ```
-<Panel  Width="50" Height="50" Background="Red" >
+<App Theme =“Basic”>
+  <面板>
+     <SolidColor ux：Name =“coloredPanel”Color =“＃F00”/>
+     <WhileWindowSize GreaterThan =“400,400”>
+       <Change coloredPanel.Color =“＃0F0”Duration =“。5”/>
+     </ WhileWindowSize>
+  </ Panel>
+</ App>
+```
+
+## $（控制触发器）
+
+### $（WhileEnabled）
+
+每当包含@（Element：elements）`IsEnabled`属性设置为`True`时，`WhileEnabled`触发器是活动的。
+
+```
+<面板宽度=“50”高度=“50”背景=“红色”>
 	<WhileEnabled>
-		<Rotate Degrees="45" Duration="0.5"/>
-	</WhileEnabled>
-</Panel>
+		<旋转角度=“45”持续时间=“0.5”/>
+	</ WhileEnabled>
+</ Panel>
 ```
 
-### $(WhileDisabled)
+### $（WhileDisabled）
 
-The `WhileDisabled` trigger is active whenever the `IsEnabled` property of its containing @(Element:element) is set to `False`.
+`WhileDisabled`触发器在其包含@（Element：element）的`IsEnabled`属性设置为`False'时处于活动状态。
 
-## $(Focus triggers and actions)
+## $（聚焦触发器和操作）
 
-### $(WhileFocused)
+### $（WhileFocused）
 
-The `WhileFocused` trigger is active whenever its containing @(Element:element) is in focus.
+`WhileFocused`触发器在其包含@（Element：element）被聚焦时是活动的。
 
-### $(WhileNotFocused)
+### $（WhileNotFocused）
 
-The opposite to @(WhileFocused), active whenever its containing @(Element:element) is _not_ in focus.
+与@（WhileFocused）相反，当它包含@（Element：element）的时候是_not_焦点。
 
-### $(WhileFocusWithin)
+### $（WhileFocusWithin）
 
-`WhileFocusWithin` is active whenever a child of its containing @(Element:element) is in focus.
+`WhileFocusWithin`是活动的，当它的包含@（Element：element）的一个孩子在焦点。
 
-### $(GiveFocus)
+### $（GiveFocus）
 
-`GiveFocus` is an action that gives focus to its containing @(Element:element) when activated.
-It also accepts a `Target` property, which specifies which element to give focus to.
+`GiveFocus`是一个动作，当激活时，它将焦点放在其包含的@（Element：element）中。
+它还接受一个`Target`属性，它指定要给予焦点的元素。
 
-### $(ReleaseFocus)
+### $（ReleaseFocus）
 
-When activated, `ReleaseFocus` removes focus from the currently focused @(Element:element).
+当激活时，`ReleaseFocus`从当前聚焦的@（Element：元素）中移除焦点。
 
-## WebView-specific triggers & actions
+## WebView特定的触发器和操作
 
-### $(PageBeginLoading)
+### $（PageBeginLoading）
 
-Triggers once the @(WebView) begins loading new content.
+@（WebView）开始加载新内容时触发。
 
 ```
 <NativeViewHost>
-	<WebView Url="http://fusetools.com">
+	<WebView Url =“http://fusetools.com”>
 		<PageBeginLoading>
-			<DebugAction Message="Page began to load!"/>
-		</PageBeginLoading>
-	</WebView>
-</NativeViewHost>
+			<DebugAction Message =“页面开始加载！”/>
+		</ PageBeginLoading>
+	</ WebView>
+</ NativeViewHost>
 ```
 
-### $(WhilePageLoading)
+### $（WhilePageLoading）
 
-Becomes active when a @(WebView) Url changes, and stays active until it has completed loading content.
+在@（WebView）网址更改时变为活动状态，并保持活动状态，直到完成加载内容。
 
-### $(PageLoaded)
+### $（PageLoaded）
 
-Triggers once the @(WebView) has completed loading content from its current Url.
+@（WebView）完成从当前网址加载内容后触发。
 
 ```
 <NativeViewHost>
-	<WebView Url="http://fusetools.com">
+	<WebView Url =“http://fusetools.com”>
 		<PageLoaded>
-			<DebugAction Message="Arrived at page!"/>
-		</PageLoaded>
-	</WebView>
-</NativeViewHost>
+			<DebugAction Message =“到达页面！”/>
+		</ PageLoaded>
+	</ WebView>
+</ NativeViewHost>
 ```
 
-### $(Reload)
+### $（Reload）
 
-The `Reload` action lets you tell a given WebView to reload its current location.
+`Reload`操作允许你告诉给定的WebView重新加载它的当前位置。
 
-`<Reload TargetNode="myWebView" />`
+`<Reload TargetNode =“myWebView”/>`
 
-### $(LoadUrl)
+### $（LoadUrl）
 
-The `LoadUrl` action lets you tell a given WebView to navigate to a location.
+`LoadUrl`操作允许你告诉给定的WebView导航到一个位置。
 
-`<LoadUrl TargetNode="myWebView" Url="http://mypage.com" />`
+`<LoadUrl TargetNode =“myWebView”Url =“http://mypage.com”/>`
 
-### $(LoadHtml)
+### $（LoadHtml）
 
-The `LoadHtml` action lets you feed a given WebView with raw HTML to display when triggered, alongside a base url to set the HTML's context. This is either done by pointing the action's `Source` attribute to a databound HTML string, or by wrapping an @(HTML) and putting the HTML in the node body, like this:
+`LoadHtml`操作允许你为一个给定的WebView提供原始HTML，以便在触发时显示，同时还有一个基本url来设置HTML的上下文。这可以通过将操作的“Source”属性指向数据绑定的HTML字符串，或者通过包装一个@（HTML）并将HTML放在节点体中来实现，如下所示：
 
 ```XML
-<LoadHtml TargetNode="myWebView" BaseUrl="http://my.domain">
+<LoadHtml TargetNode =“myWebView”BaseUrl =“http：//my.domain”>
 	<HTML>
-		<![CDATA[
-			<h1>Boom!</h1>
+		<！[CDATA [
+			<h1> Boom！</ h1>
 		]]>
-	</HTML>
-</LoadHtml>
+	</ HTML>
+</ LoadHtml>
 ```
 
-> ### $(EvaluateJS)
+> ### $（EvaluateJS）
 
-The WebView offers limited execution of arbitrary JavaScript in the currently loaded web environment. This is done with the `<EvaluateJS/>` action. Let's look at a simplified example.
+WebView在当前加载的Web环境中提供有限的任意JavaScript执行。这是通过`<EvaluateJS />`动作完成的。让我们来看一个简单的例子。
 
 ```XML
-<EvaluateJS Handler="{onPageLoaded}">
+<EvaluateJS Handler =“{onPageLoaded}”>
 	var result = {
-		url : document.location.href
+		url：document.location.href
 	};
-	return result;
-</EvaluateJS>
+	返回结果;
+</ EvaluateJS>
 ```
 
-Note the use of a `return` statement in the script body. Implementations of JavaScript evaluation APIs generally act like a JavaScript [REPL](https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop), and when evaluating multiple lines of JS the result of the last statement of the script becomes the returned value. For instance, "1+5" is completely valid JS when evaluated and returns the expected value of "6".
+注意在脚本主体中使用`return`语句。JavaScript评估API的实现通常像JavaScript [REPL]（https://en.wikipedia.org/wiki/Read%E2%80%93eval%E2%80%93print_loop），在评估多行JS时，结果的脚本的最后一条语句成为返回值。例如，“1 + 5”在计算时是完全有效的JS，并返回期望值“6”。
 
-This can result in odd-feeling JS, where referencing an object becomes an implicit return statement, whereas an explicit return is not allowed.
+这可能导致奇怪的JS，其中引用对象变成一个隐式return语句，而不允许显式返回。
 
 ```JavaScript
 var result = {};
-result.foo = "bar";
-result; // using return here is invalid JS
+result.foo =“bar”;
+结果; // using return这里是无效的JS
 ```
 
-To make this feel better and allow return, we currently inject the user's JS in the form of a function:
+为了让这种感觉更好并允许返回，我们目前以一个函数的形式注入用户的JS：
 
 ```JavaScript
-(function() { USER_JS })();
+（function（）{USER_JS}）（）;
 ```
 
-#### Reading the result value
+####读取结果值
 
-When we evaluate the JavaScript we are currently bound by platform restrictions in a key way: String is the only allowed return value type on Android, our lowest common denominator. Android allows for parity with iOS as of API level 19, which denies us good backwards compatibility. For now we must rely on the comparatively ancient [addJavaScriptInterface](http://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface(java.lang.Object, java.lang.String)) API for backwards compatibility.
+当我们评估JavaScript时，我们目前受到平台限制的关键方式：String是Android上唯一允许的返回值类型，我们的最低公分母。Android允许与API相同的API级别19，这否认我们良好的向后兼容性。现在，我们必须依靠比较古老的[addJavaScriptInterface]（http://developer.android.com/reference/android/webkit/WebView.html#addJavascriptInterface（java.lang.Object，java.lang.String））API向后兼容。
 
-What this means is that any return value passed from the evaluated script must by necessity be returned as JSON and parsed back from it on the Fuse end. Even if all you want is the result of some arithmetic, you'd still receive it as a string and require a cast. Instead of forcing you to routinely `return JSON.stringify(foo)` from your own JS we handle this by *always* wrapping your JS in JSON.stringify before evaluation:
+
 
 ```JavaScript
-JSON.stringify( (function() { USER_JS })() );
+JSON.stringify（（function（）{USER_JS}）（））;
 ```
 
-The returned JSON string here is then put into a result object with the `json` key. This is for clarity, so you never forget that the data you are receiving is a JSON string that you will need to parse.
+这里返回的JSON字符串然后放入一个结果对象与`json`键。这是为了清楚，所以你永远不会忘记，你接收的数据是一个JSON字符串，你将需要解析。
 
 ```XML
 <JavaScript>
 	module.exports = {
-		onPageLoaded : function(result)
+		onPageLoaded：function（result）
 		{
-			var url = JSON.parse(result.json).url;
-		}
+			var url = JSON.parse（result.json）.url;
+		}}
 	};
-</JavaScript>
+</ JavaScript>
 ```
 
-Note that of course return is optional. If you don't return anything from your evaluated JS the return value of the expression will simply be "null".
+注意，当然返回是可选的。如果你不返回任何从你的计算JS，表达式的返回值将只是“null”。
 
 
-## $(Special Animations)
+## $（特殊动画）
 
-In Fuse terminology, *animations* are a certain category of triggers that animate in response to a higher level interpretation
-of input, events and logical state changes.
+在保险丝术语中，*动画*是某种类型的触发器，其响应于更高级别的解释而动画化
+的输入，事件和逻辑状态更改。
 
-Animation triggers are designed to solve quite specific animation problems that would otherwise be hard to pull off using the simpler triggers.
-The flipside is that these triggers can be somewhat hard to understand and use, so make sure you read the docs and study examples before spending
-too much time scratching your head.
+动画触发器被设计为解决相当具体的动画问题，否则将难以使用更简单的触发器。
+另一方面，这些触发器可能有点难以理解和使用，所以请确保您在开始之前阅读文档和学习示例
+太多的时间抓你的头。
 
 ### LayoutAnimation
 
-The `LayoutAnimation` is triggered in response to a layout change. A layout change happens whenever an element gets a new layout by the layout system. `LayoutAnimation` is commonly used together with @(MultiLayoutPanel) for some pretty interesting animations. See @(LayoutAnimation) for more in depth documentation.
+“LayoutAnimation”是响应布局更改而触发的。每当元素通过布局系统获取新布局时发生布局更改。`LayoutAnimation`通常与@（MultiLayoutPanel）一起使用，用于一些非常有趣的动画。有关更多深入文档，请参阅@（LayoutAnimation）。
 
-<!-- TODO: consider linking to external article here-->
+<！ -  TODO：考虑链接到外部文章 - >
 
-### $(AddingAnimation)
+### $（AddingAnimation）
 
-<!-- TODO: Link to examples -->
+<！ -  TODO：链接到示例 - >
 
-`AddingAnimation` is triggered whenever the element is added to the visual tree. Adding animation is by default a backward animation, meaning it will animate from progress 1 back to 0.
+每当将元素添加到视觉树中时，就会触发“AddingAnimation”。默认情况下添加动画是一种向后动画，这意味着它将从进度1动画到0。
 
-<!-- TODO: Example -->
+<！ -  TODO：Example  - >
 
-### $(RemovingAnimation)
+### $（RemovingAnimation）
 
-`RemovingAnimation` is similar to @(AddingAnimation), but is triggered whenever an @(Element) is being removed from the visual tree.
+`RemovingAnimation`类似于@（AddingAnimation），但是当从可视树中删除一个@（Element）时触发。
 
-`RemovingAnimation` is similar to @(AddingAnimation) but is triggered whenever the element is removed from its parent. `RemovingAnimation` progresses normally from 0 to 1 over the specified @(Duration).
+`RemovingAnimation`类似于@（AddingAnimation），但是当元素从其父元素中删除时触发。`RemovingAnimation`通常在指定的@（Duration）上从0到1。
 
-In the following example, a rectangle will move in from the right side by the width of its parent container over one second when it is added to the visual tree by the @(Switch). It will move out to the left by the same distance when it is removed.
+在以下示例中，当通过@（开关）将矩形添加到视图树中时，矩形将从右侧移动其父容器的宽度一秒钟。当它被移除时，它将向左移动相同的距离。
 
 ```
-<App Theme="Basic" ClearColor="#eeeeeeff">
-	<StackPanel Background="#ddd" Margin="10">
+<App Theme =“Basic”ClearColor =“＃eeeeeeff”>
+	<StackPanel Background =“＃ddd”Margin =“10”>
 		<Switch>
 			<WhileTrue>
-				<Change whileTrue.Value="true"/>
-			</WhileTrue>
-		</Switch>
-		<WhileTrue ux:Name="whileTrue">
-			<Panel Height="50" Width="50" Background="Red">
+				<Change whileTrue.Value =“true”/>
+			</ WhileTrue>
+		</ Switch>
+		<WhileTrue ux：Name =“whileTrue”>
+			<面板高度=“50”宽度=“50”背景=“红色”>
 				<AddingAnimation>
-					<Move RelativeTo="ParentSize" X="1" Duration="1" Easing="BounceIn"/>
-				</AddingAnimation>
-				<RemovingAnimation>
-					<Move RelativeTo="ParentSize" X="-1" Duration="0.5"/>
-				</RemovingAnimation>
-			</Panel>
-		</WhileTrue>
-	</StackPanel>
-</App>
+					<Move RelativeTo =“ParentSize”X =“1”Duration =“1”Easing =“BounceIn”/>
+				</ AddingAnimation>
+				<删除动画>
+					<Move RelativeTo =“ParentSize”X =“ -  1”Duration =“0.5”/>
+				</ RemovingAnimation>
+			</ Panel>
+		</ WhileTrue>
+	</ StackPanel>
+</ App>
 ```
 
-### $(ActivatingAnimation)
+### $（ActivatingAnimation）
 
-`ActivatingAnimation` allows for animating based on which @(Page) is active. `ActivatingAnimation` will progress from 0 to 1 as a @(Page) is being navigated to. If @(SwipeNavigate) is used, one can observe that `ActivatingAnimation` progressed from 0 as soon as the @(Page) is entering, stays at 1 as long as the @(Page) is active, and then progresses towards 0 again as the @(Page) is exiting.
+`ActivatingAnimation`允许根据@（Page）是活动的动画。`ActivatingAnimation`将在@（页面）导航到时从0进展到1。如果使用@（SwipeNavigate），可以观察到`ActivatingAnimation'一旦进入@（页面）就从0开始，只要@（Page）被激活，就保持在1，然后再次向0 @（Page）退出。
 
-### $(DeactivatingAnimation)
+### $（DeactivatingAnimation）
 
-`DeactivatingAnimation` is just like the `ActivatingAnimation`, except that the progress is reversed. That means that the trigger will progress from 1 to 0 as a @(Page) activates, and 0 to 1 as it deactivates.
+`DeactivatingAnimation`就像`ActivatingAnimation`，除了进度是相反的。这意味着触发器将在@（页面）激活时从1进展到0，当它取消激活时，触发器从0到1。
 
-### $(ScrollingAnimation)
+### $（ScrollingAnimation）
 
-`ScrollingAnimation` lets us create animations in response to a @(ScrollView) being scrolled. By using the `From` and `To` properties one can define an interval on the @(ScrollView) where the trigger gets activated.
+`ScrollingAnimation`允许我们创建动画以响应正在滚动的@（ScrollView）。通过使用“From”和“To”属性，可以在@（ScrollView）上定义触发器被激活的间隔。
 
-In the following example, we use `ScrollingAnimation` to @(Scale) the @(ScrollView) as it is being scrolled.
+在下面的示例中，我们使用`ScrollingAnimation`来@（ScrollView）在滚动时@（缩放）。
 
 ```
 <ScrollView>
-	<StackPanel Background="#ddd" Margin="10">
-		<Panel Height="200" Background="Red"/>
-		<Panel Height="200" Background="Blue"/>
-		<Panel Height="200" Background="Green"/>
-		<Panel Height="200" Background="Purple"/>
-		<Panel Height="200" Background="Teal"/>
-	</StackPanel>
-	<ScrollingAnimation From="0" To="400">
-		<Scale Factor="0.3" />
-	</ScrollingAnimation>
-</ScrollView>
+	<StackPanel Background =“＃ddd”Margin =“10”>
+		<面板高度=“200”背景=“红色”/>
+		<面板高度=“200”背景=“蓝色”/>
+		<面板高度=“200”背景=“绿色”/>
+		<面板高度=“200”背景=“紫色”/>
+		<面板高度=“200”背景=“青色”/>
+	</ StackPanel>
+	<ScrollingAnimation From =“0”To =“400”>
+		<比例因子=“0.3”/>
+	</ ScrollingAnimation>
+</ ScrollView>
 ```
 
-> ### $(PullToReload)
+> ### $（PullToReload）
 
-`PullToReload` lets you easily create a "pull to reload" interaction.
+`PullToReload`允许你轻松创建一个“pull to reload”交互。
 
-It is implemented as a @(ScrollingAnimation), with a set of properties that let you bind different @(State:states) that should be triggered during different stages of interaction.
+
 
 ```
 <ScrollView>
 	<PullToReload>
-		<State ux:Binding="Pulling">
-			<!-- Will be active while the user is pulling downward -->
-		</State>
-		<State ux:Binding="PulledPastThreshold">
-			<!-- Will be active when the user has pulled past the threshold -->
-		</State>
-		<State ux:Binding="Loading">
-			<!-- Will be active when the pointer is released after pulling past the threshold -->
-		</State>
-	</PullToReload>
-</ScrollView>
+		<状态ux：绑定=“拉”>
+			<！ - 将在用户向下拉时激活 - >
+		</ State>
+		<状态ux：Binding =“PulledPastThreshold”>
+			<！ - 当用户已经超过阈值时将处于活动状态 - >
+		</ State>
+		<状态ux：Binding =“加载”>
+			<！ - 当指针在超过阈值后释放时将处于活动状态 - >
+		</ State>
+	</ PullToReload>
+</ ScrollView>
 ```
 
-By data binding to the `IsLoading` and `ReloadHandler` properties, we can respond to the reload being initiated.
+通过数据绑定到`IsLoading`和`ReloadHandler`属性，我们可以响应重启正在启动。
 
 ```
 <JavaScript>
-	var Observable = require("FuseJS/Observable");
+	var Observable = require（“FuseJS / Observable”）;
 	
-	var isLoading = Observable(false);
-	function onReload() {
-		fetchDataSomehow(function() {
+	var isLoading = Observable（false）;
+	function onReload（）{
+		fetchDataSomehow（function（）{
 			isLoading.value = false;
-		});
-	}
+		}）;
+	}}
 	
-	module.exports = { isLoading, onReload };
-</JavaScript>
+	module.exports = {isLoading，onReload};
+</ JavaScript>
 
 <ScrollView>
-	<PullToReload IsLoading="{isLoading}" ReloadHandler="{onReload}" />
-</ScrollView>
+	<PullToReload IsLoading =“{isLoading}”ReloadHandler =“{onReload}”/>
+</ ScrollView>
 ```
 
-**Note:** In the above example, `IsLoading` has a two-way data binding to `isLoading`, meaning that both the `PullToReload` itself and the `isLoading` Observable can change its value.
+**注意：**在上面的例子中，`IsLoading`有一个双向数据绑定到`isLoading`，这意味着`PullToReload`本身和`isLoading` Observable都可以改变它的值。
 
-Since `PullToReload` actually is a @(ScrollingAnimation), we can for instance use it to show a loading indicator as the user pulls downward.
+因为`PullToReload`实际上是一个@（ScrollingAnimation），我们可以使用它来显示一个负载指示器，当用户向下拉。
 
 ```
-<Panel>
-	<Circle ux:Name="loadingIndicator" Width="50" Height="50" Color="Red" Alignment="Top" Offset="0,-50" />
+<面板>
+	<Circle ux：Name =“loadingIndicator”Width =“50”Height =“50”Color =“Red”Alignment =“Top”Offset =“0，-50”/>
 	<ScrollView>
 		<PullToReload>
-			<Move Target="loadingIndicator" Y="2" RelativeTo="Size" Duration="1" />
-		</PullToReload>
-	</ScrollView>
-</Panel>
+			<Move Target =“loadingIndicator”Y =“2”RelativeTo =“Size”Duration =“1”/>
+		</ PullToReload>
+	</ ScrollView>
+</ Panel>
 ```
 
-### $(WhileScrollable)
+### $（WhileScrollable）
 
-`WhileScrollable` is used to animate based on whether a @(ScrollView) can be scrolled or not. Use the `ScrollDirections` property to filter the activation based which directions we care about.
+`WhileScrollable'用于根据是否可以滚动@（ScrollView）来动画。使用`ScrollDirections`属性根据我们关心的方向过滤激活。
 
-`ScrollDirections` can take on any one of the following values:
+`ScrollDirections`可以取以下任意一个值：
 
-- All
-- Both
-- Down
-- Horizontal
-- Left
-- Right
-- Up
-- Vertical
+- 全部
+- 两者
+- 下
+- 水平
+- 剩下
+- 对
+- 向上
+- 垂直
 
-In the following example, our background changes color when we reach the bottom of our @(ScrollView):
+在下面的示例中，当我们到达@（ScrollView）的底部时，我们的背景颜色会改变：
 
 ```
 <ScrollViewer>
-	<SolidColor ux:Name="color" Color="#000"/>
-	<StackPanel Margin="10">
-			<Each Count="10">
-				<Panel Height="200" Background="Red" Margin="2"/>
-			</Each>
-		</StackPanel>
-	<WhileScrollable ScrollDirections="Down">
-		<Change color.Color="#ddd" Duration="0.4"/>
-	</WhileScrollable>
-</ScrollViewer>
+	<SolidColor ux：Name =“color”Color =“＃000”/>
+	<StackPanel Margin =“10”>
+			<Every Count =“10”>
+				<面板高度=“200”背景=“红色”margin =“2”/>
+			</ Each>
+		</ StackPanel>
+	<WhileScrollable ScrollDirections =“Down”>
+		<Change color.Color =“＃ddd”Duration =“0.4”/>
+	</ WhileScrollable>
+</ ScrollViewer>
 ```
 
-### $(ProgressAnimation)
+### $（ProgressAnimation）
 
-`ProgressAnimation` can be used together with a slider to animate elements as one slides its thumb. `ProgressAnimation` always goes from 0 to 1 as one slides the slider from its minimum value to its maximum value.
+`ProgressAnimation`可以与滑块一起使用，以便在元素滑动时滑动其大拇指。`ProgressAnimation`总是从0到1，因为滑块从最小值滑到最大值。
 
 ```
-<Image File="someImage.png">
-	<Blur ux:Name="blur" Radius="0"/>
-</Image>
-<Slider Width="50%" Alignment="Bottom" Margin="0,80">
+<Image File =“someImage.png”>
+	<Blur ux：Name =“blur”Radius =“0”/>
+</ Image>
+<滑块宽度=“50％”对齐=“底部”Margin =“0,80”>
 	<ProgressAnimation>
-		<Change blur.Radius="10"/>
-	</ProgressAnimation>
-</Slider>
+		<Change blur.Radius =“10”/>
+	</ ProgressAnimation>
+</ Slider>
 ```
 
-### $(Timeline)
+### $（时间轴）
 
-The `Timeline` allows for a nice way of grouping several animations together and separating them from the interaction logic. It can be played by animating its `TargetProgress` property between 0 and 1.
+“时间轴”允许一个很好的方式将几个动画组合在一起，并将它们与交互逻辑分开。它可以通过在0到1之间的“TargetProgress”属性进行动画播放。
 
-Here is an example of how we can use a timeline to animate several properties on a rectangle (its width and color), and then play between the start and end of this `Timeline` by clicking two buttons.
+
 
 ```
-<App Theme="Basic">
+<App Theme =“Basic”>
 	<StackPanel>
-		<Rectangle ux:Name="rect" Height="40" Width="100%">
-			<SolidColor ux:Name="color" Color="#f00" />
-		</Rectangle>
-		<Grid ColumnCount="2">
-			<Button Text="Red">
+		<Rectangle ux：Name =“rect”Height =“40”Width =“100％”>
+			<SolidColor ux：Name =“color”Color =“＃f00”/>
+		</ Rectangle>
+		<Grid ColumnCount =“2”>
+			<Button Text =“Red”>
 				<Clicked>
-					<Set timeline.TargetProgress="0" />
-				</Clicked>
-			</Button>
-			<Button Text="Green">
+					<Set timeline.TargetProgress =“0”/>
+				</ Clicked>
+			</ Button>
+			<Button Text =“Green”>
 				<Clicked>
-					<Set timeline.TargetProgress="1" />
-				</Clicked>
-			</Button>
-		</Grid>
+					<Set timeline.TargetProgress =“1”/>
+				</ Clicked>
+			</ Button>
+		</ Grid>
 
-		<Timeline ux:Name="timeline">
-			<Change Target="rect.Width">
-				<Keyframe Value="10" Time="0.3"/>
-				<Keyframe Value="100" Time="0.6"/>
-			</Change>
-			<Change color.Color="#0f0" Duration="0.3" Delay="0.3"/>
-		</Timeline>
-	</StackPanel>
-</App>
+		<Timeline ux：Name =“timeline”>
+			<Change Target =“rect.Width”>
+				<关键帧值=“10”时间=“0.3”/>
+				<关键帧值=“100”时间=“0.6”/>
+			</ Change>
+			<Change color.Color =“＃0f0”Duration =“0.3”Delay =“0.3”/>
+		</ Timeline>
+	</ StackPanel>
+</ App>
 ```
 
-## $(RangeAdapter:Range adapter)
+## $（RangeAdapter：Range adapter）
 
-The `RangeAdapter` can be used to adjust the range of values used in bindings. This allows finer control over animations such as `Timeline` and `...Animation` triggers.
+`RangeAdapter`可用于调整绑定中使用的值的范围。这允许更好地控制动画，如“时间轴”和“...动画”触发器。
 
-- `Source` the value to be adapted. This value is always updated directly, the `RangeAdapter` does not store any value internally.
-- `SourceRangeMin` the minimum value to map to on the source
-- `SourceRangeMax` the maximum value to map to on the source
-- `ValueRangeMin` the minimum value to map to on the value. Default 0
-- `ValueRangeMax` the maximum value to map to on the value. Default 1
-- `Value` the value to be translated. Change this to have `Source` updated with the translated value.
+- `Source'要修改的值。这个值总是直接更新，`RangeAdapter`不会在内部存储任何值。
+- `SourceRangeMin`映射到源的最小值
+- `SourceRangeMax`要映射到源的最大值
+- `ValueRangeMin`映射到值的最小值。默认值0
+- `ValueRangeMax`要映射到的值的最大值。默认值1
+- 'Value'是要翻译的值。将此更改为使用已翻译的值更新“源”。
 
-In the following example, two panels are rotated. However, due to one of the panels being animated via a `RangeAdapter`, it will only rotate half of what the other panel is rotated:
+在以下示例中，旋转了两个面板。然而，由于其中一个面板通过“RangeAdapter”进行动画处理，它只会旋转另一个面板旋转的一半：
 
 ```
-<App Theme="Basic" Background="#fff">
+<App Theme =“Basic”Background =“＃fff”>
   <StackPanel>
-    <StackPanel Height="200">
-      <Panel ux:Name="animationTarget" Color="#874cff" Width="70" Height="70" Margin="10" />
-      <Panel ux:Name="animationTargetTwo" Color="#d46fff" Width="70" Height="70" Margin="10" />
-    </StackPanel>
-    <Button Text="Run animation" >
+    <StackPanel Height =“200”>
+      <Panel ux：Name =“animationTarget”Color =“＃874cff”Width =“70”Height =“70”Margin =“10”/>
+      <Panel ux：Name =“animationTargetTwo”Color =“＃d46fff”Width =“70”Height =“70”Margin =“10”/>
+    </ StackPanel>
+    <Button Text =“运行动画”>
       <Clicked>
-	<Toggle Target="actualAnim" />
-      </Clicked>
-    </Button>
-    <Timeline ux:Name="timeline">
-      <Rotate Target="animationTargetTwo" Degrees="90" Duration="1"/>
-    </Timeline>
-    <RangeAdapter ux:Name="range" Source="timeline.Progress" SourceRangeMin="0" SourceRangeMax="0.5" />
-    <WhileTrue ux:Name="actualAnim">
-      <Rotate Target="animationTarget" Degrees="90" Duration="1"/>
-      <Change range.Value="1" Duration="1" />
-    </WhileTrue>
-  </StackPanel>
-</App>
+	<切换目标=“actualAnim”/>
+      </ Clicked>
+    </ Button>
+    <Timeline ux：Name =“timeline”>
+      <Rotate Target =“animationTargetTwo”Degrees =“90”Duration =“1”/>
+    </ Timeline>
+    <RangeAdapter ux：Name =“range”Source =“timeline.Progress”SourceRangeMin =“0”SourceRangeMax =“0.5”/>
+    <WhileTrue ux：Name =“actualAnim”>
+      <Rotate Target =“animationTarget”Degrees =“90”Duration =“1”/>
+      <Change range.Value =“1”Duration =“1”/>
+    </ WhileTrue>
+  </ StackPanel>
+</ App>
 ```
 
-<!-- ## Advanced trigger usage
+<！ -  ##高级触发器使用
 
-TODO: Show examples of
-* Document Bypass
-* Triggers within triggers
-* Elements/nodes within triggers
-* Styles within triggers (? not sure if this is currently possible) -->
+TODO：显示示例
+*文档旁路
+*触发器内的触发器
+*触发器中的元素/节点
+*触发器中的样式（？不确定这是否可能） - >

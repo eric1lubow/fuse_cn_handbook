@@ -1,161 +1,161 @@
-# UI Components
+＃UI组件
 
-Fuse comes with a number of UI components that can be used to construct a user interface. In UX you can add UI components by enclosing them in tags:
+Fuse附带了许多可用于构建用户界面的UI组件。在UX中，您可以通过将UI组件包含在标记中来添加它们：
 
-    <Image File="MyImage.png" />
-    <Rectangle Width="50" Height="50" Fill="#888" />
-    <Text>Hello world!</Text>
+    <Image File =“MyImage.png”/>
+    <Rectangle Width =“50”Height =“50”Fill =“＃888”/>
+    <Text> Hello world！</ Text>
 
-Note that just because something is enclosed in a tag doesn't necessarily mean it has to be a UI component. UX uses tags for other concepts also, such as @(Trigger:Triggers) and @(Actions).
+注意，只是因为某物被包含在标签中，并不一定意味着它必须是一个UI组件。UX对其他概念也使用标签，例如@（Trigger：Triggers）和@（Actions）。
 
-## $(Text)
+## $（Text）
 
-Here is a tiny app that renders text:
-
-	<App>
-		<Text>Hello, world!</Text>
-	</App>
-
-This is great but when you have longer passages of text, such as a _Lorem Ipsum_, you most likely want to enable word wrapping. In Fuse, this is done with the `$(TextWrapping)` property on the `Text` control:
-
-	<Text TextWrapping="Wrap">Lorem Ipsum(...)</Text>
-
-If you are still finding that wrapping the text still makes it hard to show all the contents you want, you probably want to consider adding the contents to a @(ScrollView), or changing @(FontSize). `TextWrapping` can be set to `Wrap` or `NoWrap` (default).
-
-### $(Fonts)
-
-You can import fonts from ttf files containing TrueType fonts. Because a font is typically referred to throughout an application, it is best to simply create a _@(Global Resources:global resource)_ for it.
+这里是一个微小的应用程序，呈现文本：
 
 	<App>
-		<Font File="Roboto-Medium.ttf" ux:Global="Medium" />
-		<Font File="Roboto-Light.ttf" ux:Global="Light" />
+		<Text> Hello，world！</ Text>
+	</ App>
+
+这是伟大的，但当你有更长的文本段落，如_Lorem Ipsum_，你最有可能想要启用字包装。在Fuse中，这是通过`Text`控件上的`$（TextWrapping）`属性来完成的：
+
+	<Text TextWrapping =“Wrap”> Lorem Ipsum（...）</ Text>
+
+如果你仍然发现包装文本仍然很难显示你想要的所有内容，你可能想考虑将内容添加到@（ScrollView）或更改@（FontSize）。`TextWrapping`可以设置为`Wrap`或`NoWrap`（默认）。
+
+### $（字体）
+
+您可以从包含TrueType字体的ttf文件导入字体。由于字体通常在整个应用程序中引用，因此最好简单地为其创建一个_ @（全局资源：全局资源）_。
+
+	<App>
+		<Font File =“Roboto-Medium.ttf”ux：Global =“Medium”/>
+		<Font File =“Roboto-Light.ttf”ux：Global =“Light”/>
 		<StackPanel>
-			<Text Font="Light">Roboto Light</Text>
-			<Text Font="Medium">Roboto Medium</Text>
-			<Text Font="Light">Roboto Light again</Text>
-		</StackPanel>
-	</App>
+			<Text Font =“Light”> Roboto Light </ Text>
+			<Text Font =“Medium”> Roboto Medium </ Text>
+			<Text Font =“Light”> Roboto Light再次</ Text>
+		</ StackPanel>
+	</ App>
 
-In this example, the fonts are located in the same directory as the relevant UX file. This way of importing the font ensures that the font is available throughout the whole project, and is only loaded once.
+在此示例中，字体位于与相关UX文件相同的目录中。这种导入字体的方式确保字体在整个项目中可用，并且只加载一次。
 
-Both iOS and Android support text rendering with multibyte character sets. This means that emojis work fine rendering on device.
+iOS和Android都支持使用多字节字符集的文本呈现。这意味着emojis在设备上工作精细渲染。
 
-_Note!_ There are currently some issues rendering multibyte character sets using desktop preview. Do not be surprised if the desktop rendering doesn't match device rendering 100%. This is an issue that is being worked on.
+_Note！_目前有一些问题使用桌面预览呈现多字节字符集。不要惊讶，如果桌面渲染不匹配设备呈现100％。这是一个正在处理的问题。
 
-### Text properties
+###文本属性
 
-For further control over how your text is rendered, you can set `$(TextAlignment)`, `$(TextColor)`, `$(FontSize)` and `$(LineSpacing)`:
+为了进一步控制如何渲染文本，可以设置`$（TextAlignment）`，`$（TextColor）`，`$（FontSize）`和`$（LineSpacing）`：
 
-	<Text TextColor="#999">Left</Text>
-	<Text TextAlignment="Center">Center</Text>
-	<Text FontSize="24" TextAlignment="Right">Right</Text>
-	<Text LineSpacing="10">
-	Multiple
-	Lines
-	</Text>
+	<Text TextColor =“＃999”>左</ Text>
+	<Text TextAlignment =“Center”>中心</ Text>
+	<Text FontSize =“24”TextAlignment =“Right”> Right </ Text>
+	<Text LineSpacing =“10”>
+	多
+	线
+	</ Text>
 
-In this example, the first text element will be left aligned as this is the default, and have its color set to a medium light grey. The second text will be center aligned. The third will be right aligned and have a larger font. The fourth will span two lines with 10 points of space inbetween. Valid values for `TextAlignment` are `Left` (default), `Right` and `Center`.
+在本示例中，第一个文本元素将左对齐，因为这是默认值，并且其颜色设置为中间浅灰色。第二个文本将居中对齐。第三个将右对齐，并具有较大的字体。第四个将跨越两条线，其间有10个空间。`TextAlignment'的有效值为`Left`（默认），`Right`和`Center`。
 
-> ### $(Number)
+> ### $（Number）
 
-While @(Text) is the way to go in most cases, you may use `Number` to display a formatted numeric value.
-The format, specified via the `Format` property, must be in the form of a [Standard Numeric Format String](https://msdn.microsoft.com/en-us/library/dwhawy9k.aspx).
+虽然@（文本）是在大多数情况下，你可以使用`Number`来显示一个格式化的数值。
+通过“Format”属性指定的格式必须是[标准数字格式字符串]（https://msdn.microsoft.com/en-us/library/dwhawy9k.aspx）的形式。
 
-The only format currently supported by `Number` is `F`, which truncates the number of decimal places to be shown.
+`Number`当前支持的唯一格式是`F`，它截断要显示的小数位数。
 
-The following code will render `3.141`:
+下面的代码将渲染`3.141`：
 
 ```
-<Number Value="3.14159265359" Format="F03" />
+<Number Value =“3.14159265359”Format =“F03”/>
 ```
 
-## $(Image)
+## $（图片）
 
-Fuse supports displaying PNG and JPEG files (in RGB color space) natively. To display an image:
+保险丝支持本地显示PNG和JPEG文件（在RGB颜色空间中）。显示图像：
 
 	<App>
-		<Image File="FuseLogo.png" />
-	</App>
+		<Image File =“FuseLogo.png”/>
+	</ App>
 
-This code assumes the file `FuseLogo.png` lives in the same directory as the UX-file. If you would rather load the contents of the image from the Internet, simply:
+此代码假定文件`FuseLogo.png`与UX文件存在于同一目录中。如果你想从互联网加载图像的内容，只需：
 
-	<Image Url="http://path_to_image" />
+	<Image Url =“http：// path_to_image”/>
 
-_Note!_ If you come from a background as a web developer you might be used to assigning a URL to a `src`-attribute. While `Image` has a `Source`-property, it is used to assign a `Resource` to an image. In this context, this `Resource` is a `HttpImageSource`, but that is created behind the covers for you automatically, so stick to the `Url`-property to load contents from the web.
+_Note！_如果你是从web开发人员的背景，你可能习惯于分配一个URL到src`属性。虽然`Image`有一个`Source`属性，它用于为一个图像分配一个`Resource`。在这个上下文中，这个“Resource”是一个“HttpImageSource”，但是它是为你自动在封面后面创建的，所以坚持使用`Url`-property从网页加载内容。
 
-> ### Image contents from resources
+> ###来自资源的图像内容
 
-For a small example of other ways to load image data, here is a small example that also uses databinding from JavaScript:
+对于其他方法加载图像数据的一个小例子，这里是一个小例子，也使用JavaScript中的数据绑定：
 
-	<FileImageSource ux:Key="pic2" File="Images/Image2.jpg" />
+	<FileImageSourceux：Key =“pic2”File =“Images / Image2.jpg”/>
 	<StackPanel>
 		<JavaScript>
 			module.exports = {
-				imageResource: "pic2",
-				url: "http://somewhereontheinternet/Cute-Cat.jpg"
-			}
-		</JavaScript>
-		<Image File="Images/Image1.jpg" />
-		<Image Source="{DataToResource imageResource}" />
-		<Image Url="{url}" />
-	</StackPanel>
+				imageResource：“pic2”，
+				url：“http：//somewhereontheinternet/Cute-Cat.jpg”
+			}}
+		</ JavaScript>
+		<Image File =“Images / Image1.jpg”/>
+		<Image Source =“{DataToResource imageResource}”/>
+		<Image Url =“{url}”/>
+	</ StackPanel>
 
-This code will show three images stacked on top of each other. The topmost image will be fetched as a file that's part of the project. At the top we've referenced a file by creating a `FileImageSource` that we bind to an image using `DataToResource`. This will lookup the resource from the key it gets form the JavaScript. We also get the URL for a picture on the web and bind it to the `Url`-property of an `Image`. If this looks complicated, don't fret: We'll look more at @(Data Binding) and @(JavaScript) shortly.
+此代码将显示三个图像堆叠在彼此的顶部。最上面的图像将作为项目的一部分的文件提取。在顶部，我们通过创建一个`FileImageSource`来引用一个文件，我们使用`DataToResource`绑定到一个图像。这将从它从JavaScript获取的键查找资源。我们还得到一个图片在网络上的URL并绑定到一个`图像'的`Url`属性。如果这看起来很复杂，不要担心：我们稍后将更多地看看@（数据绑定）和@（JavaScript）。
 
-> ### Image Color
+> ###图像颜色
 
-It is possible to tint an `Image` by using the `Color`-property. Note, that this will affect the parts of the image that is closest to white in the most predictable way. For example:
+可以通过使用“颜色”属性来对“图像”进行着色。请注意，这将以最可预测的方式影响最接近白色的图像部分。例如：
 
-	<Image File="WhiteIcon.png" Color="#f00" />
+	<Image File =“WhiteIcon.png”Color =“＃f00”/>
 
-This will turn a white icon red.
+这将使白色图标变红。
 
-<!-- Removed due to resampleMode being broken ATM
-> ### Custom resample mode
+<！ - 删除由于resampleMode被损坏的ATM
+> ###自定义重新采样模式
 
-In some cases, like when showing images with low resolution, you may need to take control over the resample mode. this is doable using the `ResampleMode` property. With it, you have the following choices:
+在某些情况下，例如显示低分辨率的图片时，您可能需要控制重新取样模式。这是可行的使用`ResampleMode`属性。有了它，你有以下选择：
 
-* Linear - samples the color linearly based on the closest samples on the image
-* Mipmap - samples the color from the mipmap that closest matches the resolution of the image on-screen
-* Nearest - samples the color closest to the intended sample point
+*线性 - 基于图像上最接近的样本线性地采样颜色
+* Mipmap  - 对来自mipmap的颜色进行采样，该颜色最接近屏幕上图像的分辨率
+*最近 - 对最接近预期采样点的颜色进行采样
 
-In the following example, we are using an `Image` with the `Nearest` resample mode in order to draw images with low resolution, like pixel art, without getting a blurry image:
+在下面的例子中，我们使用了一个带有“最近”重采样模式的“Image”来绘制低分辨率的图像，像像素艺术，没有得到一个模糊的图像：
 
 ```
-<Image ResampleMode="Nearest" File="Art.png" />
+<Image ResampleMode =“Nearest”File =“Art.png”/>
 ```
--->
+- >
 
-> ### $(StretchMode)
+> ### $（StretchMode）
 
-When added to a container, an `Image` will by default try to show as much of itself as possible. If the image isn't the same aspect as its container, there will be parts of the container that will not be covered.
+当添加到一个容器，一个`Image`将默认尝试尽可能显示自己。如果图像与其容器不是同一方面，则将存在将不被覆盖的容器的部分。
 
-There are a number of ways to address this issue. You can set the `StretchMode`-property on your `Image` to make it behave differently. Here are the different modes:
+有许多方法来解决这个问题。你可以在你的`Image`上设置`StretchMode`属性，使它的行为不同。这里有不同的模式：
 
-- `Fill` - Fill the available area in the container without necessarily preserving the aspect ratio.
-- `PixelPrecise` - Use the pixels from the image as unit to make sure the image is crisp on all devices. This means that the image will be different sizes on different devices. It ignores the size of the `Image` container.
-- `PointPrecise` - This uses the size of the image source as the `Image` in points, which guarantees that it will be the same on all devices. It ignores the size of the `Image` container. For example, if the image is 64x64 pixels in size, the resulting control will be 64x64 @(points)
-- `PointPrefer` - The `PointPrefer` stretch mode will prioritize getting image size correct using `PointPrecise` stretch mode, but in cases where `PixelPrecise` would create an on-screen image with approximately the right size, it will use `PixelPrecise` to increase the clarity of the image.
-- `Scale9` - If you use `Scale9`, the `Image` will be streched according to its $(Scale9Margin). This margin will decide which pixels will be streched and by how much. The margin divides the image into 9 areas, where the corners will retain their original aspect and the rest of the areas will be stretched to accomodate the desired size of the image.
-- `Uniform` - This will make the picture as large as possible while preserving aspect ratio. This will often make the `Image` not cover the whole parent.
-- `UniformToFill` - Fill the parent container while preserving aspect ratio. This will often mean that parts of the picture are left out, clipped by the parent
+- `Fill`  - 填充容器中的可用区域，而不必保留宽高比。
+- `PixelPrecise`  - 使用图像中的像素作为单位，以确保图像在所有设备上清脆。这意味着图像在不同设备上的大小会不同。它忽略了`Image`容器的大小。
+- `PointPrecise`  - 这使用图像源的大小作为`图像'的点，这保证它将在所有设备上相同。它忽略了`Image`容器的大小。例如，如果图像的大小为64x64像素，则生成的控件将为64x64 @（点）
+- `PointPrefer`  - “PointPrefer”拉伸模式将优先使用“PointPrecise”拉伸模式获得图像大小正确，但是在PixelPrecise将创建一个大约合适大小的屏幕图像的情况下，它将使用PixelPrecise以增加图像的清晰度。
+- `Scale9`  - 如果你使用`Scale9`，`Image`将根据它的$（Scale9Margin）。这个边缘将决定哪些像素将被拖曳和多少。边缘将图像分为9个区域，其中角将保留其原始方面，其余区域将被拉伸以适应所需的图像大小。
+- “制服” - 这将使图片尽可能大，同时保持长宽比。这通常会使“Image”不覆盖整个父类。
+- `UniformToFill`  - 填充父容器，同时保留宽高比。这通常意味着图片的部分被省略，由父母剪裁
 
-#### $(StretchDirection)
+#### $（StretchDirection）
 
-You can set which directions you want the image to scale by setting the `StretchDirection`-property:
+您可以通过设置“StretchDirection”属性来设置图像缩放的方向：
 
-- `Both` - Allow both up- and downscaling
-- `UpOnly` - Only upscale contents
-- `DownOnly` - Only downscale contents
+- `Both`  - 允许上下调整
+- `UpOnly`  - 只有高档内容
+- `DownOnly`  - 只有缩小内容
 
-> ### $(ContentAlignment)
+> ### $（ContentAlignment）
 
-You can set an alignment on Image which will make the image align within its rectangle on screen if it fills more or less of the available space in its rectangle. Which might be common when using @(StretchDirection) and @(StretchMode):
+您可以在图像上设置对齐，这将使图像在屏幕上的矩形内对齐，如果它在其矩形中填充更多或更少的可用空间。这在使用@（StretchDirection）和@（StretchMode）时可能很常见：
 
-- `Default`
-- `Left`
-- `HorizontalCenter`
-- `Right`
+- `默认'
+- `左'
+- `Horizo​​ntalCenter`
+- “右”
 - `Top`
 - `VerticalCenter`
 - `Bottom`
@@ -163,1061 +163,1061 @@ You can set an alignment on Image which will make the image align within its rec
 - `TopCenter`
 - `TopRight`
 - `CenterLeft`
-- `Center`
+- `中心'
 - `CenterRight`
 - `BottomLeft`
 - `BottomCenter`
 - `BottomRight`
 
-### $(Image sources)
+### $（图片来源）
 
-Image sources can be specified directly on @(Image) by using the `File` or `Url` attributes.
-This however, reduces control over several aspects of the image's lifetime.
+可以使用`File`或`Url`属性直接在@（Image）上指定图像源。
+然而，这减少了对图像的寿命的几个方面的控制。
 
-Using $(ImageSource) objects instead of specifying the source directly on the @(Image) attribute
-allows you to name and reuse the image source as a resource throughout your app, without duplicating
-paths and metadata everywhere.
+使用$（ImageSource）对象，而不是直接在@（Image）属性上指定源
+允许您在整个应用程序中将图像源命名和重用为资源，而不会重复
+路径和元数据。
 
-The following example shows you how you can declare an image as a resource:
+以下示例说明如何将图像声明为资源：
 
-	<FileImageSource ux:Global="CloseIcon" File="close.png" Density="2" />
+	<FileImageSource ux：Global =“CloseIcon”File =“close.png”Density =“2”/>
 
-And then you can use `CloseIcon` anywhere in your project:
+然后你可以在项目的任何地方使用`CloseIcon`：
 
-	<Image Source="CloseIcon" />
+	<Image Source =“CloseIcon”/>
 
-Fuse currently supports the following image source types:
+保险丝当前支持以下图像源类型：
 
-* `FileImageSource` - specifies a single local image file and its density
-* @(HttpImageSource) - specifies a single image from a URL and its density
-* @(MultiDensityImageSource) - allows you to specify multiple versions of the same image for use with different screen densities.
+*`FileImageSource`  - 指定单个本地映像文件及其密度
+* @（HttpImageSource） - 指定来自URL及其密度的单个图像
+* @（MultiDensityImageSource） - 允许您指定同一图像的多个版本以用于不同的屏幕密度。
 
-> ### $(MultiDensityImageSource)
+> ### $（MultiDensityImageSource）
 
-Because devices have widely different pixel densities, Fuse allows you to specify multiple image resources for the same logical `Image`:
+由于设备的像素密度差别很大，Fuse允许您为同一个逻辑“图像”指定多个图像资源：
 
-	<Image StretchMode="PointPrefer">
+	<Image StretchMode =“PointPrefer”>
 		<MultiDensityImageSource>
-			<FileImageSource File="Icon.png" Density="1"/>
-			<FileImageSource File="Icon.png@2x.png" Density="2"/>
-		</MultiDensityImageSource>
-	</Image>
+			<FileImageSource File =“Icon.png”Density =“1”/>
+			<FileImageSource File =“Icon.png@2x.png”Density =“2”/>
+		</ MultiDensityImageSource>
+	</ Image>
 
-Fuse will then pick the resource best suited for the screen, respecting the $(StretchMode) of the image.
+然后，保险丝将选择最适合屏幕的资源，尊重图像的$（StretchMode）。
 
-> ### $(HttpImageSource)
+> ### $（HttpImageSource）
 
-`HttpImageSource` allows you to specify an image to be fetched from a HTTP and be displayed asynchronously.
+`HttpImageSource`允许你指定一个从HTTP获取的图像，并以异步方式显示。
 
 	<Image>
 		<MultiDensityImageSource>
-			<HttpImageSource Url="{image_url_1x}" Density="1"/>
-			<HttpImageSource Url="{image_url_2x}" Density="2"/>
-		</MultiDensityImageSource>
-	</Image>
+			<HttpImageSource Url =“{image_url_1x}”Density =“1”/>
+			<HttpImageSource Url =“{image_url_2x}”Density =“2”/>
+		</ MultiDensityImageSource>
+	</ Image>
 
-Or alternatively, if you want to use a fixed density image, you can use the shorter form directly:
+或者，如果要使用固定密度图像，则可以直接使用较短的形式：
 
-	<Image Url="{image_url}" />
+	<Image Url =“{image_url}”/>
 
-Note that images fetched from Http may take some time to load, and until loaded, Fuse knows nothing about the dimensions of the image. You should therefore be careful about basing the layout of your application on the dimensions of HTTP-fetched images.
+请注意，从Http获取的图像可能需要一些时间加载，直到加载，Fuse不知道图像的尺寸。因此，您应该谨慎地将应用程序的布局基于HTTP提取的图像的维度。
 
-## $(Video)
+## $（视频）
 
-To display a video:
+显示视频：
 
-	<Video File="fuse_video.mp4" />
+	<Video File =“fuse_video.mp4”/>
 
-Video allows playback of video from file or stream through its properties `File` and `Url` respectively. Video is similar to @(Image), they share the properties @(StretchMode), @(StretchDirection) and @(ContentAlignment) and they work in the same way for both.
+视频允许从文件或流通过其属性`File`和`Url`播放视频。视频类似于@（Image），它们共享属性@（StretchMode），@（StretchDirection）和@（ContentAlignment），它们以相同的方式工作。
 
-### $(Video properties)
+### $（视频属性）
 
-Video comes with a set of properties that can be used to configure it or control it, in addition to the properties shared with @(Image):
+视频带有一组属性，可用于配置或控制它，除了与@（图像）共享的属性：
 
-- `Volume`: range from `0.0` to `1.0`, default is `1.0`
-- `Duration`: the duration of the video in seconds
-- `Position`: the current position of the video in seconds
-- `IsLooping`: a `bool` specifying if the video should loop or not, default is `false`
+- `Volume`：范围从`0.0`到`1.0`，默认是`1.0`
+- `Duration`：视频的持续时间（以秒为单位）
+- “位置”：视频的当前位置（以秒为单位）
+- `IsLooping`：一个`bool`指定视频是否应该循环，默认是`false`
 
-### $(Video-Triggers:Useful triggers that can be used with Video)
+### $（Video-Triggers：可用于视频的有用触发器）
 
-	<Video>
-		<WhilePlaying />    <!-- Active while the video is playing -->
-		<WhilePaused />     <!-- Active while the video is paused -->
-		<WhileCompleted />  <!-- Active while the video is done playing -->
-		<WhileLoading />    <!-- Active while the video is loading -->
-		<WhileFailed />     <!-- Active if the video failed to load or an error occured -->
-	</Video>
+	<视频>
+		<WhilePlaying /> <！ - 正在播放视频时有效 - >
+		<WhilePaused /> <！ - 视频暂停时处于活动状态 - >
+		<WhileCompleted /> <！ - 在视频播放完成时激活 - >
+		<WhileLoading /> <！ - 在视频加载时处于活动状态 - >
+		<WhileFailed /> <！ - 如果视频加载失败或出现错误，则处于活动状态 - >
+	</ Video>
 
-### $(Video-Actions:Useful actions that can be used to control Video)
-Fuse comes with a set of actions that can be used to control video playback. They all have a common `Target` property that specifies which $(Video) element they control.
+### $（Video-Actions：可用于控制视频的有用操作）
+保险丝提供了一组可用于控制视频播放的操作。它们都有一个共同的`Target`属性，指定它们控制哪个$（Video）元素。
 
 ```
-<Pause />                   <!-- Pauses playback, leaving the current position as-is -->
-<Stop />                    <!-- Stops playback and returns to the beginning of the video -->
-<Resume />                  <!-- Resumes playback from the current position -->
-<PlayTo Progress="..." />   <!-- Plays until the time specified by the Progress property -->
+<暂停/> <！ - 暂停播放，保留当前位置为 - >
+<停止/> <！ - 停止播放并返回到视频的开头 - >
+<继续/> <！ - 从当前位置恢复播放 - >
+<PlayTo Progress =“...”/> <！ - 播放到由进度属性指定的时间 - >
 ```
 
-### Supported formats
+###支持的格式
 
-Video is implemented by using the videodecoder provided by the export target and therefore supports whatever the platform supports.
-Be aware that Windows, OS X, Android and iOS might not share support for some formats
+视频通过使用导出目标提供的视频解码器实现，因此支持任何平台支持。
+请注意，Windows，OS X，Android和iOS可能不会共享对某些格式的支持
 
-- [Android supported formats](http://developer.android.com/guide/appendix/media-formats.html)
-- [iOS and OS X supported formats (found under 'public.movie')](https://developer.apple.com/library/mac/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html)
-- [Windows supported formats](https://msdn.microsoft.com/en-us/library/cc189080%28v=vs.95%29.aspx)
+-  [Android supported formats]（http://developer.android.com/guide/appendix/media-formats.html）
+-  [iOS和OS X支持的格式（在'public.movi​​e'下）]（https://developer.apple.com/library/mac/documentation/Miscellaneous/Reference/UTIRef/Articles/System-DeclaredUniformTypeIdentifiers.html）
+-  [Windows支持的格式]（https://msdn.microsoft.com/en-us/library/cc189080%28v=vs.95%29.aspx）
 
-> ### $(Video example)
+> ### $（视频示例）
 
-	<App Theme="Basic">
+	<App Theme =“Basic”>
 		<DockPanel>
-			<Video ux:Name="video" Dock="Fill" File="fuse_video.mp4" IsLooping="true" StretchMode="UniformToFill">
+			<Video ux：Name =“video”Dock =“Fill”File =“fuse_video.mp4”IsLooping =“true”StretchMode =“UniformToFill”>
 				<ProgressAnimation>
-					<Change progressBar.Width="100" />
-				</ProgressAnimation>
-			</Video>
-			<Rectangle ux:Name="progressBar" Dock="Bottom" Fill="#f00" Width="0%" Height="10" />
-			<Grid Dock="Bottom" ColumnCount="2" RowCount="1">
-				<Button Text="Play">
+					<Change progressBar.Width =“100”/>
+				</ ProgressAnimation>
+			</ Video>
+			<Rectangle ux：Name =“progressBar”Dock =“Bottom”Fill =“＃f00”Width =“0％”Height =“10”/>
+			<Grid Dock =“Bottom”ColumnCount =“2”RowCount =“1”>
+				<Button Text =“Play”>
 					<Clicked>
-						<Resume Target="video" />
-					</Clicked>
-				</Button>
-				<Button>
+						<Resume Target =“video”/>
+					</ Clicked>
+				</ Button>
+				<按钮>
 					<Clicked>
-						<Pause Target="video" />
-					</Clicked>
-				</Button>
-			</Grid>
-		</DockPanel>
-	</App>
+						<暂停目标=“视频”/>
+					</ Clicked>
+				</ Button>
+			</ Grid>
+		</ DockPanel>
+	</ App>
 
 
-## $(Shapes)
+## $（形状）
 
-Fuse can render `Rectangle`s and `Circle`s. These shapes can have multiple @(Fill:Fills) and @(Stroke:Strokes). These will be layered on top of each other.
+保险丝可以渲染`Rectangle`s和`Circle`s。这些形状可以有多个@（Fill：Fills）和@（Stroke：Strokes）。这些将在彼此的顶部分层。
 
-### $(Rectangle)
+### $（Rectangle）
 
-To draw a `Rectangle`:
+绘制一个`Rectangle`：
 
-	<Rectangle Fill="#f00" />
+	<Rectangle Fill =“＃f00”/>
 
-In this example, the `Rectangle` will take up as much space as it is allowed by its parent and fill it with a red @(SolidColor).
+在这个例子中，`Rectangle`会占用父元素所允许的空间，并用红色@（SolidColor）填充。
 
-If you want to have the `Rectangle` limit itself in size, you can add `Width` and `Height`:
+如果你想让`Rectangle`限制自己的大小，你可以添加`Width`和`Height`：
 
-	<Rectangle Fill="#f00" Width="50" Height="50" CornerRadius="5" />
+	<Rectangle Fill =“＃f00”Width =“50”Height =“50”CornerRadius =“5”/>
 
-This will render a red `Rectangle` with rounded corners. Note that these @(Units:units) are in @(Points), not @(Pixels), and the `Rectangle` will appear to be roughly the same size on most devices, regardless of pixel density and screen size.
+这将呈现一个带有圆角的红色“矩形”。请注意，这些@（单位：单位）是@（点），而不是@（像素），并且在大多数设备上，“矩形”看起来大致相同的大小，而不管像素密度和屏幕大小。
 
-### $(Circle)
+### $（Circle）
 
-It is equally simple to draw a `Circle`:
-
-
-	<Circle Fill="#f00" Width="50" Height="50">
-		<Stroke Width="5" Brush="#ff0" />
-	</Circle>
-
-In this example, we've taken it a bit further, and we're adding a yellow @(Stroke).
-
-#### $(StartAngle) / $(EndAngle)
-
-`StartAngle` and `EndAngle` can be used to only draw a slice of a @(Circle).
-There are 6 different properties that can be used to control this in different ways.
-
-* `StartAngle` - The angle in radians where the slice begins
-* `EndAngle` - The angle in radians where the slice ends
-* $(StartAngleDegrees) - The angle in degrees where the slice begins
-* $(EndAngleDegrees) - The angle in degrees where the slice ends
-* $(LengthAngle) - An offset in radians from @(StartAngle). This can be used instead of @(EndAngle)
-* $(LengthAngleDegrees) - An offset in degrees from @(StartAngle). This can be used instead of @(EndAngleDegrees)
-
-Note that using for example both @(StartAngle) and @(StartAngleDegrees) on the same @(Circle) will have an undefined behavior.
+绘制一个“Circle”同样简单：
 
 
->### $(RegularPolygon)
+	<Circle Fill =“＃f00”Width =“50”Height =“50”>
+		<笔画宽度=“5”Brush =“＃ff0”/>
+	</ Circle>
 
-A `RegularPolygon` is a convex shape in which all angles are equal, and all sides have equal length.
-Triangles, hexagons and octagons are all regular polygons.
-The number of sides can be controlled with the `Sides` property.
+在这个例子中，我们更进一步，我们添加了一个黄色@（Stroke）。
 
-	<RegularPolygon Sides="6" Fill="#000" Width="50" Height="50" />
+#### $（StartAngle）/ $（EndAngle）
 
->### $(Ellipse)
+`StartAngle`和`EndAngle`只能用来绘制一个@（Circle）的切片。
+有6个不同的属性可以用于以不同的方式控制。
 
-Use `Ellipse` when you want a @(Circle) of non-constant radius.
+*`StartAngle`  - 切片开始的以弧度表示的角度
+*`EndAngle`  - 以弧度表示切片结束的角度
+* $（StartAngleDegrees） - 切片开始的角度
+* $（EndAngleDegrees） - 切片结束的角度
+* $（LengthAngle） - 以@（StartAngle）为单位的弧度偏移量。这可以用来代替@（EndAngle）
+* $（LengthAngleDegrees） - 与@（StartAngle）的偏移量。这可以用来代替@（EndAngleDegrees）
 
-	<Ellipse Width="100" Height="50" Fill="#f00" />
+注意，例如在同一个@（Circle）上使用@（StartAngle）和@（StartAngleDegrees）都会有一个未定义的行为。
 
-### Styling a shape
 
-In order to style shapes, we provide two properties:
+> ### $（RegularPolygon）
 
-* `Fill` - Styles the background of a shape
-* `Stroke` - Styles the border of a shape
+“RegularPolygon”是所有角度相等的凸形，并且所有边具有相等的长度。
+三角形，六边形和八边形都是正多边形。
+侧面的数量可以用`Sides`属性控制。
 
-#### $(Fill:Fills)
+	<RegularPolygon Sides =“6”Fill =“＃000”Width =“50”Height =“50”/>
 
-We've seen that shapes accept simple `Fill` properties:
+> ### $（Ellipse）
 
-	<Rectangle Fill="#f00" />
+当你想要一个非常数半径的@（圆）时，使用`椭圆'。
 
-It is possible to use other kinds of brushes to fill shapes. For example:
+	<Ellipse Width =“100”Height =“50”Fill =“＃f00”/>
+
+###样式化形状
+
+为了风格化形状，我们提供两个属性：
+
+*`Fill`  - 样式的形状的背景
+*`Stroke`  - 样式的形状的边框
+
+#### $（Fill：Fills）
+
+我们已经看到形状接受简单的`Fill`属性：
+
+	<Rectangle Fill =“＃f00”/>
+
+可以使用其他种类的刷子来填充形状。例如：
 
 
 	<StackPanel>
-		<Circle Width="150" Height="150">
-			<ImageFill File="Pictures/Picture1.jpg" />
-		</Circle>
-		<Rectangle Height="150">
-			<LinearGradient StartPoint="0,0" EndPoint="1,0.75">
-				<GradientStop Offset="0" Color="#FC3C47" />
-				<GradientStop Offset="1" Color="#B73070" />
-			</LinearGradient>
-		</Rectangle>
-	</StackPanel>
+		<圆宽=“150”高=“150”>
+			<ImageFill File =“Pictures / Picture1.jpg”/>
+		</ Circle>
+		<Rectangle Height =“150”>
+			<LinearGradient StartPoint =“0,0”EndPoint =“1,0.75”>
+				<GradientStop Offset =“0”Color =“＃FC3C47”/>
+				<GradientStop Offset =“1”Color =“＃B73070”/>
+			</ LinearGradient>
+		</ Rectangle>
+	</ StackPanel>
 
-Here, we created a `Circle` that has been filled with an `ImageFill`-brush, great for creating a typical profile picture in a social app. Then under it, we created a @(Rectangle) that has a nice and subtle `LinearGradient`.
+在这里，我们创建了一个“Circle”，它已经填充了一个“ImageFill”笔刷，非常适合在社交应用程序中创建典型的个人资料图片。然后在它下面，我们创建了一个@（Rectangle），它有一个漂亮和微妙的“LinearGradient”。
 
-#### $(Stroke:Strokes)
+#### $（Stroke：Strokes）
 
-Strokes accept a brush the same way a @(Fill) does:
+笔划接受刷子的方式与@（Fill）相同：
 
 	<StackPanel>
-		<Circle Width="150" Height="150">
-			<Stroke Width="10">
-				<ImageFill File="Pictures/Picture1.jpg" />
-			</Stroke>
-		</Circle>
-		<Rectangle Height="150">
-			<Stroke Width="15">
-				<LinearGradient StartPoint="0,0" EndPoint="1,0.75">
-					<GradientStop Offset="0" Color="#FC3C47" />
-					<GradientStop Offset="1" Color="#B73070" />
-				</LinearGradient>
-			</Stroke>
-		</Rectangle>
-	</StackPanel>
+		<圆宽=“150”高=“150”>
+			<行程宽度=“10”>
+				<ImageFill File =“Pictures / Picture1.jpg”/>
+			</ Stroke>
+		</ Circle>
+		<Rectangle Height =“150”>
+			<行程宽度=“15”>
+				<LinearGradient StartPoint =“0,0”EndPoint =“1,0.75”>
+					<GradientStop Offset =“0”Color =“＃FC3C47”/>
+					<GradientStop Offset =“1”Color =“＃B73070”/>
+				</ LinearGradient>
+			</ Stroke>
+		</ Rectangle>
+	</ StackPanel>
 
-It can also be set to be a @(SolidColor:SolidColor-brush) using the `Brush`-property:
+它也可以设置为@（SolidColor：SolidColor-brush）使用`Brush`-property：
 
-	<Rectangle Fill="#f00" Width="50" Height="50">
-		<Stroke Width="5" Brush="#ff0" />
-	</Rectangle>
-
-
-##### $(StrokeAlignment:Alignment)
-
-The @(Stroke) can be aligned:
-
-	<Stroke Alignment="Center" />
-
-Valid values are `Center`, `Inside` and `Outside`.
-
-##### $(Stroke.Offset)
-
-The @(Stroke) of a @(Shapes:Shape) can be `Offset`:
-
-	<Stroke Width="10" Offset="10">
-		<ImageFill File="Pictures/Picture1.jpg" />
-	</Stroke>
-
-A positive `Offset` will make the `Stroke` appear outside the `Shape` while a negative `Offset` will make it appear inside.
+	<Rectangle Fill =“＃f00”Width =“50”Height =“50”>
+		<笔画宽度=“5”Brush =“＃ff0”/>
+	</ Rectangle>
 
 
-### $(Brush:Brushes)
+##### $（StrokeAlignment：Alignment）
 
-A `Brush` is a definition of how something is colored. It can either be applied directly to a @(Shapes) `Fill` property, or applied to a @(Stroke) to style the border of a shape.
+@（行程）可以对齐：
 
-This is how you would use brush to style the fill of a shape. Notice that the `SolidColor` brush binds to the rectangle's `Fill` property:
+	<描边对齐=“中心”/>
 
-```
-<Rectangle>
-	<SolidColor Color="#f00" />
-</Rectangle>
-```
+有效值为“中心”，“内部”和“外部”。
 
-This is how you would use a brush to style the border of a shape:
+##### $（Stroke.Offset）
+
+@（形状：Shape）的@（笔画）可以是'偏移'：
+
+	<行程宽度=“10”偏移=“10”>
+		<ImageFill File =“Pictures / Picture1.jpg”/>
+	</ Stroke>
+
+正的“偏移”将使“描边”出现在“形状”外，而负的“偏移”将使它出现在内部。
+
+
+### $（Brush：Brushes）
+
+“Brush”是一个如何着色的定义。它可以直接应用到@（Shapes）`Fill`属性，也可以应用到@（Stroke）来为形状的边框设置样式。
+
+这是你将如何使用画笔来填充形状的样式。注意，`SolidColor`刷子绑定到矩形的`Fill`属性：
 
 ```
 <Rectangle>
-	<Stroke>
-		<SolidColor Color="#0f0" />
-	</Stroke>
-</Rectangle>
+	<SolidColor Color =“＃f00”/>
+</ Rectangle>
 ```
 
-#### $(SolidColor)
-
-If you want to make a simple continuous color, you can use a `SolidColor`:
-
-```
-<SolidColor Color="#00f" />
-```
-
-This will create a brush that can be assigned to any place that accepts a brush, for example a @(Rectangle):
+这是你将如何使用画笔来定义一个形状的边框：
 
 ```
 <Rectangle>
-	<SolidColor Color="#00f" />
-</Rectangle>
+	<行程>
+		<SolidColor Color =“＃0f0”/>
+	</ Stroke>
+</ Rectangle>
 ```
 
-Note that this is equivalent of writing:
+#### $（SolidColor）
+
+如果你想做一个简单的连续颜色，你可以使用一个`SolidColor`：
 
 ```
-<Rectangle Fill="#00f" />
+<SolidColor Color =“＃00f”/>
 ```
 
-> #### $(IsCompletelyTransparent:Finding out if a SolidColor is completely transparent)
-
-The `IsCompletelyTransparent` property will be true if the alpha value of the color is 0.
-
-
-#### $(ImageFill)
-
-`ImageFill` is a @(Brush) that fills the parent @(Shapes:shape) with an image. It is like an @(Image) in a lot of ways, but it has a very important difference: the `ImageFill` is a brush, and is supposed to style a shape, and does therefore not work by itself. The following example will fill a `Circle` with an image loaded from the file `Portrait.png`:
+这将创建一个画笔，可以分配到任何接受画笔的地方，例如@（矩形）：
 
 ```
-<Circle Width="160" Height="160">
-	<ImageFill File="Portrait.png" />
-</Circle>
+<Rectangle>
+	<SolidColor Color =“＃00f”/>
+</ Rectangle>
 ```
 
-#### $(LinearGradient)
+注意这相当于写作：
 
-You can describe a `LinearGradient`-brush using `LinearGradient` and `GradientStop`. For example, to create a grey ramp that is white in the top and black in the bottom:
+```
+<Rectangle Fill =“＃00f”/>
+```
 
-	<LinearGradient StartPoint="0,0" EndPoint="0,1">
-		<GradientStop Offset="0" Color="#fff" />
-		<GradientStop Offset="1" Color="#000" />
-	</LinearGradient>
+> #### $（IsCompletelyTransparent：查明SolidColor是否完全透明）
 
-The `StartPoint` and `EndPoint` are both X and Y offsets within the @(Shapes:Shape) the brush is used in, so you can specify a diagonal brush by using `StartPoint="0,0" EndPoint="1,1"`.
+如果颜色的alpha值为0，那么`IsCompletelyTransparent`属性将为true。
 
-Instead of `StartPoint` and `EndPoint`, you can also specify an angle. This can either be in radians using the `Angle` property, or in degrees using the `AngleDegrees` property.
 
-	<LinearGradient Angle="2.4" />
+#### $（ImageFill）
 
-	             or
+`ImageFill`是一个@（Brush），用图像填充父@（Shapes：shape）。它很像一个@（Image）在很多方面，但它有一个非常重要的区别：`ImageFill`是一个画笔，并应该为一个形状，因此不工作本身。下面的示例将填充一个`Circle`与从文件`Portrait.png`加载的图像：
 
-	<LinearGradient AngleDegrees="45">
+```
+<Circle Width =“160”Height =“160”>
+	<ImageFill File =“Portrait.png”/>
+</ Circle>
+```
 
-## $(Button)
+#### $（LinearGradient）
 
-<!-- TODO: Remove DebugAction and or rename to <Debug Message=, this has a pull request, but the examples needs a search/replace DebugAction -> Debug -->
+您可以使用“LinearGradient”和“GradientStop”描述一个“LinearGradient”画笔。例如，要创建一个灰色斜坡，其顶部为白色，底部为黑色：
 
-Buttons are clickable controls that take their look and feel from the @(Theme).
+	<LinearGradient StartPoint =“0,0”EndPoint =“0,1”>
+		<GradientStop Offset =“0”Color =“＃fff”/>
+		<GradientStop Offset =“1”Color =“＃000”/>
+	</ LinearGradient>
 
-	<App Theme="Basic">
-		<Button Text="Click me!" ux:Name="button1">
+`StartPoint`和`EndPoint`都是使用画刷的@（形状：Shape）中的X和Y偏移，因此可以使用`StartPoint =“0,0”EndPoint =“1指定一个对角画笔， 1“。
+
+而不是`StartPoint`和`EndPoint`，你也可以指定一个角度。这可以是使用`Angle`属性的弧度，或者使用`AngleDegrees`属性的度数。
+
+	<LinearGradient Angle =“2.4”/>
+
+	             要么
+
+	<LinearGradient AngleDegrees =“45”>
+
+## $（Button）
+
+<！ -  TODO：删除DebugAction和或重命名为<Debug Message =，这有一个pull请求，但是这些例子需要一个搜索/替换DebugAction  - > Debug  - >
+
+按钮是可点击的控件，它们的外观和感觉从@（主题）。
+
+	<App Theme =“Basic”>
+		<Button Text =“点击我！ux：Name =“button1”>
 			<Clicked>
-				<Set button1.Text="Clicked!" />
-			</Clicked>
-		</Button>
-	</App>
+				<Set button1.Text =“Clicked！” />
+			</ Clicked>
+		</ Button>
+	</ App>
 
-This small example will create a `Button` that covers the whole screen. When you click it, its label will change from "Click me!" to "Clicked!".
+这个小例子将创建一个覆盖整个屏幕的“Button”。当您点击它时，其标签将从“点击我！到“点击！”。
 
-In Fuse, pretty much anything can easily be made @(Clicked:clickable) (and @(Tapped:tappable), etc). Thus, if you want to design a custom look and feel for a button, any component can be used:
+在Fuse，几乎任何东西都可以很容易地做@（点击：可点击）（和@（Tapped：tappable）等）。因此，如果您想为按钮设计自定义的外观和感觉，可以使用任何组件：
 
 	<App>
-		<Rectangle Fill="#309">
+		<Rectangle Fill =“＃309”>
 			<Clicked>
-				<DebugAction Message="Rectangle got clicked" />
-			</Clicked>
-		</Rectangle>
-	</App>
+				<DebugAction Message =“Rectangle got clicked”/>
+			</ Clicked>
+		</ Rectangle>
+	</ App>
 
-When you click the rectangle the `Message` output will show up in the [Monitor](https://www.fusetools.com/learn/guides/preview-and-export-monitor) if you are running in preview mode. It will also show up in the standard device logs or, if you started the preview process from the commandline, in the standard console.
+当您单击矩形时，如果您在预览模式下运行，则“Message”输出将显示在[Monitor]（https://www.fusetools.com/learn/guides/preview-and-export-monitor）中。它也将显示在标准设备日志中，或者，如果您从命令行启动预览过程，在标准控制台中。
 
 
-### $(Event triggers)
+### $（事件触发器）
 
-The `Button` can also accept `Clicked` as an _event-trigger_:
+“Button”也可以接受“Clicked”作为_event-trigger_：
 
-	<App Theme="Basic">
+	<App Theme =“Basic”>
 		<JavaScript>
 			module.exports = {
-				buttonClick: function (args) { console.log("Button was clicked"); }
-			}
-		</JavaScript>
-		<Button Text="Click me!" Clicked="{buttonClick}" />
-	</App>
+				buttonClick：function（args）{console.log（“Button was clicked”）; }}
+			}}
+		</ JavaScript>
+		<Button Text =“点击我！Clicked =“{buttonClick}”/>
+	</ App>
 
-This is handy when you want to drive business logic from events.
+当你想从事件中驱动业务逻辑时，这是很方便的。
 
-## $(Switch)
+## $（Switch）
 
-To accept on/off-style input, Fuse has a `Switch`-control:
+为了接受开/关式输入，Fuse有一个`Switch`-control：
 
-	<Switch />
+	<开关/>
 
-To make it react to being switched on, you can use the @(WhileTrue:WhileTrue-trigger):
+要使其对打开响应，您可以使用@（WhileTrue：WhileTrue-trigger）：
 
-	<App Theme="Basic">
+	<App Theme =“Basic”>
 		<StackPanel>
 			<Switch>
 				<WhileTrue>
-					<Change rectangle.Width="160" Duration="0.5"
-						Easing="CircularInOut" />
-				</WhileTrue>
-			</Switch>
-			<Rectangle ux:Name="rectangle" Width="70" Height="70" Fill="#909" />
-		</StackPanel>
-	</App>
+					<Change rectangle.Width =“160”Duration =“0.5”
+						Easing =“CircularInOut”/>
+				</ WhileTrue>
+			</ Switch>
+			<Rectangle ux：Name =“rectangle”Width =“70”Height =“70”Fill =“＃909”/>
+		</ StackPanel>
+	</ App>
 
-To make it act on the opposite state, you can use @(WhileFalse), or `WhileTrue Invert="true"`.
+要使它处于相反的状态，可以使用@（WhileFalse）或`WhileTrue Invert =“true”`。
 
-If you want the `Switch` to start out being activated:
+如果你想要“开关”开始被激活：
 
-	<Switch Value="true" />
+	<Switch Value =“true”/>
 
-The events emitted by the `Switch` can also be handled from JavaScript:
+`Switch`发出的事件也可以从JavaScript处理：
 
-	<App Theme="Basic">
+	<App Theme =“Basic”>
 		<JavaScript>
 			module.exports = {
-				switchChanged: function (args) {
-					console.log("Switch value is: " + args.value);
-				}
+				switchChanged：function（args）{
+					console.log（“Switch value is：”+ args.value）;
+				}}
 			};
-		</JavaScript>
+		</ JavaScript>
 		<StackPanel>
-			<Switch Value="true" ValueChanged="{switchChanged}" />
-		</StackPanel>
-	</App>
+			<Switch Value =“true”ValueChanged =“{switchChanged}”/>
+		</ StackPanel>
+	</ App>
 
-> ### Databinding switch
+> ###数据绑定开关
 
-You can also databind the `Switch` using its `Value`-property:
+你也可以使用它的'Value`属性来数据绑定`Switch`：
 
-	<App Theme="Basic">
+	<App Theme =“Basic”>
 		<JavaScript>
-			var Observable = require("FuseJS/Observable");
+			var Observable = require（“FuseJS / Observable”）;
 
-			var switchValue = Observable(false);
+			var switchValue = Observable（false）;
 
 			module.exports = {
-				switchValue: switchValue,
-				enableSwitch: function () { switchValue.value = true; },
-				disableSwitch: function () { switchValue.value = false; },
-				switchChanged: function (args) {
-					console.log("Switch value is: " + args.value);
-				}
+				switchValue：switchValue，
+				enableSwitch：function（）{switchValue.value = true; }，
+				disableSwitch：function（）{switchValue.value = false; }，
+				switchChanged：function（args）{
+					console.log（“Switch value is：”+ args.value）;
+				}}
 			};
-		</JavaScript>
+		</ JavaScript>
 		<StackPanel>
-			<Switch Value="{switchValue}" ValueChanged="{switchChanged}" />
-			<Grid ColumnCount="2">
-				<Button Text="Disable" Clicked="{disableSwitch}" />
-				<Button Text="Enable" Clicked="{enableSwitch}" />
-			</Grid>
-		</StackPanel>
-	</App>
+			<Switch Value =“{switchValue}”ValueChanged =“{switchChanged}”/>
+			<Grid ColumnCount =“2”>
+				<Button Text =“Disable”Clicked =“{disableSwitch}”/>
+				<Button Text =“Enable”Clicked =“{enableSwitch}”/>
+			</ Grid>
+		</ StackPanel>
+	</ App>
 
-## $(Slider)
+## $（滑块）
 
-To display a slider:
+要显示滑块：
 
 	<Slider />
 
-To react to the slider being moved, use `ProgressAnimation`. Consider this code which allows you to `Rotate` a `Rectangle` from 0 to 90 degrees:
+要对正在移动的滑块作出反应，请使用`ProgressAnimation`。考虑这个代码，它允许你从0到90度旋转`Rectangle`：
 
 	<StackPanel>
 		<Slider>
 			<ProgressAnimation>
-				<Rotate Target="rectangle" Degrees="90" />
-			</ProgressAnimation>
-		</Slider>
-		<Rectangle ux:Name="rectangle" Width="100" Height="100" Fill="#808" />
-	</StackPanel>
+				<Rotate Target =“rectangle”Degrees =“90”/>
+			</ ProgressAnimation>
+		</ Slider>
+		<Rectangle ux：Name =“rectangle”Width =“100”Height =“100”Fill =“＃808”/>
+	</ StackPanel>
 
-You can also listen to the `ValueChanged`-event:
+你也可以听'ValueChanged`事件：
 
-	<App Theme="Basic">
+	<App Theme =“Basic”>
 		<JavaScript>
 			module.exports = {
-				sliderValueChanged: function (args)
+				sliderValueChanged：function（args）
 				{
-					console.log("Value: " + args.value);
-				}
+					console.log（“Value：”+ args.value）;
+				}}
 			};
-		</JavaScript>
-		<Slider ValueChanged="{sliderValueChanged}" />
-	</App>
+		</ JavaScript>
+		<Slider ValueChanged =“{sliderValueChanged}”/>
+	</ App>
 
-When moving the slider from the far left to the far right, your console will output floating point numbers from 0 to 100, which are the default `Minimum` and `Maximum` values. These properties can also be set:
+当将滑块从最左侧移动到最右侧时，控制台将输出0到100之间的浮点数，这是默认的“最小值”和“最大值”。这些属性也可以设置：
 
-	<Slider Minimum="4" Maximum="42" />
+	<滑块最小值=“4”最大值=“42”/>
 
-> ### Databinding slider
+> ###数据绑定滑块
 
-It is also possible to databind the slider position:
+也可以对滑块位置进行数据绑定：
 
-	<App Theme="Basic">
+	<App Theme =“Basic”>
 		<JavaScript>
-			var Observable = require("FuseJS/Observable");
+			var Observable = require（“FuseJS / Observable”）;
 
-			var sliderValue = Observable(42);
-			var sliderLabel = sliderValue.map(function (val) {
-				return "Current position: " + val;
-			});
+			var sliderValue = Observable（42）;
+			var sliderLabel = sliderValue.map（function（val）{
+				return“当前位置：”+ val;
+			}）;
 
 			module.exports = {
-				sliderValue: sliderValue,
-				sliderLabel: sliderLabel
+				sliderValue：sliderValue，
+				sliderLabel：sliderLabel
 			};
-		</JavaScript>
+		</ JavaScript>
 		<StackPanel>
-			<Slider Value="{sliderValue}" />
-			<Text TextAlignment="Center" Value="{sliderLabel}" />
-		</StackPanel>
-	</App>
+			<Slider Value =“{sliderValue}”/>
+			<Text TextAlignment =“Center”Value =“{sliderLabel}”/>
+		</ StackPanel>
+	</ App>
 
-## $(TextInput) and $(TextEdit)
+## $（TextInput）和$（TextEdit）
 
-Fuse provides two different controls for entering and editing text:
+保险丝提供两种不同的控制输入和编辑文本：
 
 
-* `TextInput` is a text editor decorated according to the current @(Theme).
-* `TextEdit` is plain text editor with no visual decoration, otherwise identical to `TextInput`.
+*`TextInput`是一个根据当前@（Theme）装饰的文本编辑器。
+*`TextEdit`是没有视觉装饰的纯文本编辑器，否则等同于`TextInput`。
 
-In the following examples, both `TextInput` and `TextEdit` can be used interchangeably:
+在下面的例子中，`TextInput`和`TextEdit`可以互换使用：
 
 	<JavaScript>
-		var valueChanged = function (args) {
-			console.log(args.value);
-		}
+		var valueChanged = function（args）{
+			console.log（args.value）;
+		}}
 
 		module.exports = {
-			valueChanged: valueChanged
+			valueChanged：valueChanged
 		};
-	</JavaScript>
+	</ JavaScript>
 
-	<TextInput ValueChanged="{valueChanged}" />
+	<TextInput ValueChanged =“{valueChanged}”/>
 
-You can also easily do two-way databinding:
+你也可以轻松做双向数据绑定：
 
-	<App Theme="Basic">
+	<App Theme =“Basic”>
 		<JavaScript>
-			var Observable = require("FuseJS/Observable");
+			var Observable = require（“FuseJS / Observable”）;
 
-			var name = Observable("");
+			var name = Observable（“”）;
 
-			var greeting = name.map(function (name) {
-				if (name == "") {
-					return "Type your name above";
+			var greeting = name.map（function（name）{
+				if（name ==“”）{
+					return“输入你的名字”;
 				} else {
-					return "Hello there, " + name + "!";
-				}
-			});
+					return“Hello there，”+ name +“！”;
+				}}
+			}）;
 
-			var clearName = function () {
-				name.value = "";
-			}
+			var clearName = function（）{
+				name.value =“”;
+			}}
 
 			module.exports = {
-				name: name,
-				greeting: greeting,
-				clearName: clearName
+				name：name，
+				问候：问候，
+				clearName：clearName
 			};
-		</JavaScript>
+		</ JavaScript>
 
 		<StackPanel>
 			<StatusBarBackground />
 			<DockPanel>
-				<Text Dock="Left" Alignment="VerticalCenter">Name:</Text>
-				<TextInput Value="{name}" Alignment="VerticalCenter" />
-			</DockPanel>
-			<Text TextAlignment="Center" Value="{greeting}" />
-			<Button Clicked="{clearName}" Text="Clear" />
-		</StackPanel>
-	</App>
+				<Text Dock =“Left”Alignment =“VerticalCenter”> Name：</ Text>
+				<TextInput Value =“{name}”Alignment =“VerticalCenter”/>
+			</ DockPanel>
+			<Text TextAlignment =“Center”Value =“{greeting}”/>
+			<Button Clicked =“{clearName}”Text =“Clear”/>
+		</ StackPanel>
+	</ App>
 
-If you want to accept a password, you might want to mask the user input:
+如果要接受密码，您可能需要屏蔽用户输入：
 
-	<TextInput IsPassword="true" />
+	<TextInput IsPassword =“true”/>
 
-If you want to accept numeric values mainly, you can set an `InputHint`:
+如果你想接受数值主要，你可以设置一个`InputHint`：
 
-	<TextInput InputHint="Integer" />
+	<TextInput InputHint =“Integer”/>
 
-Valid values for `InputHint` are `Default`, `Email`, `Integer`, `Decimal`, `Phone`, `Url`. These are called "hints" because they might not do anything, depending on which platform you are on. For example, when on the desktop, the keyboard will be the same no matter which hint is added to the `TextInput`.
+`InputHint的有效值是`Default`，`Email`，`Integer`，`Decimal`，`Phone`，`Url`。这些被称为“提示”，因为他们可能不会做任何事情，这取决于你在哪个平台。例如，当在桌面上时，键盘将是相同的，无论是什么提示添加到`TextInput`。
 
-`TextInput` also allows you to input contents over multiple lines instead of scrolling off to the right, which it does by default:
+`TextInput`也允许您通过多行输入内容，而不是向右滚动，默认情况下：
 
-	<TextInput IsMultiline="true" />
+	<TextInput IsMultiline =“true”/>
 
-You may also choose to disable editing altogether:
+您也可以选择完全停用编辑功能：
 
-	<TextInput IsReadOnly="true" />
+	<TextInput IsReadOnly =“true”/>
 
-When a `TextInput` gets focus, it will often summon the device's on-screen keyboard. Fuse provides a number of mechanisms to react to this event, one of which is `WhileKeyboardVisible`:
+当一个`TextInput`获得焦点时，它通常会召唤设备的屏幕键盘。Fuse提供了许多机制来响应这个事件，其中一个是`WhileKeyboardVisible`：
 
-	<Text Value="Instructions of some kind">
+	<文本值=“某种说明”>
 		<WhileKeyboardVisible>
-			<Move Y="-1" RelativeTo="Keyboard" />
-		</WhileKeyboardVisible>
-	</Text>
+			<Move Y =“ -  1”RelativeTo =“Keyboard”/>
+		</ WhileKeyboardVisible>
+	</ Text>
 	<TextInput />
 
-As you can see, `WhileKeyboardVisible` can be attached to an arbitrary element, and you can do pretty much anything you want as a response to the on-screen keyboard taking up space on the screen.
+正如你可以看到，`WhileKeyboardVisible`可以附加到一个任意的元素，你可以做任何你想要的，作为对屏幕键盘占用屏幕上的空间的响应。
 
-The read-only `RenderValue` property gives you the string that is actually being drawn. For instance, if `IsPassword` is true, it will contain the masked password (i.e. `•••••••`).
+只读的“RenderValue”属性给你实际上正在绘制的字符串。例如，如果`IsPassword`为真，它将包含掩码密码（即``••••••``）。
 
 > ### Styling TextInput
 
-The `CaretColor` property allows you to change the color of the caret:
+`CaretColor`属性允许您更改插入符的颜色：
 
-	<TextInput CaretColor="#ff0000" />
+	<TextInput CaretColor =“＃ff0000”/>
 
-If you want to change the color of the selection, `SelectionColor` enables you to do just that:
+如果你想改变选择的颜色，`SelectionColor`使你能做到：
 
-	<TextInput SelectionColor="#00ffaa" />
+	<TextInput SelectionColor =“＃00ffaa”/>
 
-A Placeholder value can be added if you want some default string to be displayed when the TextInput is empty
+如果希望在TextInput为空时显示某个默认字符串，可以添加占位符值
 
-	<TextInput PlaceholderText="My placeholder text" />
+	<TextInput PlaceholderText =“我的占位符文本”/>
 
-And it can also have a separate color
+它也可以有一个单独的颜色
 
-	<TextInput PlaceholderText="My placeholder text" PlaceholderColor="#eee" />
+	<TextInput PlaceholderText =“我的占位符文本”PlaceholderColor =“＃eee”/>
 
 
-<!--
-- WhileFocused TODO: I am not sure what exactly this is supposed to demonstrate
-- WhileEmpty TODO: This doesn't exist, should it? It is good for implementing placeholder data
-- link to styling?
-- text edit TODO: What is this?
+<！ - 
+- 虽然重点TODO：我不知道这是什么应该证明
+-  WhileEmpty TODO：这不存在，应该吗？它对于实现占位符数据很有好处
+- 链接到样式？
+- 文本编辑TODO：这是什么？
 
-TODO: Consider not documenting these here but in the chapter on Triggers and Animators -->
+TODO：不要在这里记录这些，但在触发器和动画师 - >章节
 
-## $(ScrollView)
+## $（ScrollView）
 
-Fuse has a `ScrollView` that can be used to navigate contents that are larger than the available size.
+保险丝有一个`ScrollView`，可以用于导航大于可用大小的内容。
 
 	<ScrollView>
-		<Panel Width="2000" Height="2000" />
-	</ScrollView>
+		<Panel 宽度=“2000”高度=“2000”/>
+	</ ScrollView>
 
-To limit the behavior of a `ScrollView`, you can set the ScrollDirection:
+为了限制`ScrollView`的行为，你可以设置ScrollDirection：
 
-	<ScrollView AllowedScrollDirections="Horizontal">
-		<!-- Contents -->
-	</ScrollView>
+	<ScrollView AllowedScrollDirections =“Horizo​​ntal”>
+		<！ -  Contents  - >
+	</ ScrollView>
 
-Valid settings for `AllowedScrollDirections` include `Horizontal`, `Both` and `Vertical` (default). <!--TODO: Check that this is true. There are also a bunch of AllowedScrollDirections in the enum I believe are not used -->
+`AllowedScrollDirections`的有效设置包括`Horizo​​ntal`，`Both`和`Vertical`（默认）。<！ -  TODO：检查这是真的。还有一堆AllowedScrollDirections在枚举中我相信没有使用 - >
 
-> ### $(ScrollingAnimation)
+> ### $（ScrollingAnimation）
 
-It is possible to animate properties based on absolute `ScrollView` position. For example, let's remove a top ledge as a `ScrollView` scrolls down:
-<!-- TODO: Link to triggers and animation -->
+可以基于绝对`ScrollView`位置来动画属性。例如，让我们删除一个顶部窗口，一个`ScrollView`向下滚动：
+<！ -  TODO：链接到触发器和动画 - >
 
-	<App Theme="Basic" Background="#fff">
-		<Panel>
-			<Panel Alignment="Top" Height="50" ux:Name="ledge">
-				<Text Alignment="Center" TextAlignment="Center" TextColor="#fff" Value="TopLedge" />
-				<Rectangle  Fill="#000" />
-			</Panel>
+	<App Theme =“Basic”Background =“＃fff”>
+		<Panel >
+			<Panel 对齐=“顶部”高度=“50”ux：名称=“ledge”>
+				<Text Alignment =“Center”TextAlignment =“Center”TextColor =“＃fff”Value =“TopLedge”/>
+				<Rectangle Fill =“＃000”/>
+			</ Panel>
 			<ScrollView>
-				<ScrollingAnimation From="0" To="50">
-					<Change ledge.Opacity="0" />
-				</ScrollingAnimation>
+				<ScrollingAnimation From =“0”To =“50”>
+					<Change ledge.Opacity =“0”/>
+				</ ScrollingAnimation>
 				<StackPanel>
-					<!-- Block out the top ledge in the scrollview -->
-					<Panel Height="50" />
-					<!-- ... Content ... -->
-				</StackPanel>
-			</ScrollView>
-		</Panel>
-	</App>
+					<！ - 阻止在scrollview中的顶部 - >
+					<Panel 高度=“50”/>
+					<！ -  ... Content ...  - >
+				</ StackPanel>
+			</ ScrollView>
+		</ Panel>
+	</ App>
 
-## $(NativeViewHost)
+## $（NativeViewHost）
 
-Some views are only available as native components. These obviously work out-of-the-box with the Native theme but how can we use them together with custom components in apps based on `GraphicsTheme`? By compositing them with the NativeViewHost! As an example, here is a @(WebView) added with a NativeViewHost:
+某些视图仅作为本机组件可用。这些显然是与本机主题的开箱即用，但我们如何可以将它们与基于`GraphicsTheme`的应用程序中的自定义组件一起使用？通过合成它们与NativeViewHost！例如，这里是一个@（WebView）添加了NativeViewHost：
 
 ```
-<App Theme="Basic">
-	<Panel>
+<App Theme =“Basic”>
+	<Panel >
 		<NativeViewHost>
-			<WebView Url="http://interwebs.com" />
-		</NativeViewHost>
-	</Panel>
-</App>
+			<WebView Url =“http://interwebs.com”/>
+		</ NativeViewHost>
+	</ Panel>
+</ App>
 ```
 
-Note that views added in a NativeViewHost are always rendered _in front_ of your other Graphics theme content, so your use of depth and render order will need to take this into account. (For instance: things like `<BringToFront>` and `<SendToBack>` might not behave the way you expect.)
+请注意，在NativeViewHost中添加的视图总是呈现在您的其他Graphics主题内容的_in front_，因此您使用深度和渲染顺序需要考虑这一点。（例如：像`<BringToFront>`和`<SendToBack>这样的东西可能不会像你期望的那样。）
 
-To achieve the opposite, adding custom components and views inside a Native theme, read on.
+要实现相反的目的，在Native主题中添加自定义组件和视图，请继续阅读。
 
-## $(GraphicsView)
+## $（GraphicsView）
 
-The `GraphicsView` is the counterpart to the @(NativeViewHost) and allows you to add Fuse views to an @(App) using the Native theme.
+`GraphicsView`是@（NativeViewHost）的对应部分，并允许您使用Native主题向@（App）添加Fuse视图。
 
 ```
-<App Theme="Native">
+<App Theme =“Native”>
 	<StackPanel>
-		<Button Text="I'm a Native button!" />
+		<Button Text =“我是原生按钮！/>
 		<GraphicsView>
-			<Button Text="I'm a Fuse button!" />
-		</GraphicsView>
-	</StackPanel>
-</App>
+			<Button Text =“我是保险丝按钮！/>
+		</ GraphicsView>
+	</ StackPanel>
+</ App>
 ```
 
-As with the @(NativeViewHost) note that depth ordering will behave differently when mixing Native and Fuse views.
+和@（NativeViewHost）一样，注意当混合Native和Fuse视图时，深度排序会有不同的行为。
 
 
-## $(WebView)
+## $（WebView）
 
-To include web content Fuse offers a native WebView component for Android and iOS. The WebView is native only, and as such needs to be contained in a @(NativeViewHost) if you wish to use it with Graphics themes.
+包括Web内容Fuse为Android和iOS提供了一个本地WebView组件。WebView只是本地的，因此需要包含在@（NativeViewHost）中，如果您希望使用它与图形主题。
 
-The WebView can be used to present web content either over the http protocol or by loading HTML as a string, and hooks into some useful triggers for building a customized browsing experience, such as @(PageBeginLoading), @(WhilePageLoading) and @(PageLoaded). Navigation triggers like @(GoBack) and @(GoForward) are complemented with WebView-specific ones, like @(Reload), @(LoadUrl) and @(LoadHtml). It can also be used to feed a @(ProgressAnimation).
+WebView可以用于通过http协议或通过加载HTML作为字符串来呈现Web内容，并且钩住一些有用的触发器来构建定制的浏览体验，例如@（PageBeginLoading），@（WhilePageLoading）和@（PageLoaded ）。导航触发器像@（GoBack）和@（GoForward）与WebView特定的，如@（重新加载），@（LoadUrl）和@（LoadHtml）的补充。它也可以用于馈送@（ProgressAnimation）。
 
-The @(EvaluateJS) trigger is noteworthy, since it allows arbitrary JavaScript to be run in the WebView's context and the resulting data be fed back into Fuse:
+@（EvaluateJS）触发器是值得注意的，因为它允许在WebView的上下文中运行任意的JavaScript，并将结果数据反馈到Fuse中：
 
 ```XML
-<App Theme="Native" Background="#333">
+<App Theme =“Native”Background =“＃333”>
 	<JavaScript>
 			module.exports = {
-				onPageLoaded : function(res) {
-					console.log("WebView arrived at "+ JSON.parse(res.json).url);
-			}
+				onPageLoaded：function（res）{
+					console.log（“WebView reached at”+ JSON.parse（res.json）.url）;
+			}}
 		};
-	</JavaScript>
+	</ JavaScript>
 	<DockPanel>
-		<StatusBarBackground Dock="Top"/>
+		<StatusBarBackground Dock =“Top”/>
 		<NativeViewHost>
-			<WebView Dock="Fill" Url="http://www.google.com">
+			<WebView Dock =“Fill”Url =“http://www.google.com”>
 				<PageLoaded>
-					<EvaluateJS Handler="{onPageLoaded}">
+					<EvaluateJS Handler =“{onPageLoaded}”>
 						var result = {
-							url : document.location.href
+							url：document.location.href
 						};
-						return result;
-					</EvaluateJS>
-				</PageLoaded>
-			</WebView>
-		</NativeViewHost>
+						返回结果;
+					</ EvaluateJS>
+				</ PageLoaded>
+			</ WebView>
+		</ NativeViewHost>
 
-		<BottomBarBackground Dock="Bottom" />
-	</DockPanel>
-</App>
+		<BottomBarBackground Dock =“Bottom”/>
+	</ DockPanel>
+</ App>
 ```
 
-WebViews can also be fed raw HTML to display by wrapping an @(HTML) node or via the @(LoadHtml) trigger action:
+WebView还可以通过包装@（HTML）节点或通过@（LoadHtml）触发器操作来提供原始HTML以显示：
 
-`<LoadHtml TargetNode="myWebView" BaseUrl="http://my.domain" Source="{html}"/>`
+`<LoadHtml TargetNode =“myWebView”BaseUrl =“http：//my.domain”Source =“{html}”/>`
 
 ### JavaScript API
-Certain methods of the WebView are exposed through JavaScript
+WebView的某些方法通过JavaScript公开
 
-- `goto("http://myurl.com")`
-- `loadHtml("my html string")`
-- `loadHtml("my html string", "http://my.baseurl.com")`
-- `setBaseUrl("http://my.baseurl.com")`
+- `goto（“http://myurl.com”）`
+- `loadHtml（“my html string”）`
+- `loadHtml（“my html string”，“http://my.baseurl.com”）`
+- `setBaseUrl（“http://my.baseurl.com”）`
 
-### $(HTML)
-`<HTML/>` is a semantic utility node used to feed a @(WebView) component or a @(LoadHtml) action with raw HTML:
+### $（HTML）
+`<HTML />`是一个语义实用程序节点，用于使用原始HTML来提供@（WebView）组件或@（LoadHtml）操作：
 
 ```XML
 <NativeViewHost>
 	<WebView>
 		<HTML>
-			<![CDATA[
-				<h1>Boom!</h1>
+			<！[CDATA [
+				<h1> Boom！</ h1>
 			]]>
-		</HTML>
-	</WebView>
-</NativeViewHost>
+		</ HTML>
+	</ WebView>
+</ NativeViewHost>
 
 <LoadHtml>
 	<HTML>
-		<![CDATA[
-			<h1>Bang!</h1>
+		<！[CDATA [
+			<h1> Bang！</ h1>
 		]]>
-	</HTML>
-</LoadHtml>
+	</ HTML>
+</ LoadHtml>
 ```
 
-## $(MapView)
-The `MapView` allows you to present annotated, interactive world-wide maps to the user using the mapping APIs native to the platform: Google Maps on Android and Apple Maps on iOS.
+## $（MapView）
+`MapView`允许您使用平台本地的映射API，在Android上使用Google地图和在iOS上使用苹果地图，向用户展示带注释，互动的全球范围的地图。
 
-The `MapView` is a native control, and thus needs to be contained in a @(NativeViewHost) to be displayed with Graphics themes. As with other native mobile controls, there currently isn't a `MapView` available for desktop targets.
+`MapView`是一个本地控件，因此需要包含在一个@（NativeViewHost）中以与Graphics主题一起显示。与其他本地移动控件一样，目前没有`MapView'可用于桌面目标。
 
-Getting a `MapView` included in your app is straight forward: Simply include the node in your UX as you normally would with a native control:
+获取一个`MapView`包含在你的应用程序是简单的：简单地包括节点在你的UX中，你通常将与本机控件：
 
 ```XML
 <NativeViewHost>
-	<MapView/>
-</NativeViewHost>
+	<MapView />
+</ NativeViewHost>
 ```
 
-To initialize and manipulate the map camera, use the `Latitude`, `Longitude`, `Zoom`, `Tilt` and `Bearing` properties, all of which are two-way bindable. `Zoom` takes values in platform specific ranges, with meters above ground on iOS and a "zoom factor" on Android.
+要初始化和操作地图摄像机，请使用“纬度”，“经度”，“缩放”，“倾斜”和“轴承”属性，所有这些都是双向绑定。`Zoom`采用平台特定范围内的值，iOS上的米高于地面，Android上为“缩放因子”。
 
-The map can be further customised by setting the rendering style using the `Style` property and the `MapStyle` enum. Options are `Normal`, `Satellite` and `Hybrid`.
+通过使用“Style”属性和“MapStyle”枚举设置渲染样式，可以进一步自定义地图。选项是“Normal”，“Satellite”和“Hybrid”。
 
-> ### $(Maps on Android)
+> ### $（Android上的地图）
 
-Google Maps requires the following:
+Google地图需要以下内容：
 
-- A @(Unoproj.Packages:package reference) to `Fuse.Maps` in your unoproj
-- The Google Play libraries. See [this guide](/learn/guides/installing-google-play-services) for installation instructions
-- A valid Google Maps API key. Follow [Google's documentation](https://developers.google.com/maps/android/) to get one set up.
+- 在Unoproj中的`Fuse.Maps`的@（Unoproj.Packages：包引用）
+-  Google Play图书馆。有关安装说明，请参阅[本指南]（/ learn / guides / installing-google-play-services）
+- 有效的Google Maps API金钥。按照[Google文件]（https://developers.google.com/maps/android/）取得一项设定。
 
-Once you have your key it must be added to your project file, as shown below:
+一旦你有你的密钥，它必须添加到你的项目文件，如下所示：
 
 ```json
-"Android": {
-	"Geo": {
-		"ApiKey": "your_key_here"
-	}
-}
+“Android”：{
+	“Geo”：{
+		“ApiKey”：“your_key_here”
+	}}
+}}
 ```
 
 ### JavaScript API
-Certain methods of the MapView are exposed through JavaScript.
+MapView的某些方法通过JavaScript公开。
 
-- `setMarkers([ { latitude:0, longitude:0, label:"Zero"} ])`
-- `setLocation(latitude, longitude)`
-- `setTilt(0.0)`
-- `setZoom(1.0)`
-- `setBearing(0.0)`
+- `setMarkers（[{latitude：0，longitude：0，label：“Zero”}]）`
+- `setLocation（latitude，longitude）`
+- `setTilt（0.0）`
+- `setZoom（1.0）`
+- `setBearing（0.0）`
 
-### $(MapMarker)
-To annotate the map, you must decorate it with `MapMarker` nodes. `MapMarker` nodes are simple value objects that contain a `Latitude`, a `Longitude` and a `Label`
+### $（MapMarker）
+要注释地图，您必须使用“MapMarker”节点来装饰它。`MapMarker`节点是包含“纬度”，“经度”和“标签”的简单值对象
 
 ```HTML
 <NativeViewHost>
 	<MapView>
-		<MapMarker Label="Fuse HQ" Latitude="59.9115573" Longitude="10.73888" />
-	</MapView>
-</NativeViewHost>
+		<MapMarker Label =“Fuse HQ”Latitude =“59.9115573”Longitude =“10.73888”/>
+	</ MapView>
+</ NativeViewHost>
 ```
 
-If you need to generate MapMarkers dynamically from JS, data binding and @(Each) are your friends. While we're scripting we might as well hook into the `MarkerTapped` event to detect when the user has selected a marker.
+如果你需要从JS动态生成MapMarkers，数据绑定和@（每个）都是你的朋友。在我们编写脚本时，我们可能会勾选“MarkerTapped”事件来检测用户何时选择了标记。
 
 ```HTML
 <JavaScript>
-	var Observable = require("FuseJS/Observable");
+	var Observable = require（“FuseJS / Observable”）;
 
-	exports.markers = Observable({latitude:30.282786, longitude:-97.741736, label:"Austin"});
+	exports.markers = Observable（{latitude：30.282786，longitude：-97.741736，label：“Austin”}）;
 
-	exports.onMarkerTapped = function(args)
+	exports.onMarkerTapped = function（args）
 	{
-		console.log("Marker press: "+args.label);
-	}
-</JavaScript>
+		console.log（“Marker press：”+ args.label）;
+	}}
+</ JavaScript>
 
 <NativeViewHost>
-	<MapView MarkerTapped={onMarkerTapped} >
-		<Each Items={markers}>
-			<MapMarker Latitude="{latitude}" Longitude="{longitude}" Label="{label}" />
-		</Each>
-	</MapView>
-</NativeViewHost>
+	<MapView MarkerTapped = {onMarkerTapped}>
+		<每个项目= {markers}>
+			<MapMarker Latitude =“{latitude}”Longitude =“{longitude}”Label =“{label}”/>
+		</ Each>
+	</ MapView>
+</ NativeViewHost>
 ```
 
-## $(Element)
+## $（Element）
 
-Here are some properties that are common for all `Element` types:
+这里有一些常见的所有`Element`类型的属性：
 
-### $(HitTestMode)
+### $（HitTestMode）
 
-When interacting with an element, it is sometimes desirable to be able to differentiate which elements can be interacted with and how. This is typically referred to as "hit testing". In Fuse, how elements interact with user input can be set using `HitTestMode`.
+当与元素交互时，有时期望能够区分哪些元素可以与其交互以及如何进行交互。这通常被称为“命中测试”。在Fuse中，元素如何与用户输入交互可以使用`HitTestMode`设置。
 
-Consider this code:
+考虑这个代码：
 
-	<Grid ColumnCount="2">
-		<Rectangle Width="100" Height="100" Fill="#808" >
+	<Grid ColumnCount =“2”>
+		<Rectangle Width =“100”Height =“100”Fill =“＃808”>
 			<Clicked>
-				<DebugAction Message="Clicked left" />
-			</Clicked>
-		</Rectangle>
-		<Rectangle Width="100" Height="100" Fill="#808" HitTestMode="None" >
+				<DebugAction Message =“点击左侧”/>
+			</ Clicked>
+		</ Rectangle>
+		<Rectangle Width =“100”Height =“100”Fill =“＃808”HitTestMode =“None”>
 			<Clicked>
-				<DebugAction Message="Clicked right" />
-			</Clicked>
-		</Rectangle>
-	</Grid>
+				<DebugAction Message =“点击右键”/>
+			</ Clicked>
+		</ Rectangle>
+	</ Grid>
 
-It will layout two `Rectangle`s and add `Clicked`-triggers to both of them. However, only the left one will output anything when clicked, as the hit testing has been explicitly disabled on the right rectangle. This can be very helpful if you have visual elements obscuring elements below it, where you want the lower elements respond to input.
+它将布局两个`Rectangle`s并将`Clicked`触发器添加到它们。但是，当点击时，只有左边的一个会输出任何内容，因为在右边的矩形上显式地禁用了命中测试。如果你有视觉元素遮挡下面的元素，你想让下面的元素响应输入，这可能是非常有帮助的。
 
-Valid values for `HitTestMode` are:
+`HitTestMode`的有效值为：
 
-- $(HitTestMode.None:None) - This element will not do hit testing
-- $(HitTestMode.LocalBounds:LocalBounds) - This element will be hit tested based on its size
-- $(HitTestMode.LocalVisual:LocalVisual) - This element will be hit tested based on its appearance
-- $(HitTestMode.LocalBoundsAndChildren:LocalBoundsAndChildren) - Hit testing will include the bounds of the element and its children
-- $(HitTestMode.LocalVisualAndChildren:LocalVisualAndChildren) - Hit testing will include the appearance of the element and its children
+-  $（HitTestMode.None：None） - 这个元素不会做命中测试
+-  $（HitTestMode.LocalBounds：LocalBounds） - 这个元素将根据其大小进行命中测试
+-  $（HitTestMode.LocalVisual：LocalVisual） - 这个元素将根据其外观进行命中测试
+-  $（HitTestMode.LocalBoundsAndChildren：LocalBoundsAndChildren） - 点击测试将包括元素及其子元素的边界
+-  $（HitTestMode.LocalVisualAndChildren：LocalVisualAndChildren） - 命中测试将包括元素及其子元素的外观
 
-### $(ClipToBounds)
+### $（ClipToBounds）
 
-Normally, when laying out an element inside the other, the inner element can freely live outside the parent element:
+通常，当将一个元素布置在另一个元素内部时，内部元素可以自由地居住在父元素之外：
 
-	<Panel Width="100" Height="100">
-			<Image Margin="-100" File="Pictures/Picture1.jpg"
-				StretchMode="UniformToFill" />
-	</Panel>
+	<Panel 宽度=“100”高度=“100”>
+			<Image Margin =“ -  100”File =“Pictures / Picture1.jpg”
+				StretchMode =“UniformToFill”/>
+	</ Panel>
 
-This `Image` will appear to be 300pt wide and tall, as the `Panel` doesn't clip children to its bounds.
+这个“图像”将显示为300pt宽和高，因为“Panel ”不会将孩子剪裁到其边界。
 
-If you intend to have the `Image` clip to its parent size, simply add $(ClipToBounds) to the `Panel`:
+如果你打算把`Image`剪辑修改为它的父大小，只需在`Panel`中添加$（ClipToBounds）即可：
 
-		<Panel Width="100" Height="100" ClipToBounds="true">
-			<Image Margin="-100" File="Pictures/Picture1.jpg"
-				StretchMode="UniformToFill" />
-		</Panel>
+		<Panel 宽度=“100”高度=“100”ClipToBounds =“true”>
+			<Image Margin =“ -  100”File =“Pictures / Picture1.jpg”
+				StretchMode =“UniformToFill”/>
+		</ Panel>
 
-Now, the `Image` will not overflow the bounds of the `Panel`.
+现在，`Image`不会溢出`Panel`的边界。
 
-### $(Opacity)
+### $（Opacity）
 
-You can set the transparency of objects using the `Opacity`-property.
+你可以使用`Opacity`属性设置对象的透明度。
 
-	<Panel Opacity="0.5"/>
+	<Panel 不透明度=“0.5” />
 
-When the `Opacity` is set to 0.0, the element is fully transparent but will still respond to @(HitTestMode:hit tests). When the `Opacity` is set to 1.0, the element will be at its default state.
+当“Opacity”设置为0.0时，元素是完全透明的，但仍会响应@（HitTestMode：hit tests）。当“Opacity”设置为1.0时，元素将处于其默认状态。
 
-### $(Layer)
+### $（Layer）
 
-Instead of partaking in layout, elements can function as backgrounds or overlays for their parents by using the `Layer` property.
+而不是分开布局，元素可以通过使用`Layer`属性作为父母的背景或叠加。
 
-In the following example, the button's text will appear above the rectangle.
-
-```
-<Button Text="Hello!">
-	<Rectangle Fill="#931" Layer="Background" />
-</Button>
-```
-
-Valid values for `Layer` are:
-
-- `Layout` _(default)_ – Element partakes in layout as usual, and is drawn between `Background` and `Overlay`
-- `Background` – Element is drawn *behind* the `Layout` layer, and does not affect layout
-- `Overlay` – Element is drawn *on top of* the `Layout` layer, and does not affect layout
-
-> ### $(ZOffset)
-
-Normally, elements are drawn in the order they appear in UX.
-You can affect this ordering by using the `ZOffset` property (0 by default).
-Elements with a higher `ZOffset` value are drawn on top of those with a lower value. They do, however, stay in their @(Layer).
-
-In the following example, the blue rectangle will appear above the red one, even though their order tells us otherwise.
+在以下示例中，按钮的文本将显示在矩形上方。
 
 ```
-<Panel>
-    <Rectangle ZOffset="1" Color="Red" />
-    <Rectangle ZOffset="2" Color="Blue" />
-</Panel>
+<Button Text =“Hello！”>
+	<Rectangle Fill =“＃931”Layer =“Background”/>
+</ Button>
 ```
 
-*Note:* The Z-order of children is completely independent of the Z-axis in 3D. Elements can still be transformed to any Z-axis location, rotated into the Z-dimension, or have actual depth, regardless and independent of their child Z-order.
+`Layer`的有效值为：
 
-## About $(Control:Controls)
+- `Layout` _（默认）_  - 元素在布局中像往常一样，在“Background”和“Overlay”之间绘制
+- `Background`  - 元素是在* Layout`层后面绘制的，并不影响布局
+- `Overlay`  - 元素在* Layout`层的顶部绘制*，并不影响布局
 
-In Fuse, we use the word _control_ to describe a UI component that has a semantic function, but could vary largely in visual appearance.
+> ### $（ZOffset）
 
-For example, @(Button) defines certain properties and events, such as @(Clicked), but what a button looks and feels like may be very different between different @(Theme:themes) or @(Style:styles).
+通常，元素按照在UX中显示的顺序绘制。
+你可以通过使用`ZOffset`属性（默认为0）来影响这个排序。
+具有较高“ZOffset”值的元素绘制在具有较低值的那些值之上。然而，他们仍然在他们的@（层）。
+
+在下面的示例中，蓝色矩形将出现在红色矩形的上方，即使它们的顺序告诉我们。
+
+```
+<Panel >
+    <Rectangle ZOffset =“1”Color =“Red”/>
+    <Rectangle ZOffset =“2”Color =“Blue”/>
+</ Panel>
+```
+
+*注意：*儿童的Z顺序完全独立于3D中的Z轴。元素仍然可以转换为任何Z轴位置，旋转到Z维度，或具有实际深度，而与其子Z轴顺序无关。
+
+##关于$（控制：控制）
+
+在Fuse中，我们使用_control_来描述一个具有语义功能的UI组件，但在视觉外观上可能有很大的变化。
+
+例如，@（Button）定义了某些属性和事件，例如@（Clicked），但不同的@（Theme：themes）或@（Style：styles）之间的按钮外观和感觉可能会有很大的不同。
 
 
-## $(Effects)
+## $（效果）
 
-Fuse has the ability to render a set of visual effects that can be added to most controls. It is important to understand that in order for these to work, you need to be in graphics mode; native themes are limited in their ability to render these effects.
+保险丝具有渲染一组可以添加到大多数控件的视觉效果的能力。重要的是要理解，为了使这些工作，你需要在图形模式; 原生主题在它们呈现这些效果的能力方面受到限制。
 
-### $(DropShadow)
+### $（DropShadow）
 
-To add a `DropShadow` to an element:
+向元素添加`DropShadow`：
 
-	<Rectangle Width="50" Height="50" Fill="#808">
+	<Rectangle Width =“50”Height =“50”Fill =“＃808”>
 		<DropShadow />
-	</Rectangle>
+	</ Rectangle>
 
-To make a soft `DropShadow` from the top down:
+从一个软的“DropShadow”从上到下：
 
-	<Rectangle Width="50" Height="50" Fill="#808">
-		<DropShadow Angle="90" Distance="12" Size="20" Spread="0.1"  />
-	</Rectangle>
+	<Rectangle Width =“50”Height =“50”Fill =“＃808”>
+		<DropShadow Angle =“90”Distance =“12”Size =“20”Spread =“0.1”/>
+	</ Rectangle>
 
-It can also be used to create artistic effects like outer glow:
+它也可以用于创造艺术效果，如外部发光：
 
-	<Panel Background="#000">
-		<Circle Width="50" Height="50" Fill="#808">
-			<DropShadow Distance="0" Size="50" Spread="0.2" Color="#ff06" />
-		</Circle>
-	</Panel>
+	<Panel Background =“＃000”>
+		<Circle Width =“50”Height =“50”Fill =“＃808”>
+			<DropShadow Distance =“0”Size =“50”Spread =“0.2”Color =“＃ff06”/>
+		</ Circle>
+	</ Panel>
 
-`DropShadow` has these properties:
+`DropShadow`有以下属性：
 
-- `Angle` - Which direction the light comes from:
-	- 0 - right
-	- 90 - top
-	- 180 - left
-	- 270 - bottom
-- `Distance` - The distance in points from the source of the shadow
-- `Size` - The size of the dropshadow
-- `Spread` - How the shadow drops off. The closer to 0, the more linear. Keep this value low (experiment below 1.0), or you will get artifacts
-- `Color` - Which color the dropshadow should have. Note that this also supports alpha channel for adjusting shadow transparency (declare with using a fourth digit for your hex color values, such as #FFF0 to #FFFF).
+- `角度' - 光从哪个方向来：
+	-  0  - 右
+	-  90  - 顶
+	-  180  - 左
+	-  270  - 底
+- `距离' - 从阴影源的点的距离
+- `Size`  - 阴影的大小
+- `Spread`  - 阴影如何掉落。越接近0，线性越多。保持这个值低（实验低于1.0），否则你会得到工件
+- `颜色' -  dropshadow应该有哪种颜色。注意，这也支持Alpha通道调整阴影透明度（使用十六进制颜色值的第四个数字声明，例如＃FFF0到#FFFF）。
 
-### $(Blur)
+### $（Blur）
 
-To blur an element:
+模糊元素：
 
-	<Text Value="Hello there!">
-		<Blur Radius="0.9" />
-	</Text>
+	<Text Value =“Hello there！”>
+		<Blur Ra​​dius =“0.9”/>
+	</ Text>
 
-Note that while the `Radius` of the `Blur` can be animated like most other properties, this is potentially an expensive operation, and should be tested on devices to make sure it behaves properly.
+注意，虽然'Blur'的`Radius'可以像大多数其他属性一样动画，这可能是一个昂贵的操作，并且应该在设备上测试，以确保它的行为正确。
 
-<!-- The original author was concerned about there being parameters in the doc he couldn't speak of with confidence. There are no such parameters  -->
+<！ - 原作者担心在文档中有参数，他不能充满信心地说话。没有这样的参数 - >
 
-### $(Desaturate)
+### $（Desaturate）
 
-To `Desaturate` an element, fully or partially:
+为了“去饱和”一个元素，完全或部分：
 
-	<Image File="Pictures/Picture1.jpg">
-		<Desaturate Amount="0.4" />
-	</Image>
+	<Image File =“Pictures / Picture1.jpg”>
+		<去饱和量=“0.4”/>
+	</ Image>
 
-An amount of 1.0 will fully `Desaturate` the element.
+1.0的量将完全“去饱和”元素。
 
-### $(Halftone)
+### $（半色调）
 
-Add a classic halftone effect:
+添加经典半色调效果：
 
-	<Image File="Pictures/Picture1.jpg">
-		<Halftone />
-	</Image>
+	<Image File =“Pictures / Picture1.jpg”>
+		<半色调/>
+	</ Image>
 
-`Halftone` accepts:
+`Halftone`接受：
 
-- `Spacing` - The distance between the dots (`float`, default 0.5)
-- `Smoothness` - How hard or soft the dot edges are (`float`, default 2)
-- `Intensity` - How much of the effect is applied (`float`, default 1)
-- `DotTint` - Tint amount of the dots (`float`, default 0.5)
-- `PaperTint` - Tint amount of the paper (`float`, default 0.2)
+- `Spacing`  - 点之间的距离（`float`，默认为0.5）
+- `平滑度' - 点边缘的硬或软的程度（`float`，默认为2）
+- `Intensity`  - 应用了多少效果（`float`，默认为1）
+- `DotTint`  - 点的色调量（`float`，默认0.5）
+- `PaperTint`  - 纸张的色泽量（`float`，默认值0.2）
 
-### $(Mask)
+### $（Mask）
 
-Fuse allows you to mask an element with an image or `ImageSource`.
+保险丝允许你用一个图像或`ImageSource`来屏蔽一个元素。
 
-	<Rectangle Width="50" Height="50">
-		<Mask File="Masks/Flower.png" />
-	</Rectangle>
+	<Rectangle Width =“50”Height =“50”>
+		<Mask File =“Masks / Flower.png”/>
+	</ Rectangle>
 
-The `Mask` effects accepts the following properties:
+“Mask”效果接受以下属性：
 
-- `Mode` - How to interpret the mask source
-	- `RGBA` (default) - Use the alpha channel of the source image as the mask and multiply the RGB values from the mask with the RGB values from the element to be masked
-	- `Alpha` - Use the alpha channel of the source image without touching the RGB values from the masked element
-	- `Greyscale` - Use the color component of the greyscale mask as a multiplication factor with the original alpha value
-- `File` - If you have a picture bundled as part of the project
-- `Source` - If you have another source for the `Image`, for instance a @(HttpImageSource)
+- `Mode`  - 如何解释掩码源
+	- `RGBA`（默认） - 使用源图像的Alpha通道作为掩码，并将掩码中的RGB值与要屏蔽的元素的RGB值相乘
+	- “Alpha” - 使用源图像的Alpha通道，而不接触来自遮罩元素的RGB值
+	- “灰度” - 使用灰度掩码的颜色分量作为与原始Alpha值的乘法因子
+- `File`  - 如果你有一个图片捆​​绑作为项目的一部分
+- `Source`  - 如果你有另一个来源`Image`，例如@（HttpImageSource）
 
-If you use a white image with alpha channel, `RGBA` and `Alpha` will have the same result.
+如果您使用带有alpha通道的白色图像，“RGBA”和“Alpha”将具有相同的结果。
 
-The mask will always stretch itself to match the size of the element to be masked.
+掩码将总是伸展自身以匹配要掩蔽的元素的大小。

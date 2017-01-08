@@ -1,171 +1,171 @@
-# $(Creating custom UI components)
+＃$（创建自定义UI组件）
 
-## ux:Class
+## ux：类
 
-Specifying the `ux:Class` attribute on an UX markup node defines a new class. A class is a reusable component that can be instantiated elsewhere in your project.
+在UX标记节点上指定`ux：Class`属性定义一个新类。类是一个可重用的组件，可以在项目的其他位置实例化。
 
-`ux:Class` creates a self-contained component that can be used anywhere. It has no acces to `ux:Name`s outside itself. To create a class that has access to `ux:Name`s in a certain context, see `ux:InnerClass`.
+`ux：Class`创建一个可以在任何地方使用的自包含组件。它没有访问`ux：Name`s本身。要创建一个在某个上下文中具有访问`ux：Name`s的类，请参见`ux：InnerClass`。
 
-### Example
+###示例
 
-The following code creates a class called `Header`, which inherits from `Text`.
-
-```
-<Text ux:Class="Header" FontSize="22" />
-```
-
-It can be instantiated, just like any other Fuse element.
+下面的代码创建一个叫“Header”的类，继承自Text。
 
 ```
-<Header>Welcome</Header>
+<Text ux：Class =“Header”FontSize =“22”/>
 ```
 
-In this case, the `Header`-class will be a different class from `Text`, although all properties from `Text` will also be available. Note that the class can be defined in a separate file, and often is.
-
-Custom classes can be as complex as you want:
+它可以被实例化，就像任何其他Fuse元素。
 
 ```
-<Image ux:Class="BurgerIcon">
+<Header>欢迎</ Header>
+```
+
+在这种情况下，`Header`类将是与`Text`不同的类，但`Text`的所有属性也都可用。注意，类可以在单独的文件中定义，并且经常是。
+
+自定义类可以是你想要的那样复杂：
+
+```
+<Image ux：Class =“BurgerIcon”>
 	<MultiDensityImageSource>
-		<FileImageSource File="Burger.png" Density="1"/>
-		<FileImageSource File="Burger.png@2x.png" Density="2"/>
-	</MultiDenistyImageSoruce>
-</Image>
+		<FileImageSource File =“Burger.png”Density =“1”/>
+		<FileImageSource File =“Burger.png@2x.png”Density =“2”/>
+	</ MultiDenistyImageSoruce>
+</ Image>
 
-<!-- ... -->
+<！ -  ...  - >
 
-<Panel>
+<面板>
 	<BurgerIcon />
-</Panel>
+</ Panel>
 ```
 
-They may also contain their own "logic" using @(Triggers:triggers), @(Actions:actions), `JavaScript` and so on.
+它们还可以包含使用@（触发器：触发器），@（动作：动作），JavaScript等的自己的“逻辑”。
 
-Note that classes created with ux:Class map to real Uno-classes:
-
-```
-<Panel ux:Class="MyPanel"/>
-```
-
-would be equal to the following Uno-class:
+注意，使用ux：Class创建的类映射到真正的Uno-classes：
 
 ```
-public class MyPanel : Panel { ... }
+<Panel ux：Class =“MyPanel”/>
 ```
 
-## ux:Property
-
-In most cases, when creating custom classes, we need to be able to define some interface to that class. This can be done through UX using the ux:Property syntax.
-
-__MyButton.ux__:
+将等于以下Uno类：
 
 ```
-<Panel ux:Class="MyButton" Text="Click me!"
-	   Fill="#f00" TextColor="#000" CornerRadius="10">
-	<string ux:Property="Text"/>
-	<float4 ux:Property="CornerRadius" />
-	<Brush ux:Property="Fill" />
-	<float4 ux:Property="TextColor"/>
-	<Text Alignment="Center" TextColor="{Property this.TextColor}" Value="{Property this.Text}"/>
-	<Rectangle Layer="Background" CornerRadius="{Property this.CornerRadius}" Fill="{Property this.Fill}" />
-</Panel>
+public class MyPanel：Panel {...}
 ```
 
-Here we have created a new class called MyButton. We expose four properties (Text, CornerRadius, Fill and TextColor). These properties can then be bound to within our ux:Class using the `{Property this.PropName}` syntax.
+## ux：属性
 
-* Notice that there exists an implicit name called `this` which we are using inside the `{Property this.PropName}` syntax. This name is used to refer to the root element of our `ux:Class`.
+在大多数情况下，在创建自定义类时，我们需要能够为该类定义一些接口。这可以通过UX使用ux：Property语法完成。
 
-When we instantiate our class, we can then access these properties directly:
+__MyButton.ux__：
 
-__MainView.ux__:
+```
+<Panel ux：Class =“MyButton”Text =“点击我！
+	   Fill =“＃f00”TextColor =“＃000”CornerRadius =“10”>
+	<string ux：Property =“Text”/>
+	<float4 ux：Property =“CornerRadius”/>
+	<Brush ux：Property =“Fill”/>
+	<float4 ux：Property =“TextColor”/>
+	<Text Alignment =“Center”TextColor =“{Property this.TextColor}”Value =“{Property this.Text}”/>
+	<Rectangle Layer =“Background”CornerRadius =“{Property this.CornerRadius}”Fill =“{Property this.Fill}”/>
+</ Panel>
+```
+
+这里我们创建了一个名为MyButton的新类。我们公开四个属性（Text，CornerRadius，Fill和TextColor）。这些属性然后可以使用`{Property this.PropName}`语法绑定到我们的ux：类中。
+
+*注意，存在一个名为`this`的隐式名称，我们在`{Property this.PropName}`语法中使用。这个名称用于引用我们的`ux：Class`的根元素。
+
+当我们实例化我们的类时，我们可以直接访问这些属性：
+
+__MainView.ux__：
 
 ```
 <App>
-	<MyButton CornerRadius="20" Text="MyText"
-	          TextColor="#fff" Width="200" Height="50">
-		<LinearGradient ux:Binding="Fill">
-			<GradientStop Color="#0f0" Offset="0" />
-			<GradientStop Color="#00f" Offset="1" />
-	    </LinearGradient>
-	</MyButton>
-</App>
+	<MyButton CornerRadius =“20”Text =“MyText”
+	          TextColor =“＃fff”Width =“200”Height =“50”>
+		<LinearGradient ux：Binding =“Fill”>
+			<GradientStop Color =“＃0f0”Offset =“0”/>
+			<GradientStop Color =“＃00f”Offset =“1”/>
+	    </ LinearGradient>
+	</ MyButton>
+</ App>
 ```
 
-You can set properties of reference types (such as `Brush`) by using `ux:Binding`. In the above example, we create a `LinearGradient` and use that as `Fill`.
+你可以使用`ux：Binding`来设置引用类型的属性（例如`Brush`）。在上面的例子中，我们创建一个`LinearGradient`，并将其用作`Fill`。
 
-> ### Observable/Array properties
+> ### Observable / Array属性
 
-If you want to pass in an Observable or Array as a property, use the `object` type, as illustrated below.
+如果你想传递一个Observable或者Array作为属性，使用`object`类型，如下图所示。
 
 ```
-<Panel ux:Class="ListView">
-	<object ux:Property="ListItems" />
+<Panel ux：Class =“ListView”>
+	<object ux：Property =“ListItems”/>
 	<StackPanel>
-		<Each Items="{Property this.ListItems}">
-			<Panel Padding="10">
-				<Text Value="{}" />
-			</Panel>
-		</Each>
-	</StackPanel>
-</Panel>
+		<Each Items =“{Property this.ListItems}”>
+			<Panel Padding =“10”>
+				<Text Value =“{}”/>
+			</ Panel>
+		</ Each>
+	</ StackPanel>
+</ Panel>
 
 <JavaScript>
-	exports.items = ["Foo", "Bar", "Baz"];
-</JavaScript>
+	exports.items = [“Foo”，“Bar”，“Baz”];
+</ JavaScript>
 
-<ListView ListItems="{items}" />
+<ListView ListItems =“{items}”/>
 ```
 
-## ux:InnerClass
+## ux：InnerClass
 
-An inner class is a class that belongs to a certain scope and has access to `ux:Name`s declared in that scope. An inner class can only be used in the scope where it is declared.
+内部类是属于某个范围的类，并且可以访问在该范围中声明的ux：Name。内部类只能在声明的范围中使用。
 
-### Example
+###示例
 
-	<App Theme="Basic">
-		<Button ux:InnerClass="ActivateButton" ux:Name="btn" Margin="10">
+	<App Theme =“Basic”>
+		<Button ux：InnerClass =“ActivateButton”ux：Name =“btn”Margin =“10”>
 			<Clicked>
-				<!-- This class has access to currentActive because it is an inner class of App -->
-				<Set highlight.LayoutMaster="btn" />
-			</Clicked>
-		</Button>
+				<！ - 此类可以访问currentActive，因为它是App  - >的内部类
+				<Set highlight.LayoutMaster =“btn”/>
+			</ Clicked>
+		</ Button>
 
 		<StackPanel>
-			<ActivateButton Text="Option A" ux:Name="defaultOption"/>
-			<ActivateButton Text="Option B" />
-			<ActivateButton Text="Option C" />
-			<Rectangle Fill="Red" ux:Name="highlight" Margin="-5" LayoutMaster="defaultOption">
+			<ActivateButton Text =“Option A”ux：Name =“defaultOption”/>
+			<ActivateButton Text =“Option B”/>
+			<ActivateButton Text =“Option C”/>
+			<Rectangle Fill =“Red”ux：Name =“highlight”Margin =“ -  5”LayoutMaster =“defaultOption”>
 				<LayoutAnimation>
-					<Move RelativeTo="PositionChange" X="1" Y="1" Duration="0.4" Easing="BackOut" />
-				</LayoutAnimation>
-			</Rectangle>
-		</StackPanel>
-	</App>
+					<Move RelativeTo =“PositionChange”X =“1”Y =“1”Duration =“0.4”Easing =“BackOut”/>
+				</ LayoutAnimation>
+			</ Rectangle>
+		</ StackPanel>
+	</ App>
 
 
-## ux:Include
+## ux：包括
 
-You can insert the contents of a UX file into another by using `ux:Include`.
+可以使用`ux：Include`将UX文件的内容插入到另一个文件中。
 
-The above example, the `ux:InnerClass can be split into a separate file
+上面的例子，`ux：InnerClass可以拆分成一个单独的文件
 
 
-	<App Theme="Basic">
-		<ux:Include File="ActivateButton.ux" />
+	<App Theme =“Basic”>
+		<ux：Include File =“ActivateButton.ux”/>
 
 		<StackPanel>
-			<ActivateButton Text="Option A" ux:Name="defaultOption"/>
-			...
-		</StackPanel>
-	</App>
+			<ActivateButton Text =“Option A”ux：Name =“defaultOption”/>
+			... ...
+		</ StackPanel>
+	</ App>
 
-In `ActivateButton.ux`:
+在`ActivateButton.ux`中：
 
-	<Button ux:InnerClass="ActivateButton" ux:Name="btn" Margin="10">
+	<Button ux：InnerClass =“ActivateButton”ux：Name =“btn”Margin =“10”>
 		<Clicked>
-			<!-- This class has access to currentActive because it is an inner class of App -->
-			<Set highlight.LayoutMaster="btn" />
-		</Clicked>
-	</Button>
+			<！ - 此类可以访问currentActive，因为它是App  - >的内部类
+			<Set highlight.LayoutMaster =“btn”/>
+		</ Clicked>
+	</ Button>
 
-Note that included files should not have `ux:Class` on the root node, that would create two instances of the class in your project. However, included files can specify `ux:InnerClass`. This will create a local version of the inner class in each location it is included.
+注意，包含的文件在根节点上不应该有ux：Class，这将在项目中创建两个类的实例。但是，包含的文件可以指定`ux：InnerClass`。这将在包含的每个位置创建内部类的本地版本。
